@@ -51,26 +51,6 @@
         </div>
       </div>
     </div>
-
-		<div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-              <li class="nav-header">Markets</li>
-              <li><a href="#">BTC/GPB</a></li>
-              <li><a href="#">BTC/GPB</a></li>
-              <li><a href="#">BTC/GPB</a></li>
-              <li class="nav-header">News</li>
-              <li class="news">
-              	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis sem ac sem convallis pellentesque ac in nisi. Vestibulum velit nunc, scelerisque vel egestas quis, vehicula convallis turpis.</p> 
- 				<p>Etiam ultricies magna tempus venenatis ultricies. Suspendisse interdum urna id massa sagittis congue. Pellentesque vulputate, nulla et varius elementum, diam augue rutrum orci, a consectetur neque neque id sapien. tempor risus.</p>
-              </li>
-              
-            </ul>
-
-        </div><!--/span-->
-			</div>
-		</div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
