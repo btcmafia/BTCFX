@@ -207,12 +207,13 @@ h4 {
 
 .boxes > p {
     padding-bottom: 20px;
-    padding-right: 26%;
+    padding-right: 31%;
+		
 }
 .boxes h3 {
     font-weight: 100;
 }
-.col-sm-6.boxes:hover, .col-md-4.boxes:hover {
+.col-xs-6.boxes:hover, .col-md-4.boxes:hover {
 	background-color:#2b2b2b;
 	 -webkit-transition: background-color 300ms linear;
     -moz-transition: background-color 300ms linear;
@@ -224,13 +225,13 @@ h4 {
 
 
 .boxes{
-    min-height: 200px;
+    min-height: 250px;
     background-color: #E5AE27;
     color: #FFFFFF;
     font-weight: 100;
 		background-position:right;
 		margin-top:10px;
-
+		border-right:1px solid black;
     padding: 10px 20px 20px;
 		margin-bottom:20px;
 }
