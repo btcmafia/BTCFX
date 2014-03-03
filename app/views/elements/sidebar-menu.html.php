@@ -80,13 +80,13 @@ if($this->_request->params['controller']!='api'){
 				?>
 				<?php foreach($Rates['result'] as $rate){?>
 					<?php if($rate['_id']['FirstCurrency']==$first_currency && $rate['_id']['SecondCurrency']==$second_currency){?>
-						<?php	$avg = $rate['avg'];?>
+						<?php	$price = $rate['max'];?>
 					<?php }?>					
 				<?php }?>
 				
 				<a href="/ex/x/<?=strtolower(str_replace("/","_",$exchange['trade']))?>" class="list-group-subitem"><i class="glyphicon glyphicon-caret-right"></i> 
 				<?=$exchange['trade']?>
-				<span class="badge btn-success"><?=number_format($avg,2)?></span></a>				
+				<span class="badge btn-success"><?=number_format($price,2)?></span></a>				
 				<?php }?>
 			</div>
 <?php }	//for?>
