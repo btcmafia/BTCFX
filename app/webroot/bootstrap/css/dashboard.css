@@ -24,7 +24,7 @@ body {
 
 /* Hide for mobile, show later */
 .sidebar {
-  display: none;
+  display: block;
 }
 @media (min-width: 768px) {
   .sidebar {
@@ -52,7 +52,7 @@ body {
 	color:#fff;
   padding-right: 20px;
   padding-left: 20px;
-	border-bottom:1px solid gray;
+	border-bottom: 1px solid gray;
 }
 .nav-sidebar > .active > a {
   color: #DFA80F;
@@ -60,7 +60,7 @@ body {
 	font-size:16px;
 }
 .nav-sidebar > li >  a:hover {
-  color: #fff;
+  color: #DFA80F;
   background-color: #E8BB5E;
 }
 
@@ -100,4 +100,55 @@ body {
 .placeholder img {
   display: inline-block;
   border-radius: 50%;
+}
+.list-group-item:first-child {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.list-group-item:last-child {
+  margin-bottom: 0;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.list-group-item{
+  color:#DFA80F;
+	font-weight:bold;
+	border:0px;
+  background-color: #222;
+}
+.list-group-item > a:hover{
+  color: #DFA80F;
+	border:0px;
+  background-color: #222;
+}
+.item-border{border-top:1px solid gray;}
+.list-group-subitem{
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: #333;
+  border: 0px solid #dddddd;
+	border-bottom:1px solid #DFA80F;
+	color:#DFA80F;
+}
+.list-group-subitem > .badge {
+  float: right;
+}
+.list-group-subitem > .badge + .badge {
+  margin-right: 5px;
+}
+a.list-group-subitem {
+  color: #DFA80F;
+}
+a.list-group-subitem .list-group-subitem-heading {
+  color: #DFA80F;
+}
+a.list-group-subitem:hover,
+a.list-group-subitem:focus {
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+a.list-group-item {
+  color: #DFA80F;
 }
