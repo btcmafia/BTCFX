@@ -1,30 +1,27 @@
-<?php use lithium\core\Environment; 
-if(substr(Environment::get('locale'),0,2)=="en"){$locale = "en";}else{$locale = Environment::get('locale');}
-?>
-<div id="footer" style="padding:10px 2px; margin-top:1px;border-top:1px solid gray;font-size:11px">
+<div id="footer" style="padding:10px 2px; margin-top:1px;border-top:1px solid gray;">
 	<p class="nav navbar-nav" style="border-bottom:double;width:100% ">
 	<a href="/">Copyright &copy; IBWT JD LTD. All rights reserved.</a></p>
-	<ul class="nav navbar-nav style="font-size:11px ">
-		<li><a href="/company/contact"><?=$t("Contact")?></a></li>		
-		<li><a href="/company/aboutus"><?=$t("About")?></a></li>		
-		<li><a href="/company/riskmanagement"><?=$t("Risk")?></a></li>				
-		<li><a href="/company/verification"><?=$t("Verification")?></a></li>						
-		<li><a href="/company/privacy"><?=$t("Privacy")?></a></li>		
-		<li><a href="/company/termsofservice"><?=$t("Terms")?></a></li>				
-		<li><a href="/company/legal"><?=$t("Legal")?></a></li>		
-		<li><a href="/company/FAQ"><?=$t("FAQ")?></a></li>				
-		<li><a href="/company/funding"><?=$t("Funding")?></a></li>						
-		<li><a href="/okpay"><?=$t("OKPAY")?></a></li>								
-		<li><a href="/news"><?=$t("News")?></a></li>						
-		<li><a href="/API"><?=$t("API")?></a></li>								
-<!--		<li><a href="/MAPI"><?=$t("Merchant API")?></a></li>										-->
-		<li><a href="/company/resources"><?=$t("Resources")?></a></li>								
+	<ul class="nav navbar-nav" style="font-size:11px">
+		<li><a href="/company/contact">Contact</a></li>		
+		<li><a href="/company/aboutus">About</a></li>		
+		<li><a href="/company/riskmanagement">Risk</a></li>				
+		<li><a href="/company/verification">Verification</a></li>						
+		<li><a href="/company/privacy">Privacy</a></li>		
+		<li><a href="/company/termsofservice">Terms</a></li>				
+		<li><a href="/company/legal">Legal</a></li>		
+		<li><a href="/company/FAQ">FAQ</a></li>				
+		<li><a href="/company/funding">Funding</a></li>						
+		<li><a href="/okpay">OKPAY</a></li>								
+		<li><a href="/news">News</a></li>						
+		<li><a href="/API">API</a></li>								
+<!--		<li><a href="/MAPI">Merchant API</a></li>										-->
+		<li><a href="/company/resources">Resources</a></li>								
 	</ul>
-	<p class="nav navbar-nav" style="font-size:11px;border-top:1px solid black ">
-		<?=$t("IBWT is a trading name of ")?><strong>IBWT JD Ltd</strong>. <?=$t("Registered in England and Wales.")?> 
-		<?=$t("Registered office: Plymouth, PL2 2AR. Company no: 8554667. 
+	<p class="nav navbar-nav footer-para" >
+		IBWT is a trading name of <strong>IBWT JD Ltd</strong>. Registered in England and Wales. 
+		Registered office: Plymouth, PL2 2AR. Company no: 8554667. 
 		Registered VAT no: 165221136. 
-		Registered Information Commissioner no: ZA007784.")?>
+		Registered Information Commissioner no: ZA007784.
 	</p>
 </div>
 <script>

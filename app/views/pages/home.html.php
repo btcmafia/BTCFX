@@ -1,3 +1,8 @@
+<?php
+use app\models\Parameters;
+use lithium\core\Environment; 
+$Comm = Parameters::find('first');
+?>
 <h2>Welcome to IBWT</h2>
 	<p>First time on this website, no problem follow these simple steps to get your self trading on IBWT</p>
 	<div class="row-fluid">
@@ -18,17 +23,16 @@
 			<div class="row-fluid">
 					<div class="col-xs-12 col-sm-8">
 							<h4 class="iconArticle" >IBWT is a UK Bitcoin/Virtual Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</h4>
-			<ul>
-			 <li>Fees are 0.6% per transaction</li>
-			 <li>Simple verification means you could be a full customer in a matter of days</li>
-			 <li>Security ensured with Cold Storage, SSL 256bit encryption & 2FA</li>
-			 <li>Dedicated Server for an enhanced customer experience</li>
-			 <li>Deposits via OKPAY or secure mail services.</li>
-			 <li>Withdrawal via OKPAY, secure mail services or via banks.</li>
-
-								</ul>
-						</div>
-						<div class="col-xs-12 col-sm-4">
+							<ul class="home-bullets">
+							 <li>Fees are <strong><?=$Comm['value']?>%</strong> per transaction</li>
+							 <li>Simple verification means you could be a full customer in a matter of days</li>
+							 <li>Security ensured with Cold Storage, SSL 256bit encryption & 2FA</li>
+							 <li>Dedicated Server for an enhanced customer experience</li>
+							 <li>Deposits via OKPAY or secure mail services.</li>
+							 <li>Withdrawal via OKPAY, secure mail services or via banks.</li>
+							</ul>
+				</div>
+				<div class="col-xs-12 col-sm-4">
 				<a class="twitter-timeline"  href="https://twitter.com/IBWTofficial"  data-widget-id="439157793853947904">Tweets by @IBWTofficial</a>
-						</div>
+				</div>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

@@ -30,7 +30,7 @@ body {
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+
 
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -67,10 +67,12 @@ body {
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 						<?php echo $this->content(); ?>
-						<div class="footer">
-							<?php echo $this->_render('element', 'footer');?>	
-						</div>	
+				<div class="footer">
+					<?php echo $this->_render('element', 'footer');?>	
+				</div>	
+
         </div>
+
       </div>
 
     </div>
