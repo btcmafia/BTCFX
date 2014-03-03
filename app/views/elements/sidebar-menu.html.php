@@ -46,7 +46,7 @@ $tradesall = Trades::find('all');
 					'_id.day'=>-1,					
 //					'_id.hour'=>-1,					
 				)),
-				array('$limit'=>1)
+//				array('$limit'=>1)
 			)
 		));
 
@@ -80,8 +80,8 @@ if($this->_request->params['controller']!='api'){
 				?>
 				<?php foreach($Rates['result'] as $rate){?>
 					<?php if($rate['_id']['FirstCurrency']==$first_currency && $rate['_id']['SecondCurrency']==$second_currency){?>
-					<?php	$avg = $rate['avg'];?>
-					<?php }?>				
+						<?php	$avg = $rate['avg'];?>
+					<?php }?>					
 				<?php }?>
 				
 				<a href="/ex/x/<?=strtolower(str_replace("/","_",$exchange['trade']))?>" class="list-group-subitem"><i class="glyphicon glyphicon-caret-right"></i> 
