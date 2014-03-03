@@ -152,3 +152,166 @@ a.list-group-subitem:focus {
 a.list-group-item {
   color: #DFA80F;
 }
+/*
+ * Brent
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+
+.navbar-inverse .navbar-inner {
+	background-color:#0f0f0f;
+	background-image:none;	
+	border:none;
+}
+.navbar .brand {
+	padding:0;	
+}
+#one{
+	background-image:url(/img/icon_1.jpg);
+	background-position:right right;
+	background-repeat:no-repeat;
+}
+#two{
+	background-image:url(/img/icon_2.jpg);
+	background-position:right right;
+	background-repeat:no-repeat;
+}
+#three{
+	background-image:url(/img/icon_3.jpg);
+	background-position:right right;
+	background-repeat:no-repeat;
+}
+
+.yellow{
+ color: #E5AE27;	
+}
+h4 {
+    color: #E5AE27;
+    font-size: 15.5px;
+    font-weight: bold;
+    line-height: 26px;
+
+}
+
+.col-sm-6 .col-md-4 > ul {
+	margin-left:0;
+}
+.col-sm-6 .col-md-4 > li {
+	padding-left:20px;
+    line-height: 34px;
+	background-image:url(../img/li.png);
+	background-repeat:no-repeat;
+	background-position:left;
+	list-style-type:none;
+}
+
+.boxes > p {
+    padding-bottom: 20px;
+    padding-right: 26%;
+}
+.boxes h3 {
+    font-weight: 100;
+}
+.col-sm-6.boxes:hover, .col-md-4.boxes:hover {
+	background-color:#2b2b2b;
+	 -webkit-transition: background-color 300ms linear;
+    -moz-transition: background-color 300ms linear;
+    -o-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+	
+}
+
+
+.boxes{
+    min-height: 200px;
+    background-color: #E5AE27;
+    color: #FFFFFF;
+    font-weight: 100;
+		background-position:right;
+		margin-top:10px;
+
+    padding: 10px 20px 20px;
+		margin-bottom:20px;
+}
+
+.navbar-link.login {
+    background-color: #E5AE27;
+    color: #FFFFFF;
+    display: block;
+    font-size: 19px;
+    font-weight: 100;
+    margin: 0;
+    padding: 13px 20px 15px;
+}
+
+.navbar-link.login:hover {
+    background-color: #FFFFFF;
+    color: #E5AE27;
+	 -webkit-transition: background-color 300ms linear;
+    -moz-transition: background-color 300ms linear;
+    -o-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+	text-decoration:none;
+
+}
+
+.well.sidebar-nav {
+    background-color: #2B2B2B;
+    border: medium none;
+    margin: 5px 0 0;
+    padding: 0 0 50px;
+	position:fixed;
+	width:16%;
+	height:100%;
+}
+
+
+
+.nav.nav-list {
+    padding-top: 20px;
+}
+.nav-header {
+    color: #e5ae27;
+    font-size: 17px;
+    padding-bottom: 10px;
+    text-shadow: none !important;
+}
+
+
+.news > p {
+    color: #989898;
+    font-size: 12px;
+}
+.nav.nav-list a {
+    border-top: 1px solid #474747;
+    box-shadow: none;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 200;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-shadow: none;
+}
+.nav.nav-list a:hover{
+	color:#2b2b2b;
+	background-color:white;
+	 -webkit-transition: background-color 300ms linear;
+    -moz-transition: background-color 300ms linear;
+    -o-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+}
+
+ @media (max-width: 767px) {
+     .well.sidebar-nav { 
+          margin-bottom: 20px;
+    	  position: inherit;
+          width: 100%;
+     }
+	 .boxes {
+	    min-height: 220px;
+	 }
+
+ }
