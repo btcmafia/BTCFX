@@ -27,29 +27,31 @@ $tradesall = Trades::find('all');
 				)),
 				array('$match'=>array(
 					'Completed'=>'Y',					
+					
 					)),
 				array('$group' => array( '_id' => array(
 							'FirstCurrency'=>'$FirstCurrency',
 							'SecondCurrency'=>'$SecondCurrency',	
-							'year'=>array('$year' => '$TransactDateTime'),
-							'month'=>array('$month' => '$TransactDateTime'),						
-							'day'=>array('$dayOfMonth' => '$TransactDateTime'),												
+//							'year'=>array('$year' => '$TransactDateTime'),
+//							'month'=>array('$month' => '$TransactDateTime'),						
+//							'day'=>array('$dayOfMonth' => '$TransactDateTime'),												
 //						'hour'=>array('$hour' => '$TransactDateTime'),
 						),
-					'min' => array('$min' => '$PerPrice'), 
-					'avg' => array('$avg' => '$PerPrice'), 					
-					'max' => array('$max' => '$PerPrice'), 
+//					'min' => array('$min' => '$PerPrice'), 
+//					'avg' => array('$avg' => '$PerPrice'), 					
+//					'max' => array('$max' => '$PerPrice'), 
+					'last' => array('$last' => '$PerPrice'), 					
 				)),
-				array('$sort'=>array(
-					'_id.year'=>-1,
-					'_id.month'=>-1,
-					'_id.day'=>-1,					
+//				array('$sort'=>array(
+//					'_id.year'=>-1,
+//					'_id.month'=>-1,
+//					'_id.day'=>-1,					
 //					'_id.hour'=>-1,					
-				)),
+//				)),
 //				array('$limit'=>1)
 			)
 		));
-
+//print_r($Rates);
 $sel_curr = $this->_request->params['args'][0];
 if($this->_request->params['controller']!='api'){
 	$currencies = array();
@@ -80,7 +82,7 @@ if($this->_request->params['controller']!='api'){
 				?>
 				<?php foreach($Rates['result'] as $rate){?>
 					<?php if($rate['_id']['FirstCurrency']==$first_currency && $rate['_id']['SecondCurrency']==$second_currency){?>
-						<?php	$price = $rate['max'];?>
+						<?php	$price = $rate['last'];?>
 					<?php }?>					
 				<?php }?>
 				
