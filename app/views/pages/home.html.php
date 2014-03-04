@@ -5,22 +5,22 @@ $Comm = Parameters::find('first');
 ?>
 <h2>Welcome to IBWT</h2>
 	<p>First time on this website, no problem follow these simple steps to get your self trading on IBWT</p>
-	<div class="row-fluid">
-			<div id="one" class="col-xs-6 col-sm-4 boxes">
+	<div class="row">
+			<div id="one" class="col-md-4 boxes">
 					<h3>Register Account</h3>
 					<p>Easy and simple registration, experience the IBWT platform with only an email address to get started.</p>
 			</div>
-			<div id="two" class="col-xs-6 col-sm-4 boxes">
+			<div id="two" class="col-md-4 col-sm-4 boxes">
 					<h3>Buy and Sell</h3>
 					<p>Choose from a multi-tued of cash and coins for your day to day trades or shopping needs.</p>
 			</div>
-			<div id="three"  class="col-xs-6 col-sm-4 boxes">
+			<div id="three"  class="col-md-4 col-sm-4 boxes">
 					<h3>Deposit or Withdraw</h3>
 					<p>Withrdraw your coins straight away or have cash sent to you with simple step verfication.</p>
 			</div>
 	</div>
 			
-			<div class="row-fluid">
+			<div class="row">
 					<div class="col-xs-12 col-sm-8">
 							<h4 class="iconArticle" >IBWT is a UK Bitcoin/Virtual Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</h4>
 							<ul class="home-bullets">

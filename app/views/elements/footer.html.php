@@ -1,6 +1,6 @@
-<div id="footer" style="padding:10px 2px; margin-top:1px;border-top:1px solid gray;">
-	<p class="nav navbar-nav" style="border-bottom:double;width:100% ">
-	<a href="/">Copyright &copy; IBWT JD LTD. All rights reserved.</a></p>
+
+	<h4 class="nav navbar-nav">
+	Copyright &copy; IBWT JD LTD. All rights reserved.</h4>
 	<ul class="nav navbar-nav" style="font-size:11px">
 		<li><a href="/company/contact">Contact</a></li>		
 		<li><a href="/company/aboutus">About</a></li>		
@@ -23,7 +23,7 @@
 		Registered VAT no: 165221136. 
 		Registered Information Commissioner no: ZA007784.
 	</p>
-</div>
+
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
