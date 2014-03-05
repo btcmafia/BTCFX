@@ -328,6 +328,15 @@ blockquote {
 	background-color: #e5ae27;
 	color: white !important;
 }
+
+.footer .navbar-nav > li > a {
+	border-right: 1px solid white;
+	border-left: 1px solid white;
+	padding-bottom: 21px;
+	padding-top: 21px;
+	background-color: #CCC;
+	color:#333333 !important;
+}
 .navbar-collapse form.navbar-form {
 	display: none;
 }
@@ -350,6 +359,31 @@ blockquote {
 	background-color: #0f0f0f;
 	background-image: none;
 	border: none;
+}
+.img-circle {
+    height: 124px;
+    width: 124px;
+}
+body {background: #EAEAEA;}
+.user-details {position: relative; padding: 0; min-height:600px; border-right:10px solid #eaeaea;}
+.user-details .user-image {position: relative;  z-index: 1; width: 100%; text-align: center; margin-top:-20px;}
+ .user-image img { clear: both; margin: auto; position: relative;}
+
+.user-details .user-info-block {width: 100%; position: absolute; top: 55px; background: rgb(255, 255, 255); z-index: 0; padding-top: 35px;}
+ .user-info-block .user-heading {width: 100%; text-align: center; margin: 10px 0 0;}
+ .user-info-block .navigation {float: left; width: 100%; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid #e5ae27; border-top: 1px solid #e5ae27;}
+  .navigation li {float: left; margin: 0; padding: 0;}
+   .navigation li a {padding: 20px 30px; float: left;}
+   .navigation li.active a {background: #e5ae27; color: #fff;}
+ .user-info-block .user-body {float: left; padding: 5%; width: 90%;}
+  .user-body .tab-content > div {float: left; width: 100%;}
+  .user-body .tab-content h4 {width: 100%; margin: 10px 0; color: #333;}
+
+a {
+    color: #e5ae27;
+}
+a:hover {
+	color:#2b2b2b;
 }
  @media (max-width: 767px) {
 .well.sidebar-nav {
