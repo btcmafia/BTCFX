@@ -73,23 +73,24 @@ if($this->_request->params['controller']!='api'){
 		$count = count($exchanges);
 ?>
     <div id="sidebar"> 
-		<a href="#<?=$currency?>" class="list-group-item item-border" data-toggle="collapse" data-parent="#sidebar"><i class="glyphicon glyphicon-plus"></i> <?=$currency?><span class="badge bg_danger"><?=$count?></span></a>
-			<div id="<?=$currency?>" class="list-group subitem collapse">	
-				<?php foreach($exchanges as $exchange){
+		<a href="#<?=$currency?>" class="list-group-item item-border" data-toggle="collapse" data-parent="#sidebar">
+			<i class="glyphicon glyphicon-plus"></i> <?=$currency?><span class="badge bg_danger"><?=$count?></span>
+		</a>
+			<div id="<?=$currency?>" class="list-group subitem collapse">
+		<?php foreach($exchanges as $exchange){
 						$first_currency = substr($exchange['trade'],0,3);		
 						$second_currency = substr($exchange['trade'],4,3);		
 						$avg = 0;
-				?>
-				<?php foreach($Rates['result'] as $rate){?>
-					<?php if($rate['_id']['FirstCurrency']==$first_currency && $rate['_id']['SecondCurrency']==$second_currency){?>
-						<?php	$price = $rate['last'];?>
-					<?php }?>					
+					foreach($Rates['result'] as $rate){
+					 if($rate['_id']['FirstCurrency']==$first_currency && $rate['_id']['SecondCurrency']==$second_currency){
+							$price = $rate['last'];
+					 }
+					}?>
+					<a href="/ex/x/<?=strtolower(str_replace("/","_",$exchange['trade']))?>" class="list-group-subitem">
+						<i class="glyphicon glyphicon-caret-right"></i><?=$exchange['trade']?><span class="badge btn-success"><?=number_format($price,2)?></span>
+					</a>				
 				<?php }?>
-				
-				<a href="/ex/x/<?=strtolower(str_replace("/","_",$exchange['trade']))?>" class="list-group-subitem"><i class="glyphicon glyphicon-caret-right"></i> 
-				<?=$exchange['trade']?>
-				<span class="badge btn-success"><?=number_format($price,2)?></span></a>				
-				<?php }?>
-			</div>
+			</div> <!-- subitem -->
+		</div> <!-- sidebar -->
 <?php }	//for?>
 <?php }	//if?>
