@@ -1,4 +1,3 @@
-
 	<h4 class="nav navbar-nav">
 	Copyright &copy; IBWT JD LTD. All rights reserved.</h4>
 	<ul class="nav navbar-nav" style="font-size:11px">
