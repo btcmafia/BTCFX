@@ -8,6 +8,7 @@
 namespace app\controllers;
 use app\models\Users;
 use app\models\Details;
+use app\models\Settings;
 use app\models\Orders;
 use app\models\Trades;
 use app\models\Pages;
@@ -46,7 +47,9 @@ class ExController extends \lithium\action\Controller {
 		$first_curr = strtoupper(substr($currency,0,3));
 		$second_curr = strtoupper(substr($currency,4,3));
 		$title = $first_curr . "/" . $second_curr;
-		
+		$currencyStatus = Trades::find('first',array(
+				'conditions' => array('trade'=>$title)
+		));
 //		$this->SetGraph($first_curr,$second_curr);
 		
 		$user = Session::read('member');
@@ -550,8 +553,9 @@ class ExController extends \lithium\action\Controller {
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
+		$settings = Settings::find('first');
 		
-		return compact('title','details','SellOrders','BuyOrders','TotalSellOrders','TotalBuyOrders','YourOrders','YourCompleteOrders','keywords','description');
+		return compact('title','details','SellOrders','BuyOrders','TotalSellOrders','TotalBuyOrders','YourOrders','YourCompleteOrders','keywords','description','settings','currencyStatus');
 	}
 	
 	public function dashboard() {
