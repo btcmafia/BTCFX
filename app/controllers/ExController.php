@@ -593,8 +593,8 @@ class ExController extends \lithium\action\Controller {
 		$title = "Dashboard";
 		$keywords = "Dashboard, trading platform, bitcoin exchange, we trust, United Kingdom, UK";
 $description = "Dashboard for trading platform for bitcoin exchange in United Kingdom, UK";
-
-		return compact('title','details','YourOrders','Commissions','CompletedCommissions','YourCompleteOrders','RequestFriends','UsersRegistered','OnlineUsers','TotalOrders','TotalCompleteOrders','keywords','description');
+		$settings = Settings::find('first');
+		return compact('title','details','YourOrders','Commissions','CompletedCommissions','YourCompleteOrders','RequestFriends','UsersRegistered','OnlineUsers','TotalOrders','TotalCompleteOrders','keywords','description','settings');
 	}
 
 	public function TotalCommissions($id){

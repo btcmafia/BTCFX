@@ -1,347 +1,276 @@
 <?php
 use lithium\util\String;
+use app\models\Trades;
+$virtuals = array('BTC');
+$virtualcurrencies = Trades::find('all',array(
+	'conditions'=>array('SecondType'=>'Virtual')
+));
+foreach($virtualcurrencies as $VC){
+	array_push($virtuals,substr($VC['trade'],4,3));
+}
 ?>
-<?php use lithium\core\Environment; 
-if(Environment::get('locale')=="en_US"){$locale = "en";}else{$locale = Environment::get('locale');}
-?>
-<div style="background-image:url(/img/Stamp.png);background-position:bottom right;background-repeat:no-repeat">
-<div class="row container" >
-	<div class="span11">
-		<div class="navbar">
-			<div class="navbar-inner1">
-			<a class="brand" href="#">Accounts </a>
-			<a href="/<?=$locale?>/users/funding_btc" class="btn btn-primary">Funding BTC</a>
-			<a href="/<?=$locale?>/users/funding_ltc" class="btn btn-primary">Funding LTC</a>			
-			<a href="/<?=$locale?>/users/funding_fiat" class="btn btn-primary">Funding Fiat</a>						
-			<a href="/<?=$locale?>/okpay"><img src="/img/DepositOkPay.png" width="110px" style="margin-top:4px "></a>
-			<a href="/<?=$locale?>/users/transactions" class="btn btn-primary">Transactions</a>			
-			<a href="/<?=$locale?>/users/settings" class="btn btn-primary">Settings</a>									
-			</div>
-		</div>
-		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
-				<tr style="background-color:#CFFDB9">
-					<td width="16%"><strong>Verification Process</strong></td>
-					<td width="16%" style="text-align:center ">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Dashboard: <?=$user['firstname']?> <?=$user['lastname']?></h3>
+  </div>
+  <div class="panel-body">
+		<div class="row">
+		<!--Options-->
+			<div class="col-md-12">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Your status</h3>
+					</div>
+					<div class="panel-body">
+					<table class="table">
+						<tr>
+							<td width="20%">
 <!-- Email start-->					
 					<?php 
 					if($details['email.verified']=='Yes'){
-					?><a href="#" class="label label-success tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="icon-ok icon-black"></i> Email</a><?php }else{
-					?><a href="/users/email/" class="label label-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="icon-remove icon-black"></i> Email</a><?php }
+					?><a href="#" class="btn btn-success   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok "></i> Email</a><?php }else{
+					?><a href="/users/email/" class="btn btn-warning   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> Email</a><?php }
 					?>
+						</td>
 <!-- Email end-->										
-					</td>					
-					<td width="16%" style="text-align:center ">
-<!-----Bank Details start----->					
-					<?php 
-					if(strlen($details['bank.verified'])==0){
-					?>
-						<a href="/users/settings/bank" class="label label-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="icon-remove icon-black"></i> Withdrawal Address & Bank</a>
-					<?php }elseif($details['bank.verified']=='No'){?>
-						<a href="#" class="label label-important tooltip-x" rel="tooltip-x" data-placement="top" title="Pending verification!"><i class="icon-edit icon-black"></i> Withdrawal Address & Bank</a>
-					<?php }else{ ?>
-						<a href="#" class="label label-success tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="icon-ok icon-black"></i> Withdrawal Address & Bank</a>					
-					<?php }	?>
-<!-----Bank Details end----->					
-					</td>
-					<td width="16%" style="text-align:center ">
-<!-----Utility Details start----->					
 						<?php 
-						if(strlen($details['utility.verified'])==0){
-						?>	
-							<a href="/users/settings/utility" class="label label-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="icon-remove icon-black"></i> Proof of Address</a>
-						<?php }elseif($details['utility.verified']=='No'){?>
-							<a href="#" class="label label-important tooltip-x" rel="tooltip-x" data-placement="top" title="Pending verification!"><i class="icon-edit icon-black"></i> Proof of Address</a>
-						<?php }else{ ?>
-							<a href="#" class="label label-success tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="icon-ok icon-black"></i> Proof of Address</a>					
-						<?php }	?>
-<!-----Utility Details end----->					
-					</td>
-					<td width="16%" style="text-align:center ">
-<!-----Government Details start----->					
-					<?php 
-					if(strlen($details['government.verified'])==0){
+						$alldocuments = array();
+						$i=0;		
+						foreach($settings['documents'] as $documents){
+							if($documents['required']==true){
+									if($documents['alias']==""){
+										$name = $documents['name'];
+									}else{
+										$name = $documents['alias'];
+									}
+								if(strlen($details[$documents['id'].'.verified'])==0){
+										$alldocuments[$documents['id']]="No";
+						?>
+					<td width="20%"><a href="/users/settings/<?=$documents['id']?>" class="btn   btn-sm btn-block btn-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> <?=$name?></a></td>
+					<?php }elseif($details[$documents['id'].'.verified']=='No'){
+							$alldocuments[$documents['id']]="Pending";
 					?>
-						<a href="/users/settings/government" class="label label-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="icon-remove icon-black"></i> Government Photo ID</a>
-					<?php }elseif($details['government.verified']=='No'){?>
-						<a href="#" class="label label-important tooltip-x" rel="tooltip-x" data-placement="top" title="Pending verification!"><i class="icon-edit icon-black"></i> Government Photo ID</a>
-					<?php }else{ ?>
-						<a href="#" class="label label-success tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="icon-ok icon-black"></i> Government ID</a>					
-					<?php }	?>
-<!-----Government Details end----->					
-					</td>
-					<td width="16%" style="text-align:center ">
-<!-- Mobile start-->										
+	<td width="20%"><a href="#" class="btn btn-danger   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Pending verification!"><i class="glyphicon glyphicon-edit"></i> <?=$name?></a></td>
+					<?php }else{
+						$alldocuments[$documents['id']]="Yes";
+					?>
+					<td width="20%"><a href="#" class="btn btn-success   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon-ok glyphicon"></i> <?=$name?></a></td>
+	<?php }
+			}
+			$i++;
+		}
+?>
+<!-- Mobile start-->			
+				<td width="20%">
 					<?php 
 					if($details['mobile.verified']=='Yes'){
-					?><a href="#" class="label label-success tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="icon-ok icon-black"></i> Mobile/Phone</a><?php }else{
-					?><a href="/users/mobile/" class="label label-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Optional!"><i class="icon-remove icon-black"></i> Mobile/Phone</a><?php }
+					?><a href="#" class="btn btn-success   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok"></i> Mobile/Phone</a><?php }else{
+					?><a href="/users/mobile/" class="btn  btn-sm btn-block btn-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Optional!"><i class="glyphicon glyphicon-remove"></i> Mobile/Phone</a><?php }
 					?>
-<!-- Mobile end-->															
 					</td>
-				</tr>
-	</table>
-		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
+<!-- Mobile end-->															
+		</tr>
+		<tr>
+<?php	
+
+		$all = true;
+			foreach($alldocuments as $key=>$val){						
+
+			if($val!='Yes'){
+			$all = false;
+			}
+		}
+		if($all){
+		?>
+		<td width="20%"><a href="/users/funding_btc" class="btn btn-primary  btn-sm btn-block">Funding BTC</a></td>
+		<td width="20%"><a href="/users/funding_ltc" class="btn btn-primary btn-sm btn-block">Funding LTC</a></td>
+		<td width="20%"><a href="/users/funding_fiat" class="btn btn-primary btn-sm btn-block">Funding Fiat</a></td>	
+		<td width="20%"><a href="/<?=$locale?>/users/transactions" class="btn btn-primary btn-sm btn-block">Transactions</a></td>
+		<td width="20%"><a href="/<?=$locale?>/users/settings" class="btn btn-primary btn-sm btn-block">Settings</a></td>
+	</tr>
+<?php }?>	
+		</table>
+					</div>
+				</div>
+			</div>
+		<!-- Options -->
+		<!--Summary-->
+			<div class="col-md-12">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Summary of accounts</h3>
+					</div>
+					<div class="panel-body">
+		<table class="table table-condensed table-bordered table-hover">
 			<thead>
 				<tr>
 					<th>Currency</th>
-					<th style="text-align:center">BTC</th>
-					<th style="text-align:center">LTC</th> 
-					<th style="text-align:center">USD</th>
-					<th style="text-align:center">EUR</th>
-					<th style="text-align:center">GBP</th>
-					<th style="text-align:center">CAD</th>					
+					<?php 
+					$currencies = array();
+					$trades = Trades::find('all');					
+					foreach($trades as $tr){
+						$currency = substr($tr['trade'],0,3);
+						array_push($currencies,$currency);
+						$currency = substr($tr['trade'],4,3);
+						array_push($currencies,$currency);
+					 }	//for
+					$currencies = array_unique($currencies);
+					foreach($currencies as $currency){?>
+					<th style="text-align:center"><?=$currency?></th>
+					<?php }?>
 				</tr>
 			</thead>
+<?php 
+foreach($YourOrders['Buy']['result'] as $YO){
+	$Buy[$YO['_id']['FirstCurrency']] = $Buy[$YO['_id']['FirstCurrency']] + $YO['Amount'];
+	$BuyWith[$YO['_id']['SecondCurrency']] = $BuyWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
+}					
+foreach($YourOrders['Sell']['result'] as $YO){
+	$Sell[$YO['_id']['FirstCurrency']] = $Sell[$YO['_id']['FirstCurrency']] + $YO['Amount'];
+	$SellWith[$YO['_id']['SecondCurrency']] = $SellWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
+}					
+foreach($YourCompleteOrders['Buy']['result'] as $YCO){
+	$ComBuy[$YCO['_id']['FirstCurrency']] = $ComBuy[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
+	$ComBuyWith[$YCO['_id']['SecondCurrency']] = $ComBuyWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
+}					
+foreach($YourCompleteOrders['Sell']['result'] as $YCO){
+	$ComSell[$YCO['_id']['FirstCurrency']] = $ComSell[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
+	$ComSellWith[$YCO['_id']['SecondCurrency']] = $ComSellWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
+}					
+?>			
+<?php
+foreach($Commissions['result'] as $C){
+	foreach($currencies as $currency){
+		if($C['_id']['CommissionCurrency']==$currency){
+			$variablename = $currency."Comm";
+			$$variablename = $C['Commission'];		
+		}
+	}
+}
+foreach($CompletedCommissions['result'] as $C){
+	foreach($currencies as $currency){
+		if($C['_id']['CommissionCurrency']==$currency){
+			$variablename = "Completed".$currency."Comm";
+			$$variablename = $C['Commission'];		
+		}
+	}
+}
+?>
 			<tbody>
-				<?php 
-
-				foreach($YourOrders['Buy']['result'] as $YO){
-					$Buy[$YO['_id']['FirstCurrency']] = $Buy[$YO['_id']['FirstCurrency']] + $YO['Amount'];
-					$BuyWith[$YO['_id']['SecondCurrency']] = $BuyWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
-				}					
-				foreach($YourOrders['Sell']['result'] as $YO){
-					$Sell[$YO['_id']['FirstCurrency']] = $Sell[$YO['_id']['FirstCurrency']] + $YO['Amount'];
-					$SellWith[$YO['_id']['SecondCurrency']] = $SellWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
-				}					
-				foreach($YourCompleteOrders['Buy']['result'] as $YCO){
-					$ComBuy[$YCO['_id']['FirstCurrency']] = $ComBuy[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
-					$ComBuyWith[$YCO['_id']['SecondCurrency']] = $ComBuyWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
-				}					
-				foreach($YourCompleteOrders['Sell']['result'] as $YCO){
-					$ComSell[$YCO['_id']['FirstCurrency']] = $ComSell[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
-					$ComSellWith[$YCO['_id']['SecondCurrency']] = $ComSellWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
-				}					
-				foreach($Commissions['result'] as $C){
-					switch ($C['_id']['CommissionCurrency']){
-					    case "BTC":
-					        $BTCComm = $C['Commission'];
-				    	    break;
-					    case "LTC":
-					        $LTCComm = $C['Commission'];
-				    	    break;
-					    case "GBP":
-					        $GBPComm = $C['Commission'];
-				    	    break;
-					    case "USD":
-					        $USDComm = $C['Commission'];
-				    	    break;
-					    case "CAD":
-					        $CADComm = $C['Commission'];
-				    	    break;
-
-					    case "EUR":
-					        $EURComm = $C['Commission'];
-				    	    break;
-					}
-				}
-				foreach($CompletedCommissions['result'] as $C){
-					switch ($C['_id']['CommissionCurrency']){
-					    case "BTC":
-					        $CompletedBTCComm = $C['Commission'];
-				    	    break;
-					    case "LTC":
-					        $CompletedLTCComm = $C['Commission'];
-				    	    break;
-					    case "GBP":
-					        $CompletedGBPComm = $C['Commission'];
-				    	    break;
-					    case "USD":
-					        $CompletedUSDComm = $C['Commission'];
-				    	    break;
-					    case "CAD":
-					        $CompletedCADComm = $C['Commission'];
-				    	    break;
-					    case "EUR":
-					        $CompletedEURComm = $C['Commission'];
-				    	    break;
-					}
-				}
-				?>
 				<tr>
 					<td><strong>Opening Balance</strong></td>
-					<td style="text-align:right "><?=number_format($details['balance.BTC']+$Sell['BTC'],8)?></td>
-					<td style="text-align:right "><?=number_format($details['balance.LTC']+$Sell['LTC'],8)?></td> 
-					<td style="text-align:right "><?=number_format($details['balance.USD']+$BuyWith['USD'],4)?></td>					
-					<td style="text-align:right "><?=number_format($details['balance.EUR']-$BuyWith['EUR'],4)?></td>										
-					<td style="text-align:right "><?=number_format($details['balance.GBP']-$BuyWith['GBP'],4)?></td>										
-					<td style="text-align:right "><?=number_format($details['balance.CAD']-$BuyWith['CAD'],4)?></td>															
+					<?php foreach($currencies as $currency){
+							if(in_array($currency,$virtuals)){
+					?>
+					<td style="text-align:right"><?=number_format($details['balance.'.$currency]+$Sell[$currency],8)?></td>					
+					<?php }else{?>
+					<td style="text-align:right"><?=number_format($details['balance.'.$currency]+$Sell[$currency],4)?></td>										
+					<?php }}?>					
 				</tr>
 				<tr>
 					<td><strong>Current Balance</strong><br>
 					(including pending orders)</td>
-					<td style="text-align:right "><?=number_format($details['balance.BTC'],8)?></td>
-					<td style="text-align:right "><?=number_format($details['balance.LTC'],8)?></td> 
-					<td style="text-align:right "><?=number_format($details['balance.USD'],4)?></td>
-					<td style="text-align:right "><?=number_format($details['balance.EUR'],4)?></td>
-					<td style="text-align:right "><?=number_format($details['balance.GBP'],4)?></td>
-					<td style="text-align:right "><?=number_format($details['balance.CAD'],4)?></td>					
+					<?php foreach($currencies as $currency){
+						if(in_array($currency,$virtuals)){
+					?>
+						<td style="text-align:right "><?=number_format($details['balance.'.$currency],8)?></td>
+					<?php }else{?>
+						<td style="text-align:right "><?=number_format($details['balance.'.$currency],4)?></td>					
+					<?php }}?>					
 				</tr>
 				<tr>
 					<td><strong>Pending Buy Orders</strong></td>
-					<td style="text-align:right ">+<?=number_format($Buy['BTC'],8)?></td>
- 					<td style="text-align:right ">+<?=number_format($Buy['LTC'],8)?></td>					
-					<td style="text-align:right ">-<?=number_format($BuyWith['USD'],4)?></td>										
-					<td style="text-align:right ">-<?=number_format($BuyWith['EUR'],4)?></td>										
-					<td style="text-align:right ">-<?=number_format($BuyWith['GBP'],4)?></td>										
-					<td style="text-align:right ">-<?=number_format($BuyWith['CAD'],4)?></td>															
+					<?php foreach($currencies as $currency){
+						if(in_array($currency,$virtuals)){
+						?>
+					<td style="text-align:right ">+<?=number_format($Buy[$currency],8)?></td>
+					<?php }else{?>
+					<td style="text-align:right ">-<?=number_format($BuyWith[$currency],4)?></td>										
+					<?php }
+					}?>					
 				</tr>
 				<tr>
 					<td><strong>Pending Sell Orders</strong></td>
-					<td style="text-align:right ">-<?=number_format($Sell['BTC'],8)?></td>
-					<td style="text-align:right ">-<?=number_format($Sell['LTC'],8)?></td>					
-					<td style="text-align:right ">+<?=number_format($SellWith['USD'],4)?></td>										
-					<td style="text-align:right ">+<?=number_format($SellWith['EUR'],4)?></td>										
-					<td style="text-align:right ">+<?=number_format($SellWith['GBP'],4)?></td>										
-					<td style="text-align:right ">+<?=number_format($SellWith['CAD'],4)?></td>															
+					<?php foreach($currencies as $currency){
+						if(in_array($currency,$virtuals)){
+						?>
+					<td style="text-align:right ">-<?=number_format($Sell[$currency],8)?></td>
+					<?php }else{?>
+					<td style="text-align:right ">+<?=number_format($SellWith[$currency],4)?></td>										
+					<?php }
+					}?>					
 				</tr>
 				<tr>
-					<td  style="border-top:1px solid black"><strong>After Execution</strong></td>
-					<td style="text-align:right;border-top:1px solid black "><?=number_format($details['balance.BTC']+$Buy['BTC']-$BTCComm,8)?></td>
-					<td style="text-align:right;border-top:1px solid black "><?=number_format($details['balance.LTC']+$Buy['LTC']-$LTCComm,8)?></td> 
-					<td style="text-align:right;border-top:1px solid black "><?=number_format($details['balance.USD']+$SellWith['USD']-$USDComm,4)?></td>					
-					<td style="text-align:right;border-top:1px solid black "><?=number_format($details['balance.EUR']+$SellWith['EUR']-$EURComm,4)?></td>										
-					<td style="text-align:right;border-top:1px solid black "><?=number_format($details['balance.GBP']+$SellWith['GBP']-$GBPComm,4)?></td>										
-					<td style="text-align:right;border-top:1px solid black "><?=number_format($details['balance.CAD']+$SellWith['CAD']-$CADComm,4)?></td>															
+					<td><strong>After Execution</strong></td>
+					<?php foreach($currencies as $currency){
+						if(in_array($currency,$virtuals)){
+						$variablename = $currency."Comm";
+						?>
+					<td style="text-align:right "><?=number_format($details['balance.'.$currency]+$Buy[$currency]-$$variablename,8)?></td>
+					<?php }else{?>
+					<td style="text-align:right "><?=number_format($details['balance.'.$currency]+$SellWith[$currency]-$$variablename,4)?></td>					
+					<?php }
+					}?>					
 				</tr>
 				<tr>
-					<td style="border-bottom:double black;"><strong>Commissions</strong></td>
-					<td style="text-align:right;border-bottom:double black;"><?=number_format($BTCComm,8)?></td>
- 					<td style="text-align:right;border-bottom:double black; "><?=number_format($LTCComm,8)?></td> 
-					<td style="text-align:right;border-bottom:double black; "><?=number_format($USDComm,4)?></td>
-					<td style="text-align:right;border-bottom:double black; "><?=number_format($EURComm,4)?></td>
-					<td style="text-align:right;border-bottom:double black; "><?=number_format($GBPComm,4)?></td>
-					<td style="text-align:right;border-bottom:double black; "><?=number_format($CADComm,4)?></td>					
+					<td><strong>Commissions</strong></td>
+					<?php foreach($currencies as $currency){
+					
+						$variablename = $currency."Comm";
+						if(in_array($currency,$virtuals)){
+						?>
+					<td style="text-align:right "><?=number_format($$variablename,8)?></td>
+					<?php }else{?>
+					<td style="text-align:right "><?=number_format($$variablename,4)?></td>					
+					<?php }}?>					
 				</tr>
-		</table>
-		</div>
-	</div>
-	<div class="row container" >
-	<div class="span11">
-		<div class="navbar">
-			<div class="navbar-inner3">
-			<a class="brand" href="#">Summary </a>			
-			</div>
-		</div>
-		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
-			<thead>
-				<tr>
-					<th>Currency</th>
-					<th style="text-align:center">BTC</th>
-					<th style="text-align:center">LTC</th> 
-					<th style="text-align:center">USD</th>
-					<th style="text-align:center">EUR</th>
-					<th style="text-align:center">GBP</th>
-					<th style="text-align:center">CAD</th>					
-				</tr>
-			</thead>
-			<tbody>
-
 				<tr>
 					<td><strong>Complete Buy Orders</strong></td>
-					<td style="text-align:right "><?=number_format($ComBuy['BTC'],8)?></td>
-					<td style="text-align:right "><?=number_format($ComBuy['LTC'],8)?></td>				
-					<td style="text-align:right "><?=number_format($ComBuyWith['USD'],4)?></td>										
-					<td style="text-align:right "><?=number_format($ComBuyWith['EUR'],4)?></td>										
-					<td style="text-align:right "><?=number_format($ComBuyWith['GBP'],4)?></td>										
-					<td style="text-align:right "><?=number_format($ComBuyWith['CAD'],4)?></td>															
+					<?php foreach($currencies as $currency){
+						if(in_array($currency,$virtuals)){
+						?>
+					<td style="text-align:right "><?=number_format($ComBuy[$currency],8)?></td>
+					<?php }else{?>
+					<td style="text-align:right "><?=number_format($ComBuyWith[$currency],4)?></td>										
+					<?php }
+					}?>					
 				</tr>
 				<tr>
 					<td><strong>Complete Sell Orders</strong></td>
-					<td style="text-align:right "><?=number_format($ComSell['BTC'],8)?></td>
-					<td style="text-align:right "><?=number_format($ComSell['LTC'],8)?></td>		
-					<td style="text-align:right "><?=number_format($ComSellWith['USD'],4)?></td>										
-					<td style="text-align:right "><?=number_format($ComSellWith['EUR'],4)?></td>										
-					<td style="text-align:right "><?=number_format($ComSellWith['GBP'],4)?></td>										
-					<td style="text-align:right "><?=number_format($ComSellWith['CAD'],4)?></td>															
+					<?php foreach($currencies as $currency){
+						if(in_array($currency,$virtuals)){
+						?>
+					<td style="text-align:right "><?=number_format($ComSell[$currency],8)?></td>
+					<?php }else{?>
+					<td style="text-align:right "><?=number_format($ComSellWith[$currency],4)?></td>										
+					<?php }
+					}?>					
 				</tr>
 				<tr>
 					<td><strong>Completed Order Commissions</strong></td>
-					<td style="text-align:right "><?=number_format($CompletedBTCComm,8)?></td>
-					<td style="text-align:right "><?=number_format($CompletedLTCComm,8)?></td> 
-					<td style="text-align:right "><?=number_format($CompletedUSDComm,4)?></td>
-					<td style="text-align:right "><?=number_format($CompletedEURComm,4)?></td>
-					<td style="text-align:right "><?=number_format($CompletedGBPComm,4)?></td>
-					<td style="text-align:right "><?=number_format($CompletedCADComm,4)?></td>					
+					<?php foreach($currencies as $currency){
+							$variablename = "Completed".$currency."Comm";
+							if(in_array($currency,$virtuals)){
+						?>
+					<td style="text-align:right "><?=number_format($$variablename,8)?></td>
+					<?php }else{?>					
+					<td style="text-align:right "><?=number_format($$variablename,4)?></td>					
+					<?php }}?>										
 				</tr>
-
-
-<!--
-				<tr>
-					<td><strong>Convert to:</strong>
-						<select name="Currency" class="span1" id="Currency">
-							<option value="BTC">BTC</option>
-							<option value="LTC">LTC</option>							
-							<option value="USD">USD</option>							
-							<option value="GBP">GBP</option>							
-							<option value="EUR">EUR</option>							
-						</select>
-					</td>
-					<td  style="text-align:right"><input type="text" value="1.000" id="BTCRate" class="span1"></td>
-					<td  style="text-align:right"><input type="text" value="0.025" id="LTCRate" class="span1"></td>					
-					<td  style="text-align:right"><input type="text" value="96.000" id="USDRate" class="span1"></td>					
-					<td  style="text-align:right"><input type="text" value="80.000" id="GBPRate" class="span1"></td>					
-					<td  style="text-align:right"><input type="text" value="75.000" id="EURRate" class="span1"></td>					
-					<td><a href="#" onClick="ConvertBalance();" class="btn btn-primary">Convert</a></td>
-				</tr>
-				<tr>
-					<td><strong>Opening Balance <span id="SelectedCurrency"></span></strong></td>
-					<td style="text-align:right" id="ConvBTC"></td>
-					<td style="text-align:right" id="ConvLTC"></td>
-					<td style="text-align:right" id="ConvUSD"></td>
-					<td style="text-align:right" id="ConvGBP"></td>
-					<td style="text-align:right" id="ConvEUR"></td>															
-				</tr>
--->
-			</tbody>				
-		</table>
-	</div>
-</div>
-<div class="row container" >
-<!--------
-	<div class="span5">
-		<div class="navbar">
-			<div class="navbar-inner">
-			<a class="brand" href="#">Users you transacted with (max 20) </a>
-			</div>
-		</div>
-		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
-			<thead>
-				<tr>
-					<th style="text-align:center">User name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td >
-			<?php foreach($RequestFriends['result'] as $RF){
-			$friend = array();
-			if($details['Friend']!=""){
-				foreach($details['Friend'] as $f){
-					array_push($friend, $f);
-				}
-			}
-			if(!in_array($RF['_id']['TransactUsername'],$friend,TRUE)){
-			  ?><a href="/<?=$locale?>/ex/AddFriend/<?=String::hash($RF['_id']['TransactUser_id'])?>/<?=$RF['_id']['TransactUser_id']?>/<?=$RF['_id']['TransactUsername']?>"
-				class=" tooltip-x label label-success" rel="tooltip-x" data-placement="top" title="Add to receive alerts from <?=$RF['_id']['TransactUsername']?>"
-				style="font-weight:bold "><i class="icon-plus"></i> <?=$RF['_id']['TransactUsername']?></a>
-			<?php }else{?>
-			<a  href="/<?=$locale?>/ex/RemoveFriend/<?=String::hash($RF['_id']['TransactUser_id'])?>/<?=$RF['_id']['TransactUser_id']?>/<?=$RF['_id']['TransactUsername']?>" class="tooltip-x label label-warning" rel="tooltip-x" data-placement="top" title="Already a friend <?=$RF['_id']['TransactUsername']?>, Remove!">
-<i class="icon-minus"></i>			<?=$RF['_id']['TransactUsername']?></a>
-			<?php }?>
-			<?php }?>
-					</td>
-				</tr>			
 			</tbody>
 		</table>
-	</div>
--->	
-	<div class="span5">
-		<div class="navbar">
-			<div class="navbar-inner2">
-			<a class="brand" href="#">Pending Orders</a>
-			</div>
-		</div>
-		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
+					</div>
+				</div>
+			</div>		
+		<!--Summary-->
+		<!-- final summary-->
+			<div class="col-md-12">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Users: <?=$UsersRegistered?> / Online: <?=$OnlineUsers?></h3>
+					</div>
+					<div class="panel-body">
+		<table class="table table-condensed table-bordered table-hover">
 				<tr>
 					<th>Status</th>
 					<th>BTC</th>
@@ -367,22 +296,7 @@ if(Environment::get('locale')=="en_US"){$locale = "en";}else{$locale = Environme
 						<td style="text-align:right "><?=number_format($r['TotalAmount']/$r['Amount'],8)?></td>																		
 					</tr>
 				<?php }?>
-		</table>
-	</div>
-
-	<div class="span5">
-		<div class="navbar">
-			<div class="navbar-inner1">
-			<a class="brand" href="#">Completed Orders</a>
-			</div>
-		</div>
-		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
 				<tr>
-					<th>Status</th>
-					<th>BTC</th>
-					<th>Amount</th>					
-					<th>Avg Price</th>										
-				</tr>
 					<th colspan="4">Completed orders</th>
 				</tr>
 				<?php foreach ($TotalCompleteOrders['Buy']['result'] as $r){ ?>
@@ -402,20 +316,41 @@ if(Environment::get('locale')=="en_US"){$locale = "en";}else{$locale = Environme
 					</tr>
 				<?php }?>
 		</table>
+					</div>
+				</div>
+			</div>		
+		<!-- final summary-->		
+<?php 
+if($settings['friends']['allow']==true){
+?>
+		<!-- Friends-->
+			<div class="col-md-12">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Users you transacted with:<small> You can get alerts when a user places an order</small></h3>
+					</div>
+					<div class="panel-body">
+			<?php foreach($RequestFriends['result'] as $RF){
+			$friend = array();
+			if($details['Friend']!=""){
+				foreach($details['Friend'] as $f){
+					array_push($friend, $f);
+				}
+			}
+			if(!in_array($RF['_id']['TransactUsercode'],$friend,TRUE)){
+			  ?><a href="/<?=$locale?>/ex/AddFriend/<?=String::hash($RF['_id']['TransactUser_id'])?>/<?=$RF['_id']['TransactUser_id']?>/<?=$RF['_id']['TransactUsercode']?>"
+				class=" tooltip-x label label-success" rel="tooltip-x" data-placement="top" title="Add to receive alerts from <?=$RF['_id']['TransactUsercode']?>"
+				style="font-weight:bold "><i class="glyphicon glyphicon-plus"></i> <?=$RF['_id']['TransactUsercode']?></a>
+			<?php }else{?>
+			<a  href="/<?=$locale?>/ex/RemoveFriend/<?=String::hash($RF['_id']['TransactUser_id'])?>/<?=$RF['_id']['TransactUser_id']?>/<?=$RF['_id']['TransactUsercode']?>" class="tooltip-x label label-warning" rel="tooltip-x" data-placement="top" title="Already a friend <?=$RF['_id']['TransactUsercode']?> Remove!">
+<i class="glyphicon glyphicon-minus"></i>			<?=$RF['_id']['TransactUsercode']?></a>
+			<?php }?>
+			<?php }?>
+					</div>
+				</div>
+			</div>		
+		<!-- Friends-->		
+<?php }?>
 		</div>
 	</div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-	<small>Users: <?=$UsersRegistered?> / Online: <?=$OnlineUsers?></small>
-</div>	
 </div>
