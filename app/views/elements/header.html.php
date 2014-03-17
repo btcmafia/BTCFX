@@ -1,4 +1,5 @@
 <?php
+use app\models\Trades;
 use lithium\storage\Session;
 use app\extensions\action\Functions;
 ?>
@@ -36,9 +37,23 @@ use app\extensions\action\Functions;
 				<li><a href="/users/settings">Settings</a></li>			
 				<li><a href="/ex/dashboard">Dashboard</a></li>
 				<li class="divider"></li>				
-				<li><a href="/users/funding_btc">Funding BTC</a></li>							
-				<li><a href="/users/funding_ltc">Funding LTC</a></li>											
-				<li><a href="/users/funding_fiat">Funding Fiat</a></li>											
+<?php 
+$trades = Trades::find('all');
+$currencies = array();
+foreach($trades as $tr){
+	$currency = substr($tr['trade'],0,3);
+	array_push($currencies,$currency);
+	$currency = substr($tr['trade'],4,3);
+	array_push($currencies,$currency);
+ }	//for
+
+	$currencies = array_unique($currencies);
+	foreach($currencies as $currency){
+		echo '<li><a href="/users/funding_'.$currency.'">Funding '.$currency.'</a></li>';
+	}
+?>
+
+
 				<li class="divider"></li>								
 				<li><a href="/users/transactions">Transactions</a></li>							
 				<li class="divider"></li>

@@ -6,7 +6,7 @@ $howmany = 100;
 use app\models\Trades;
 use app\models\Orders;
 use lithium\data\Connections;
-
+use lithium\storage\Session;
 $trades = Trades::find('all',array('limit'=>$howmany));
 $tradesall = Trades::find('all');
 
@@ -60,10 +60,10 @@ if($this->_request->params['controller']!='api'){
 
 		array_push($currencies,$currency);
 		$currency = substr($tr['trade'],4,3);
-
 		array_push($currencies,$currency);
 	 }	//for
 	$currencies = array_unique($currencies);
+
 	?>
 	<?php
 	foreach($currencies as $currency){

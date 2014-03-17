@@ -6,6 +6,7 @@ use app\models\Users;
 use app\models\Details;
 use app\models\Transactions;
 use app\models\Parameters;
+use app\models\Settings;
 use app\models\File;
 use lithium\data\Connections;
 use app\extensions\action\Functions;
@@ -308,8 +309,8 @@ class UsersController extends \lithium\action\Controller {
 			$details = Details::find('first',
 				array('conditions'=>array('user_id'=> (string) $id))
 			);		
-
-		return compact('details','user','title','qrCodeUrl','secret','option','imagename_utility','imagename_government');
+				$settings = Settings::find('first');
+		return compact('details','user','title','qrCodeUrl','secret','option','imagename_utility','imagename_government','settings');
 	}
 	
 	
