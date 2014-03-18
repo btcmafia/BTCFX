@@ -30,8 +30,10 @@ class UsersController extends \lithium\action\Controller {
 	public function index(){
 	}
 	public function signup() {	
-		$user = Users::create();
-		if(($this->request->data) && $user->save($this->request->data)) {	
+		if($this->request->data) {	
+      $Users = Users::create($this->request->data);
+      $saved = $Users->save();
+			if($saved==true){
 			$verification = sha1($user->_id);
 
 			$bitcoin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
@@ -97,8 +99,9 @@ class UsersController extends \lithium\action\Controller {
 			$mailer->send($message);
 			$this->redirect('Users::email');	
 			
-		}
-			
+			}
+		}	
+		return compact('saved','Users');		
 	}
 	public function email(){
 		$user = Session::read('member');

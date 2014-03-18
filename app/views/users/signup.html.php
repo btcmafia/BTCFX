@@ -2,6 +2,8 @@
 use app\models\Parameters;
 $Comm = Parameters::find('first');
 ?>
+<?php $this->form->config(array( 'templates' => array('error' => '<p class="alert alert-danger">{:content}</p>'))); 
+?>
 <div class="row container-fluid">
 	<div class="col-md-6 well" >
 		<div class="panel panel-success">
@@ -9,7 +11,7 @@ $Comm = Parameters::find('first');
 				<h3 class="panel-title">Sign In</h3>
 			</div>
 		</div>
-		<?=$this->form->create($user,array('class'=>'form-group has-error')); ?>
+		<?=$this->form->create($Users,array('class'=>'form-group has-error')); ?>
 			<div class="form-group has-error">			
 				<div class="input-group">
 					<span class="input-group-addon">
