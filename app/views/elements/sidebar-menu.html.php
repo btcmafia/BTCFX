@@ -81,6 +81,7 @@ if($this->_request->params['controller']!='api'){
 						$first_currency = substr($exchange['trade'],0,3);		
 						$second_currency = substr($exchange['trade'],4,3);		
 						$avg = 0;
+						$price = 0;
 					foreach($Rates['result'] as $rate){
 					 if($rate['_id']['FirstCurrency']==$first_currency && $rate['_id']['SecondCurrency']==$second_currency){
 							$price = $rate['last'];
