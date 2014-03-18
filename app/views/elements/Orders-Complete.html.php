@@ -1,4 +1,4 @@
-		<div class="col-md-4"  style="height:334px;">
+		<div class="col-md-6">
 			<div class="panel panel-success">
 				<div class="panel-heading">
 				<h2 class="panel-title"  style="font-weight:bold" >Completed orders</h2>

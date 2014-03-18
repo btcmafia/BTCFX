@@ -177,9 +177,9 @@ class UpdatesController extends \lithium\action\Controller {
 		return $this->render(array('json' => array(
 			'Refresh'=> $Refresh,
 			'URL'=> $URL,
-			'Low'=> number_format($Low,2),
-			'High' => number_format($High,2),
-			'Last'=> number_format($LastPrice,2),			
+			'Low'=> $Low,
+			'High' => $High,
+			'Last'=> $LastPrice,			
 			'VolumeFirst'=> number_format($TotalOrders['result'][0]['Amount'],4),
 			'VolumeSecond'=> number_format($TotalOrders['result'][0]['TotalAmount'],0),
 			'VolumeFirstUnit'=> $FirstCurrency,			

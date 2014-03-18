@@ -83,7 +83,7 @@ function BuyFormCalculate (){
 		BuySummary = "Amount cannot be Zero";
 		$("#BuySummary").html(BuySummary);
 		$("#BuySubmitButton").attr("disabled", "disabled");
-		$("#BuySubmitButton").attr("class", "btn btn-warning");
+		$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
 		return false;
 	}
 	if(parseFloat(BalanceSecond) <= parseFloat(GrandTotal)){
@@ -92,12 +92,12 @@ function BuyFormCalculate (){
 		BuySummary = "The transaction amount exceeds the balance by " + Excess + " " + SecondCurrency;
 		$("#BuySummary").html(BuySummary);
 		$("#BuySubmitButton").attr("disabled", "disabled");
-		$("#BuySubmitButton").attr("class", "btn btn-warning");
+		$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
 	}else{
 		BuySummary = "The transaction amount " + GrandTotal  + " " + SecondCurrency;
 		$("#BuySummary").html(BuySummary);
 		$("#BuySubmitButton").removeAttr('disabled');
-		$("#BuySubmitButton").attr("class", "btn btn-success");		
+		$("#BuySubmitButton").attr("class", "btn btn-success btn-block");		
 	}
 	if(parseFloat(GrandTotal)===0){$("#BuySubmitButton").attr("disabled", "disabled");}
 }
@@ -131,7 +131,7 @@ if(SellPriceper=="" || SellPriceper==0){return false;}
 	SellSummary = "Amount cannot be Zero";
 		$("#SellSummary").html(SellSummary);
 		$("#SellSubmitButton").attr("disabled", "disabled");
-		$("#SellSubmitButton").attr("class", "btn btn-warning");		
+		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
 		return false;
 	}
 
@@ -141,12 +141,12 @@ if(SellPriceper=="" || SellPriceper==0){return false;}
 		SellSummary = "The transaction amount exceeds the balance by " + Excess + " " + FirstCurrency;
 		$("#SellSummary").html(SellSummary);
 		$("#SellSubmitButton").attr("disabled", "disabled");
-		$("#SellSubmitButton").attr("class", "btn btn-warning");				
+		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");				
 	}else{
 		SellSummary = "The transaction amount " + GrandTotal  + " " + FirstCurrency;
 		$("#SellSummary").html(SellSummary);
 		$("#SellSubmitButton").removeAttr('disabled');
-		$("#SellSubmitButton").attr("class", "btn btn-success");				
+		$("#SellSubmitButton").attr("class", "btn btn-success btn-block");				
 	}
 	if(parseFloat(GrandTotal)===0){$("#SellSubmitButton").attr("disabled", "disabled");}
 }

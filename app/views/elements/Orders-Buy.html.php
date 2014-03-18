@@ -1,4 +1,4 @@
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="panel panel-success">
 			<div class="panel panel-heading">
 			<h2 class="panel-title"  style="font-weight:bold"  href="#">Orders:

@@ -50,7 +50,7 @@ class ExController extends \lithium\action\Controller {
 		$currencyStatus = Trades::find('first',array(
 				'conditions' => array('trade'=>$title)
 		));
-//		$this->SetGraph($first_curr,$second_curr);
+		$this->SetGraph($first_curr,$second_curr);
 		
 		$user = Session::read('member');
 		$id = $user['_id'];
@@ -850,7 +850,7 @@ $description = "Dashboard for trading platform for bitcoin exchange in United Ki
 				Details::find('all')->save($data);
 			
 		}
-		$this->redirect(array('controller'=>'ex','action'=>"x/".$back,'locale'=>$locale));		
+		$this->redirect(array('controller'=>'ex','action'=>"x/".$back));		
 	}
 	public function updateBalance($id){
 		$Orders = Orders::find('first', array(

@@ -1,4 +1,4 @@
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="panel panel-danger" style="min-height:350px ">
 			<div class="panel-heading">
 			<h2 class="panel-title"  style="cursor:pointer;font-weight:bold" onclick="document.getElementById('Graph').style.display='block';">No funds in <?=$first_curr?> / Verification 

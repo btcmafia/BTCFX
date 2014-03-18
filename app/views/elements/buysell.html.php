@@ -77,12 +77,6 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 			'details' => $details,		
 		));
 	}
-		echo $this->_render('element', 'YourOrders',array(
-			'first_curr' => $first_curr,
-			'second_curr' => $second_curr,
-			'YourOrders' => $YourOrders,		
-			'sel_curr' => $sel_curr,
-		));
 	?>
 	</div>
 	<div class="row">
@@ -101,6 +95,15 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 			'BuyOrders' => $BuyOrders,
 			'sel_curr' => $sel_curr,
 		));
+	?>
+</div>
+<div class="row">
+<?php		echo $this->_render('element', 'YourOrders',array(
+			'first_curr' => $first_curr,
+			'second_curr' => $second_curr,
+			'YourOrders' => $YourOrders,		
+			'sel_curr' => $sel_curr,
+		));
 		echo $this->_render('element', 'Orders-Complete',array(
 			'first_curr' => $first_curr,
 			'second_curr' => $second_curr,
@@ -108,5 +111,5 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 			'BuyOrders' => $BuyOrders,
 			'sel_curr' => $sel_curr,
 		));
-	?>
+?>
 </div>
