@@ -431,11 +431,21 @@ function CheckUserName(value){
 	}
 }
 function CheckEmail(email){
+	email = email.toLowerCase();
+	$("#Email").val(email);	
 	if(validateEmail(email)){
-		$("#EmailIcon").attr("class", "glyphicon glyphicon-ok");	
-		}else{
+		$.getJSON('/Users/signupemail/'+email,
+			function(ReturnValues){
+			if(ReturnValues['Available']=='Yes'){
+				$("#EmailIcon").attr("class", "glyphicon glyphicon-ok");					
+
+			}else{
+				$("#EmailIcon").attr("class", "glyphicon glyphicon-remove");
+			}
+		});							
+	}else{
 		$("#EmailIcon").attr("class", "glyphicon glyphicon-remove");						
-		}
+	}
 }
 function CheckPassword(value){
 	if(value.length>6){

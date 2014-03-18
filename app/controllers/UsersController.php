@@ -1420,5 +1420,18 @@ class UsersController extends \lithium\action\Controller {
 			'Available'=> $Available,
 		)));
 	}
+	public function signupemail($email=null){
+		$usercount = Users::find('all',array(
+			'conditions'=>array('email'=>$email)
+		));
+		if(count($usercount)==0){
+			$Available = 'Yes';
+		}else{
+			$Available = 'No';
+		}
+			return $this->render(array('json' => array(
+			'Available'=> $Available,
+		)));
+	}
 }
 ?>
