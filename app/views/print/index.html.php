@@ -3,7 +3,7 @@
 	<div class="span12">
 		<div class="navbar">
 			<div class="navbar-inner1">
-				<a class="brand" href="#"><?=$t('Print / Cold storage')?> </a>
+				<a class="brand" href="#">Print / Cold storage </a>
 			</div>
 		</div>
 		<table class="table table-condensed table-bordered table-hover" style="margin-top:-20px">
