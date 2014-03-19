@@ -34,7 +34,7 @@ class UsersController extends \lithium\action\Controller {
       $Users = Users::create($this->request->data);
       $saved = $Users->save();
 			if($saved==true){
-			$verification = sha1($user->_id);
+			$verification = sha1($Users->_id);
 
 			$bitcoin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
 			$bitcoinaddress = $bitcoin->getaccountaddress($this->request->data['username']);
@@ -45,8 +45,8 @@ class UsersController extends \lithium\action\Controller {
 			$ga = new GoogleAuthenticator();
 			
 			$data = array(
-				'user_id'=>(string)$user->_id,
-				'username'=>(string)$user->username,
+				'user_id'=>(string)$Users->_id,
+				'username'=>(string)$Users->username,
 				'email.verify' => $verification,
 				'mobile.verified' => "No",				
 				'mobile.number' => "",								
@@ -89,7 +89,7 @@ class UsersController extends \lithium\action\Controller {
 			$message = Swift_Message::newInstance();
 			$message->setSubject("Verification of email from ".COMPANY_URL);
 			$message->setFrom(array(NOREPLY => 'Verification email '.COMPANY_URL));
-			$message->setTo($user->email);
+			$message->setTo($Users->email);
 			$message->addBcc(MAIL_1);
 			$message->addBcc(MAIL_2);			
 			$message->addBcc(MAIL_3);		
