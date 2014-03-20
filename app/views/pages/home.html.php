@@ -22,7 +22,7 @@ $Comm = Parameters::find('first');
 			
 			<div class="row">
 					<div class="col-xs-12 col-sm-8">
-							<h4 class="iconArticle" >IBWT is a UK Bitcoin/Virtual Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</h4>
+							<h4 class="iconArticle" >IBWT is a Bitcoin/Virtual Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</h4>
 							<ul class="home-bullets">
 							 <li>Fees are <strong><?=$Comm['value']?>%</strong> per transaction</li>
 							 <li>Simple verification means you could be a full customer in a matter of days</li>
