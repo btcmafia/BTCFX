@@ -78,7 +78,7 @@
 	</tr>
 	<tr>
 <?php foreach($VirtualCurr as $VC)	{?>
-		<td><a href="/users/funding_<?=strtolower($VC)?>" class="btn btn-primary">Funding <?=$VC?></a></td>
+		<td><a href="/users/funding/<?=strtolower($VC)?>" class="btn btn-primary">Funding <?=$VC?></a></td>
 <?php }?>		
 	</tr>
 	<tr>

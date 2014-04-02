@@ -10,9 +10,9 @@ use app\models\Settings;
 use app\models\File;
 use lithium\data\Connections;
 use app\extensions\action\Functions;
-
 use app\extensions\action\Bitcoin;
 use app\extensions\action\Litecoin;
+use app\extensions\action\Greencoin;
 use lithium\security\Auth;
 use lithium\storage\Session;
 use app\extensions\action\GoogleAuthenticator;
@@ -589,8 +589,9 @@ class UsersController extends \lithium\action\Controller {
 
 	return compact('msg');
 	}
-	public function funding_btc(){
-				$title = "Funding BTC";
+	public function funding($currency=null){
+				$currency = strtoupper($currency);
+				$title = "Funding ".$currency;
 
 		$user = Session::read('default');
 		if ($user==""){		return $this->redirect('/login');}
@@ -600,32 +601,89 @@ class UsersController extends \lithium\action\Controller {
 			array('conditions'=>array('user_id'=> (string) $id))
 		);
 		$secret = $details['secret'];
-		$userid = $details['user_id'];		
-		$my_address = BITCOIN_ADDRESS;
-		$callback_url = 'https://'.COMPANY_URL.'/users/receipt/?userid='.$userid.'&secret='.$secret;
-		$root_url = 'https://blockchain.info/api/receive';
-		$parameters = 'method=create&address=' . $my_address .'&shared=false&callback='. urlencode($callback_url);
-		ini_set('allow_url_fopen',1);
-		$response = file_get_contents($root_url . '?' . $parameters);
-		$object = json_decode($response);
-		$address = $object->input_address;
+		$userid = $details['user_id'];
+		///////////////////// Change of code required when Virtual Currency added
+		switch($currency){
+			case "BTC":
+			$currencyName = "Bitcoin";
+			$my_address = BITCOIN_ADDRESS;			
+			$callback_url = 'https://'.COMPANY_URL.'/users/receipt/?userid='.$userid.'&secret='.$secret;
+			$root_url = 'https://blockchain.info/api/receive';
+			$parameters = 'method=create&address=' . $my_address .'&shared=false&callback='. urlencode($callback_url);
+			ini_set('allow_url_fopen',1);
+			$response = file_get_contents($root_url . '?' . $parameters);
+			$object = json_decode($response);
+			$address = $object->input_address;
+			if($address==""){
+				$address = (string)$details['bitcoinaddress'][0];
+			}
+			break;
+
+			case "LTC":
+			$currencyName = "Litecoin";			
+			$litecoin = new Litecoin('http://'.LITECOIN_WALLET_SERVER.':'.LITECOIN_WALLET_PORT,LITECOIN_WALLET_USERNAME,LITECOIN_WALLET_PASSWORD);
 		
-		if($address==""){
-			$address = (string)$details['bitcoinaddress'][0];
+			if($details[$currency.'newaddress']=="" || $details[$currency.'newaddress']=="Yes"){
+				$address = $litecoin->getnewaddress($user['username']);
+			}else{
+				if($details['litecoinaddress'][0]==""){
+					$address = $litecoin->getnewaddress($user['username']);
+				}else{
+					$address = $details['litecoinaddress'][0];
+				}
+			}
+			$data = array(
+				'litecoinaddress.0' => $address,
+				$currency.'newaddress'=>'No'						
+			);
+			Details::find('all',array(
+				'conditions'=>array('username'=>$user['username'])
+			))->save($data);
+
+			break;
+
+			case "XGC":
+			$currencyName = "Greencoin";			
+			$greencoin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+				
+			if($details[$currency.'newaddress']=="" || $details[$currency.'newaddress']=="Yes"){
+				$address = $greencoin->getnewaddress($user['username']);
+			}else{
+				if($details['greencoinaddress'][0]==""){
+					$address = $greencoin->getnewaddress($user['username']);
+				}else{
+					$address = $details['greencoinaddress'][0];
+				}
+			}
+			$data = array(
+				'greencoinaddress.0' => $address,
+				$currency.'newaddress'=>'No'
+			);
+			Details::find('all',array(
+				'conditions'=>array('username'=>$user['username'])
+			))->save($data);
+
+			break;
+
+			case "MAX":
+			$currencyName = "Maxcoin";
+			$my_address = MAXCOIN_ADDRESS;			
+			break;
 		}
-		
-		$laddress = 'LADDRESS';				
+		// End of /////////////////// Change of code required when Virtual Currency added		
+
+
 		$paytxfee = Parameters::find('first');
 		$txfee = $paytxfee['paytxfee'];
 		$transactions = Transactions::find('first',array(
 				'conditions'=>array(
 				'username'=>$user['username'],
 				'Added'=>false,
-				'Currency'=>'BTC',
+				'Currency'=>strtoupper($currency),
 				'Paid'=>'No'
 				)
 		));
-			return compact('details','address','txfee','title','transactions','laddress','user')	;
+			return compact('details','address','txfee','title','transactions','user','currency','currencyName')	;
 	}
 	public function funding_fiat(){
 				$title = "Funding Fiat";
@@ -657,18 +715,6 @@ class UsersController extends \lithium\action\Controller {
 			array('conditions'=>array('user_id'=> (string) $id))
 		);
 
-		$litecoin = new Litecoin('http://'.LITECOIN_WALLET_SERVER.':'.LITECOIN_WALLET_PORT,LITECOIN_WALLET_USERNAME,LITECOIN_WALLET_PASSWORD);
-		
-		if($details['LTCnewaddress']=="" || $details['LTCnewaddress']=="No"){
-			$address = $litecoin->getnewaddress($user['username']);
-			
-		}else{
-			if($details['litecoinaddress'][0]==""){
-				$address = $litecoin->getnewaddress($user['username']);
-			}else{
-				$address = $details['litecoinaddress'][0];
-			}
-		}
 		
 		$secret = $details['secret'];
 		$userid = $details['user_id'];		

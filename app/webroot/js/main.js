@@ -238,40 +238,6 @@ function DeleteTOTP(){
 		function(ReturnValues){}
 	);	
 }
-function CheckPayment(){
-	address = $("#bitcoinaddress").val();
-	if(address==""){return false;}
-	amount = $("#Amount").val();
-	if(amount==""){return false;}
-	if(parseFloat(amount)==0){return false;}
-	maxValue = $("#maxValue").val();
-	if(parseFloat(amount)>parseFloat(maxValue)){return false;}
-	
-	$("#SendFees").html($("#txFee").val());
-
-	$("#SendAmount").html(amount);	
-	$("#SendTotal").html(parseFloat(amount)-parseFloat($("#txFee").val()));	
-	$("#TransferAmount").val(parseFloat(amount)-parseFloat($("#txFee").val()));
-
-	$.getJSON('/Updates/Address/'+address,
-		function(ReturnValues){
-			if(ReturnValues['verify']['isvalid']==true){
-			address = "<a href='http://blockchain.info/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='icon-ok'></i>";
-			$("#SendAddress").html(address); 	
-			$("#SendSuccessButton").removeAttr('disabled');				
-				}
-		});
-	return true;
-	}
-	
-function BitCoinAddress(){
-	address = $("#bitcoinaddress").val();
-  $("#SendAddress").html(address); 	
-	SuccessButtonDisable();
-	}
-function SuccessButtonDisable(){
-	$("#SendSuccessButton").attr("disabled", "disabled");
-	}
 function CheckDeposit(){
 	AmountFiat = $("#AmountFiat").val();
 	if(AmountFiat==""){return false;}
@@ -323,16 +289,16 @@ function RejectReason(value){
 	nurl = url.substr(0,len)+value;
 	$("#RejectURL").attr('href',nurl);
 }
-function litecoinAddress(){
-	address = $("#litecoinaddress").val();
-  $("#SendLTCAddress").html(address); 	
-	SuccessLTCButtonDisable();
+function currencyAddress(currency){
+	address = $("#currencyaddress").val();
+  $("#Send"+currency+"Address").html(address); 	
+	SuccessButtonDisable();
 	}
-function SuccessLTCButtonDisable(){
-	$("#SendLTCSuccessButton").attr("disabled", "disabled");
-	}
-function CheckLTCPayment(){
-	address = $("#litecoinaddress").val();
+function SuccessButtonDisable(){
+	$("#SendSuccessButton").attr("disabled", "disabled");
+}
+function CheckCurrencyPayment(currency){
+	address = $("#currencyaddress").val();
 	if(address==""){return false;}
 	amount = $("#Amount").val();
 	if(amount==""){return false;}
@@ -340,18 +306,18 @@ function CheckLTCPayment(){
 	if(parseFloat(amount)==0){return false;}
 	if(parseFloat(amount)>parseFloat(maxValue)){return false;}
 	
-	$("#SendLTCFees").html($("#txFee").val());
+	$("#Send"+currency+"Fees").html($("#txFee").val());
 
-	$("#SendLTCAmount").html(amount);	
-	$("#SendLTCTotal").html(parseFloat(amount)-parseFloat($("#txFee").val()));	
+	$("#Send"+currency+"Amount").html(amount);	
+	$("#Send"+currency+"Total").html(parseFloat(amount)-parseFloat($("#txFee").val()));	
 	$("#TransferAmount").val(parseFloat(amount)-parseFloat($("#txFee").val()));
 
-	$.getJSON('/Updates/LTCAddress/'+address,
+	$.getJSON('/Updates/CurrencyAddress/'+currency+'/'+address,
 		function(ReturnValues){
 			if(ReturnValues['verify']['isvalid']==true){
 			address = "<a href='http://ltc.block-explorer.com/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='icon-ok'></i>";
-			$("#SendLTCAddress").html(address); 	
-			$("#SendLTCSuccessButton").removeAttr('disabled');				
+			$("#Send"+currency+"Address").html(address); 	
+			$("#Send"+currency+"SuccessButton").removeAttr('disabled');				
 				}
 		});
 	return true;
