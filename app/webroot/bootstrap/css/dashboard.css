@@ -77,7 +77,12 @@ body {
 /*
  * Placeholder dashboard ideas
  */
-
+.header{
+	font-size:48px;
+	font-weight:bolder;
+	background-color:	#000000;
+	margin-left:66px
+}
 .placeholders {
 	margin-bottom: 30px;
 	text-align: center;
@@ -159,17 +164,17 @@ a.list-group-item {
 	padding: 0;
 }
 #one {
-	background-image: url(/img/icon_1.jpg);
+	background-image: url(/img/icon_1.png);
 	background-position: right right;
 	background-repeat: no-repeat;
 }
 #two {
-	background-image: url(/img/icon_2.jpg);
+	background-image: url(/img/icon_2.png);
 	background-position: right right;
 	background-repeat: no-repeat;
 }
 #three {
-	background-image: url(/img/icon_3.jpg);
+	background-image: url(/img/icon_3.png);
 	background-position: right right;
 	background-repeat: no-repeat;
 }
@@ -195,7 +200,7 @@ h4 {
 }
 .boxes > p {
 	padding-bottom: 20px;
-	padding-right: 31%;
+	padding-right: 34%;
 }
 .boxes h3 {
 	font-weight: 100;
@@ -209,15 +214,24 @@ h4 {
 	transition: background-color 300ms linear;
 }
 .boxes {
-	min-height: 150px;
-	background-color: #E5AE27;
+	min-height: 250px;
+
 	color: #FFFFFF;
 	font-weight: 100;
 	background-position: right;
 	margin-top: 10px;
-	border-right: 30px solid white;
+	border-right: 30px solid #e8e8e8;
 	padding: 10px 20px 20px;
 	margin-bottom: 20px;
+}
+.box1{
+	background-color: #E5AE27;
+}
+.box2{
+	background-color: #006666;
+}
+.box3{
+	background-color: #336600;
 }
 .navbar-link.login {
 	background-color: #E5AE27;

@@ -13,11 +13,11 @@ use app\extensions\action\Functions;
 	</button>
 	<a class="navbar-brand" href="/"><img src="/img/logo.png" alt="IBWT" title="In Bitcoin We Trust"></a>
 </div> <!-- navbar-header-->
-<div class="navbar-collapse collapse">
+<div class="navbar-collapse collapse ">
 	<?php 
 
 	if(strtolower($this->_request->controller)=='ex'){ ?>
-		<ul class="nav navbar-nav" style="font-size:12px ">
+		<ul class="nav navbar-nav header" style="font-size:12px ">
 			<li><a class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Latest low price" href="#">Low:<strong><span id="LowPrice" class="btn-success" style="padding:2px"></span></strong></a></li>
 			<li><a class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Latest high price" href="#">High:<strong><span id="HighPrice" class="btn-danger"  style="padding:2px"></span></strong></a></li>
 			<li><a class=" tooltip-x" rel="tooltip-x" data-placement="bottom" title="Latest price" href="#">Last:<strong><span id="LastPrice" class="btn-info"  style="padding:2px"></span></strong></a></li>					
@@ -25,7 +25,7 @@ use app\extensions\action\Functions;
 		</ul>	
 	<?php }else{?>
 	<ul class="nav navbar-nav">				
-		<li><a>Virtual Currency Exchange</a></li>
+		<li><a class="header">Virtual Currency Exchange</a></li>
 	</ul>
 <?php }?>				
 	<ul class="nav navbar-nav navbar-right">

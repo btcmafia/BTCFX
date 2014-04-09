@@ -299,12 +299,18 @@ function SuccessButtonDisable(){
 }
 function CheckCurrencyPayment(currency){
 	address = $("#currencyaddress").val();
+	$("#AmountError").hide();
 	if(address==""){return false;}
 	amount = $("#Amount").val();
 	if(amount==""){return false;}
 	maxValue = $("#maxValue").val();
-	if(parseFloat(amount)==0){return false;}
-	if(parseFloat(amount)>parseFloat(maxValue)){return false;}
+	if(parseFloat(amount)==0){
+		$("#AmountError").show();
+		return false;}
+	if(parseFloat(amount)>parseFloat(maxValue)){
+		$("#AmountError").show();
+		return false;
+	}
 	
 	$("#Send"+currency+"Fees").html($("#txFee").val());
 
@@ -315,11 +321,27 @@ function CheckCurrencyPayment(currency){
 	$.getJSON('/Updates/CurrencyAddress/'+currency+'/'+address,
 		function(ReturnValues){
 			if(ReturnValues['verify']['isvalid']==true){
-			address = "<a href='http://ltc.block-explorer.com/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='icon-ok'></i>";
-			$("#Send"+currency+"Address").html(address); 	
-			$("#Send"+currency+"SuccessButton").removeAttr('disabled');				
+				switch(ReturnValues['currency'])
+					{
+					case "BTC":
+					address = "<a href='http://blockchain.info/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='glyphicon glyphicon-ok'></i>";
+						break;
+					case "XGC":
+					address = "<a href='http://greencoin.io/blockchain/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='glyphicon glyphicon-ok'></i>";
+
+						break;
+					case "LTC":
+					address = "<a href='http://ltc.block-explorer.com/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='glyphicon glyphicon-ok'></i>";
+						break;
+					default:
+					address = address +" <i class='glyphicon glyphicon-remove'></i>";					
+					} 
+					$("#Send"+currency+"SuccessButton").removeAttr('disabled');							
+				}else{
+						address = address +" <i class='glyphicon glyphicon-remove'></i>";					
 				}
-		});
+			$("#Send"+currency+"Address").html(address); 	
+});
 	return true;
 	}
 function PaymentMethod(value){

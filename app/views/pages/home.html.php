@@ -6,15 +6,15 @@ $Comm = Parameters::find('first');
 <h2>Welcome to IBWT</h2>
 	<p>First time on this website, no problem follow these simple steps to get your self trading on IBWT</p>
 	<div class="row">
-			<div id="one" class="col-md-4 boxes">
+			<div id="one" class="col-md-4 boxes box1">
 					<h3>Register Account</h3>
 					<p>Easy and simple registration, experience the IBWT platform with only an email address to get started.</p>
 			</div>
-			<div id="two" class="col-md-4 col-sm-4 boxes">
+			<div id="two" class="col-md-4 col-sm-4 boxes box2">
 					<h3>Buy and Sell</h3>
 					<p>Choose from a multi-tued of cash and coins for your day to day trades or shopping needs.</p>
 			</div>
-			<div id="three"  class="col-md-4 col-sm-4 boxes">
+			<div id="three"  class="col-md-4 col-sm-4 boxes box3">
 					<h3>Deposit or Withdraw</h3>
 					<p>Withrdraw your coins straight away or have cash sent to you with simple step verfication.</p>
 			</div>

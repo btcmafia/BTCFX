@@ -773,32 +773,24 @@ class UsersController extends \lithium\action\Controller {
 
 			return $this->render(array('layout' => false));	
 	}
-	public function paymentbtcconfirm($id = null){
+	public function paymentconfirm($currency=null,$id = null){
 		if ($id==""){return $this->redirect('/login');}
 		$transaction = Transactions::find('first',array(
 			'conditions'=>array(
 				'verify.payment'=>$id,
+				'Currency'=>$currency,
 				'Paid'=>'No'
 				)
 		));
 		$username = $transaction['username'];
-
-		
-		return compact('transaction','username');
+		return compact('transaction','username','currency');
 
 	}
-	public function paymentltcconfirm($id = null){
-		if ($id==""){return $this->redirect('/login');}
-		$transaction = Transactions::find('first',array(
-			'conditions'=>array(
-				'verify.payment'=>$id,
-				'Paid'=>'No'
-				)
-		));
-		return compact('transaction');
 
-	}
-	public function paymentbtcverify(){
+	public function paymentverify($currency=null){
+		if($currency==""){
+				return compact('data','details','user');
+		}
 		$user = Session::read('default');
 		if ($user==""){		return $this->redirect('/login');}
 		$id = $user['_id'];
@@ -809,9 +801,9 @@ class UsersController extends \lithium\action\Controller {
 		
 		if ($this->request->data) {
 			$amount = $this->request->data['TransferAmount'];
-			if($details['balance.BTC']<=$amount){return false;}			
+			if($details['balance.'.$currency]<=$amount){return false;}			
 			$fee = $this->request->data['txFee'];
-			$address = $this->request->data['bitcoinaddress'];
+			$address = $this->request->data['currencyaddress'];
 
 			$tx = Transactions::create();
 				$data = array(
@@ -821,7 +813,7 @@ class UsersController extends \lithium\action\Controller {
 					'verify.payment' => sha1(openssl_random_pseudo_bytes(4,$cstrong)),
 					'Paid' => 'No',
 					'Amount'=> (float) -$amount,
-					'Currency'=> 'BTC',					
+					'Currency'=> $currency,					
 					'txFee' => (float) -$fee,
 					'Added'=>false,
 				);							
@@ -836,10 +828,10 @@ class UsersController extends \lithium\action\Controller {
 			));
 			$body = $view->render(
 				'template',
-				compact('data','details','tx'),
+				compact('data','details','tx','currency'),
 				array(
 					'controller' => 'users',
-					'template'=>'withdraw_btc',
+					'template'=>'withdraw',
 					'type' => 'mail',
 					'layout' => false
 				)
@@ -849,73 +841,8 @@ class UsersController extends \lithium\action\Controller {
 			$mailer = Swift_Mailer::newInstance($transport);
 	
 			$message = Swift_Message::newInstance();
-			$message->setSubject("BTC Withdrawal Approval from ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => 'BTC Withdrawal Approval email '.COMPANY_URL));
-			$message->setTo($email);
-			$message->addBcc(MAIL_1);
-			$message->addBcc(MAIL_2);
-			$message->addBcc(MAIL_3);
-
-			$message->setBody($body,'text/html');
-			
-			$mailer->send($message);
-		}	
-		return compact('data','details','user');
-	}
-
-	public function paymentltcverify(){
-		$user = Session::read('default');
-		if ($user==""){		return $this->redirect('/login');}
-		$id = $user['_id'];
-		$email = $user['email'];
-		$details = Details::find('first',
-			array('conditions'=>array('user_id'=> (string) $id))
-		);
-		
-		if ($this->request->data) {
-			$amount = $this->request->data['TransferAmount'];
-			if($details['balance.LTC']<=$amount){return false;}			
-			$fee = $this->request->data['txFee'];
-			$address = $this->request->data['litecoinaddress'];
-
-			$tx = Transactions::create();
-				$data = array(
-					'DateTime' => new \MongoDate(),
-					'username' => $details['username'],
-					'address'=>$address,							
-					'verify.payment' => sha1(openssl_random_pseudo_bytes(4,$cstrong)),
-					'Paid' => 'No',
-					'Amount'=> (float) -$amount,
-					'Currency'=> 'LTC',					
-					'txFee' => (float) -$fee,
-					'Added'=>false,
-				);							
-				$tx->save($data);	
-				
-			$view  = new View(array(
-				'loader' => 'File',
-				'renderer' => 'File',
-				'paths' => array(
-					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-				)
-			));
-			$body = $view->render(
-				'template',
-				compact('data','details','tx'),
-				array(
-					'controller' => 'users',
-					'template'=>'withdraw_ltc',
-					'type' => 'mail',
-					'layout' => false
-				)
-			);
-
-			$transport = Swift_MailTransport::newInstance();
-			$mailer = Swift_Mailer::newInstance($transport);
-	
-			$message = Swift_Message::newInstance();
-			$message->setSubject("LTC Withdrawal Approval from ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => 'LTC Withdrawal Approval email '.COMPANY_URL));
+			$message->setSubject($currency." Withdrawal Approval from ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => $currency.' Withdrawal Approval email '.COMPANY_URL));
 			$message->setTo($email);
 			$message->addBcc(MAIL_1);
 			$message->addBcc(MAIL_2);			
@@ -926,7 +853,7 @@ class UsersController extends \lithium\action\Controller {
 			$mailer->send($message);
 				
 		}	
-		return compact('data','details','user');
+		return compact('data','details','user','currency');
 	}
 
 	
@@ -937,12 +864,13 @@ class UsersController extends \lithium\action\Controller {
 			$verify = $this->request->data['verify'];
 			$username = $this->request->data['username'];
 			$password = $this->request->data['password'];
-
+			$currency = $this->request->data['currency'];
 
 			$transaction = Transactions::find('first',array(
 				'conditions'=>array(
 					'verify.payment'=>$verify,
 					'username'=>$username,
+					'Currency'=>$currency,
 					'Paid'=>'No'
 					)
 			));
@@ -962,51 +890,108 @@ class UsersController extends \lithium\action\Controller {
 		);
 			$amount = abs($transaction['Amount']);
 
-		if($details['balance.BTC']<=$amount){
+		if($details['balance.'.$currency]<=$amount){
 			$txmessage = "Not Sent! Amount does not match!";
 			return compact('txmessage');
 		}			
-		
+
 		if ($this->request->data) {
-			$guid=BITCOIN_GUID;
-			$firstpassword=BITCOIN_FIRST;
-			$secondpassword=BITCOIN_SECOND;
-			$amount = abs($transaction['Amount']);
-			if($details['balance.BTC']<=$amount){return false;}			
-			$fee = $transaction['txFee'];
-			$address = $transaction['address'];
-			$satoshi = (float)$amount * 100000000;
-			$fee_satoshi = (float)$fee * 100000000;
-			$json_url = "http://blockchain.info/merchant/$guid/payment?password=$firstpassword&second_password=$secondpassword&to=$address&amount=$satoshi&fee=$fee_satoshi";
-			$json_data = file_get_contents($json_url);
-			$json_feed = json_decode($json_data);
-			$txmessage = $json_feed->message;
-			$txid = $json_feed->tx_hash;
-			if($txid!=null){
-				$data = array(
-					'DateTime' => new \MongoDate(),
-					'TransactionHash' => $txid,
-					'Paid'=>'Yes',
-					'Transfer'=>$message,
-				);							
+		///////////////////Special for bitcoin as it uses blockchain!		
+		
+			if($currency=='BTC'){
+				$guid=BITCOIN_GUID;
+				$firstpassword=BITCOIN_FIRST;
+				$secondpassword=BITCOIN_SECOND;
+				$amount = abs($transaction['Amount']);
+				if($details['balance.BTC']<=$amount){return false;}			
+				$fee = $transaction['txFee'];
+				$address = $transaction['address'];
+				$satoshi = (float)$amount * 100000000;
+				$fee_satoshi = (float)$fee * 100000000;
+				$json_url = "http://blockchain.info/merchant/$guid/payment?password=$firstpassword&second_password=$secondpassword&to=$address&amount=$satoshi&fee=$fee_satoshi";
+				$json_data = file_get_contents($json_url);
+				$json_feed = json_decode($json_data);
+				$txmessage = $json_feed->message;
+				$txid = $json_feed->tx_hash;
+				if($txid!=null){
+					$data = array(
+						'DateTime' => new \MongoDate(),
+						'TransactionHash' => $txid,
+						'Paid'=>'Yes',
+						'Transfer'=>$message,
+					);							
+					$transaction = Transactions::find('first',array(
+						'conditions'=>array(
+							'verify.payment'=>$verify,
+							'username'=>$username,
+							'Paid'=>'No'
+							)
+					))->save($data);
+				}
+			}else{
+						print_r($currency);
+						print_r($address);
+						print_r($comment);
+			
+				$amount =  abs($transaction['Amount']);
+				if($details['balance.'.$currency]<=$amount){return false;}		
+				
+				$fee = abs($transaction['txFee']);
+				$address =  $transaction['address'];
+				$satoshi = (float)$amount * 100000000;
+				$fee_satoshi = (float)$fee * 100000000;
+
+				
+		///////////////////// Change of code required when Virtual Currency added				
+				switch($currency){
+					case "LTC":
+						$coin = new Litecoin('http://'.LITECOIN_WALLET_SERVER.':'.LITECOIN_WALLET_PORT,LITECOIN_WALLET_USERNAME,LITECOIN_WALLET_PASSWORD);
+					
+					break;
+					case "XGC":
+		$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+							
+					break;
+				}
+		// End for /////////////////// Change of code required when Virtual Currency added
+				
+				$comment = "User: ".$details['username']."; Address: ".$address."; Amount:".$amount.";";
+										
+				if((float)$details['balance.'.$currency]>=(float)$amount){
+						$settxfee = $coin->settxfee($fee);
+
+						$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
+					if($txid!=null){
+				
+						$data = array(
+							'DateTime' => new \MongoDate(),
+							'TransactionHash' => $txid,
+							'Added'=>false,
+							'Paid'=>'Yes',
+							'Transfer'=>$comment,
+						);							
+						$transaction = Transactions::find('first',array(
+							'conditions'=>array(
+								'verify.payment'=>$verify,
+								'username'=>$username,
+								'Currency'=>$currency,
+								'Paid'=>'No'
+								)
+						))->save($data);
+				}
+			}
 			$transaction = Transactions::find('first',array(
 				'conditions'=>array(
 					'verify.payment'=>$verify,
 					'username'=>$username,
-					'Paid'=>'No'
-					)
-			))->save($data);
-			$transaction = Transactions::find('first',array(
-				'conditions'=>array(
-					'verify.payment'=>$verify,
-					'username'=>$username,
+					'Currency'=>$currency,					
 					'Paid'=>'Yes'
 					)
 			));			
-			$balance = (float)$details['balance.BTC'] - (float)$amount;
+			$balance = (float)$details['balance.'.$currency] - (float)$amount;
 			$balance = (float)($balance) + (float)$fee;
 				$dataDetails = array(
-						'balance.BTC' => (float)number_format($balance,8),
+						'balance.'.$currency => (float)number_format($balance,8),
 					);
 				$details = Details::find('all',
 					array(
@@ -1023,10 +1008,10 @@ class UsersController extends \lithium\action\Controller {
 			));
 			$body = $view->render(
 				'template',
-				compact('transaction','details','txid'),
+				compact('transaction','details','txid','currency'),
 				array(
 					'controller' => 'users',
-					'template'=>'withdraw_btc_sent',
+					'template'=>'withdraw_sent',
 					'type' => 'mail',
 					'layout' => false
 				)
@@ -1036,18 +1021,18 @@ class UsersController extends \lithium\action\Controller {
 			$mailer = Swift_Mailer::newInstance($transport);
 	
 			$message = Swift_Message::newInstance();
-			$message->setSubject("BTC sent from ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => 'BTC sent from '.COMPANY_URL));
+			$message->setSubject($currency." sent from ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => $currency.' sent from '.COMPANY_URL));
 			$message->setTo($email);
 			$message->addBcc(MAIL_1);
 			$message->addBcc(MAIL_2);			
 			$message->addBcc(MAIL_3);		
 
 			$message->setBody($body,'text/html');
-			
+			$txmessage = number_format($amount,8) . $currency ."  transfered to ".$address;
 			$mailer->send($message);
 			}
-			return compact('txmessage','txid','json_url','json_feed','title');
+			return compact('txmessage','txid','json_url','json_feed','title','currency');
 		}
 	}
 

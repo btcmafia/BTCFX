@@ -424,37 +424,33 @@ use li3_qrcode\extensions\action\QRcode;
 						</div>
 						<div class="panel-body">
 				
-				<a href="/<?=$locale?>/users/addbank">Add/Edit bank details</a>
+				<a href="/users/addbank">Add/Edit bank details (Personal)</a>
 				<table class="table">
 					<tr>
 						<td>Account name:</td>
-						<td><?=$details['finance']['bank']['accountname']?></td>
+						<td><?=$details['bank']['accountname']?></td>
 					</tr>
 					<tr>
 						<td>Sort Code:</td>
-						<td><?=$details['finance']['bank']['sortcode']?></td>
+						<td><?=$details['bank']['sortcode']?></td>
 					</tr>
 					<tr>
 						<td>Account number:</td>
-						<td><?=$details['finance']['bank']['accountnumber']?></td>
+						<td><?=$details['bank']['accountnumber']?></td>
 					</tr>
 					<tr>
 						<td>Bank name:</td>
-						<td><?=$details['finance']['bank']['bankname']?></td>
+						<td><?=$details['bank']['bankname']?></td>
 					</tr>
 					<tr>
 						<td>Branch address:</td>
-						<td><?=$details['finance']['bank']['branchaddress']?></td>
-					</tr>
-					<tr>
-						<td>NEFT/RTGS/IFSC:</td>
-						<td><?=$details['finance']['bank']['ifsc']?></td>
+						<td><?=$details['bank']['branchaddress']?></td>
 					</tr>
 					<tr>
 						<td>Verified:</td>
-						<td><?=$details['finance']['bank']['verified']?>
+						<td><?=$details['bank']['verified']?>
 						<?php 
-							if($details['finance']['bank']['verified']=='Yes'){
+							if($details['bank']['verified']=='Yes'){
 								echo '<a href="#" class="label label-success">Verified</a>';
 								}else{
 								echo '<a href="/users/funding_fiat"  class="label label-important">Funding Fiat</a>';
@@ -462,46 +458,133 @@ use li3_qrcode\extensions\action\QRcode;
 						</td>
 					</tr>
 				</table>
+				<p style="color:red;font-weight:bold;font-size:14px"><u>Optional</u><br>
+Only required if you wish to withdraw via your bank.
+				</p>
 				</div></div>
 				</div>
 				<div class="col-md-6">
-
+				<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Add/Edit Bank Business</h3>
+						</div>
+						<div class="panel-body">
+				<a href="/users/addbankBuss">Add/Edit bank details (Business)</a>
+				<table class="table">
+					<tr>
+						<td>Account name:</td>
+						<td><?=$details['bankBuss']['accountname']?></td>
+					</tr>
+					<tr>
+						<td>Company name:</td>
+						<td><?=$details['bankBuss']['companyname']?></td>
+					</tr>
+					<tr>
+						<td>Company number:</td>
+						<td><?=$details['bankBuss']['companynumber']?></td>
+					</tr>
+					<tr>
+						<td>Sort Code:</td>
+						<td><?=$details['bankBuss']['sortcode']?></td>
+					</tr>
+					<tr>
+						<td>Account number:</td>
+						<td><?=$details['bankBuss']['accountnumber']?></td>
+					</tr>
+					<tr>
+						<td>Bank name:</td>
+						<td><?=$details['bankBuss']['bankname']?></td>
+					</tr>
+					<tr>
+						<td>Branch address:</td>
+						<td><?=$details['bankBuss']['branchaddress']?></td>
+					</tr>
+					<tr>
+						<td>Verified:</td>
+						<td><?=$details['bankBuss']['verified']?>
+						<?php 
+							if($details['bankBuss']['verified']=='Yes'){
+								echo '<a href="#" class="label label-success">Verified</a>';
+								}else{
+								echo '<a href="/users/funding_fiat"  class="label label-important">Funding Fiat</a>';
+								}?>
+						</td>
+					</tr>
+				</table>
+				<p style="color:red;font-weight:bold;font-size:14px"><u>Optional</u><br>
+Only required if you wish to withdraw via your bank.
+				</p>
+				</div></div>
+					</div>
+<hr>
+				<div class="col-md-6">
 				<div class="panel panel-primary">
 						<div class="panel-heading">
 							<h3 class="panel-title">Add/Edit Postal Address</h3>
 						</div>
 						<div class="panel-body">
-				<a href="/<?=$locale?>/users/addpostal">Add/Edit Postal address</a>
-				<table class="table">
+				<a href="/users/addpostal">Add/Edit Postal address</a>
+				<table class="table" >
 					<tr>
 						<td>Name:</td>
-						<td><?=$details['finance']['address']['Name']?></td>
+						<td><?=$details['postal']['Name']?></td>
 					</tr>
 					<tr>
 						<td>Address:</td>
-						<td><?=$details['finance']['address']['Address']?></td>
+						<td><?=$details['postal']['Address']?></td>
 					</tr>
 					<tr>
 						<td>Street:</td>
-						<td><?=$details['finance']['address']['Street']?></td>
+						<td><?=$details['postal']['Street']?></td>
 					</tr>
 					<tr>
 						<td>City:</td>
-						<td><?=$details['finance']['address']['City']?></td>
+						<td><?=$details['postal']['City']?></td>
 					</tr>
 					<tr>
 						<td>Postal / Zip Code:</td>
-						<td><?=$details['finance']['address']['Zip']?></td>
-					</tr>
-					<tr>
-						<td>State:</td>
-						<td><?=$details['finance']['address']['State']?></td>
+						<td><?=$details['postal']['Zip']?></td>
 					</tr>
 					<tr>
 						<td>Country:</td>
-						<td><?=$details['finance']['address']['Country']?></td>
+						<td><?=$details['postal']['Country']?></td>
 					</tr>
 				</table>
+				<p style="color:red;font-weight:bold;font-size:14px"><u>Optional</u><br>
+Only required if you wish to withdraw hard currency.
+				</p>
+						
+				</div></div>
+					</div>
+				<div class="col-md-6">
+				<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Withdrawal OKPAY email</h3>
+						</div>
+						<div class="panel-body">
+				<table class="table" >
+					<tr>
+						<td>Email</td>
+						<td>
+						<form action="/users/okpaysave" method="post" class="form-group">
+						<input type="text" class="form-control" name="email" id="email" value="<?=$details['okpay']['email']?>" placeholder="yourOKPay@email.com">
+						<input type="submit" value="Save" class="btn btn-primary btn-block">
+						</form>
+					<?php 
+					if($details['okpay']['verified']=="No"){
+					?>						
+						<form action="/users/okpayverify" method="post" class="form-group">
+						<input type="text" class="form-control" name="verify" id="verify" value="<?=$details['okpay']['verified']?>" placeholder="5da89606601e5779565281db11a608ee54f18c2f">
+						<input type="submit" value="Verify" class="btn btn-primary btn-block">
+						<p  class="label label-important">Not Verified</p>						
+						</form>
+					<?php }else{?>
+					<p class="label label-success">Verified</p>					
+					<?php }?>
+						</td>
+					</tr>
+				</table>
+						
 				</div></div>
 					</div>
       	</div>
