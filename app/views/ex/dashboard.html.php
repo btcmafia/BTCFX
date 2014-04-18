@@ -80,7 +80,7 @@ foreach($virtualcurrencies as $VC){
 			}
 		}
 
-		if($all){
+
 		?>
 		<td colspan="5"><h3>Funding</h3>
 		<table class="table"><tr>
@@ -114,10 +114,11 @@ foreach($trades as $tr){
 	foreach($VirtualCurr as $currency){
 		echo '<td><a href="/users/funding/'.$currency.'" class="btn btn-primary btn-sm btn-block"> '.$currency.' </a></td>';
 	}
-	foreach($FiatCurr as $currency){
-		echo '<td><a href="/users/funding_fiat/'.$currency.'" class="btn btn-primary btn-sm btn-block"> '.$currency.' </a></td>';
-	}
-
+	if($all){
+		foreach($FiatCurr as $currency){
+			echo '<td><a href="/users/funding_fiat/'.$currency.'" class="btn btn-primary btn-sm btn-block"> '.$currency.' </a></td>';
+		}
+	} //if all
 ?>
 </tr></table>
 </td>
@@ -127,7 +128,7 @@ foreach($trades as $tr){
 		<td colspan="3">&nbsp;</td>
 		<td colspan="1"><a href="/users/settings" class="btn btn-primary btn-sm btn-block">Settings</a></td>
 	</tr>
-<?php }?>	
+
 		</table>
 					</div>
 				</div>

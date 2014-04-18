@@ -54,9 +54,11 @@
 		foreach($alldocuments as $key=>$val){						
 			if($val=='Yes'){
 			$all = true;
+			}else{
+			$all = false;	
+			break;
 			}
 		}
-		if($all){
 			$first_curr = strtoupper(substr($currencyStatus['trade'],0,3));
 			$second_curr = strtoupper(substr($currencyStatus['trade'],4,3));			
 			$VirtualCurr = array(); $FiatCurr = array();
@@ -81,8 +83,9 @@
 <?php }?>		
 	</tr>
 	<tr>
-<?php if($FiatCurr!="")	{
-?>
+<?php if($all){
+print_r($all);
+	if($FiatCurr!="")	{?>
 		<td colspan="2"><a href="/users/funding_fiat/<?=$FiatCurr[0]?>" class="btn btn-primary">Funding <?=$FiatCurr[0]?></a></td>	
 <?php }?>		
 	</tr>
