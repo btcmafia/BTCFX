@@ -56,6 +56,7 @@ class UsersController extends \lithium\action\Controller {
 				'bitcoinaddress.0'=>$bitcoinaddress,
 				'balance.BTC' => (float)0,
 				'balance.LTC' => (float)0,				
+				'balance.XGC' => (float)0,								
 				'balance.USD' => (float)0,				
 				'balance.EUR' => (float)0,
 				'balance.GBP' => (float)0,				
