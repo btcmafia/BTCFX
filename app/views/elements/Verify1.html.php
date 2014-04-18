@@ -59,15 +59,16 @@
 		if($all){
 			$first_curr = strtoupper(substr($currencyStatus['trade'],0,3));
 			$second_curr = strtoupper(substr($currencyStatus['trade'],4,3));			
+			$VirtualCurr = array(); $FiatCurr = array();
 			if($currencyStatus['FirstType']=='Virtual'){
-				$VirtualCurr = array($first_curr);
+				array_push($VirtualCurr,$first_curr);
 				}else{
-				$FiatCurr = $FiatCurr . $first_curr;
+				array_push($FiatCurr,$first_curr);
 			}
 			if($currencyStatus['SecondType']=='Virtual'){
 				array_push($VirtualCurr,$second_curr);
 				}else{
-				$FiatCurr = $FiatCurr . " - " .  $second_curr;
+				array_push($FiatCurr,$second_curr);
 			}
 		
 		?>
@@ -80,8 +81,9 @@
 <?php }?>		
 	</tr>
 	<tr>
-<?php if($FiatCurr!="")	{?>
-		<td colspan="2">		<a href="/users/funding_fiat" class="btn btn-primary">Funding Fiat</a></td>	
+<?php if($FiatCurr!="")	{
+?>
+		<td colspan="2"><a href="/users/funding_fiat/<?=$FiatCurr[0]?>" class="btn btn-primary">Funding <?=$FiatCurr[0]?></a></td>	
 <?php }?>		
 	</tr>
 <?php }?>	

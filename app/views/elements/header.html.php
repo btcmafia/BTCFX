@@ -40,17 +40,35 @@ use app\extensions\action\Functions;
 <?php 
 $trades = Trades::find('all');
 $currencies = array();
+$VirtualCurr = array(); $FiatCurr = array();
 foreach($trades as $tr){
-	$currency = substr($tr['trade'],0,3);
-	array_push($currencies,$currency);
-	$currency = substr($tr['trade'],4,3);
-	array_push($currencies,$currency);
- }	//for
+	$first_curr = substr($tr['trade'],0,3);
+	array_push($currencies,$first_curr);
+	$second_curr = substr($tr['trade'],4,3);
+	array_push($currencies,$second_curr);
+
+		if($tr['FirstType']=='Virtual'){
+			array_push($VirtualCurr,$first_curr);
+			}else{
+			array_push($VirtualCurr,$first_curr);
+		}
+		if($tr['SecondType']=='Virtual'){
+			array_push($VirtualCurr,$second_curr);
+			}else{
+			array_push($FiatCurr,$second_curr);
+		}
+}	//for
 
 	$currencies = array_unique($currencies);
-	foreach($currencies as $currency){
-		echo '<li><a href="/users/funding_'.$currency.'">Funding '.$currency.'</a></li>';
+	$VirtualCurr = array_unique($VirtualCurr);
+	$FiatCurr = array_unique($FiatCurr);
+	foreach($VirtualCurr as $currency){
+		echo '<li><a href="/users/funding/'.$currency.'">Funding '.$currency.'</a></li>';
 	}
+	foreach($FiatCurr as $currency){
+		echo '<li><a href="/users/funding_fiat/'.$currency.'">Funding '.$currency.'</a></li>';
+	}
+
 ?>
 
 

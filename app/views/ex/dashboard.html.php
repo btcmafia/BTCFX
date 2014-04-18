@@ -75,18 +75,57 @@ foreach($virtualcurrencies as $VC){
 
 		$all = true;
 			foreach($alldocuments as $key=>$val){						
-
 			if($val!='Yes'){
 			$all = false;
 			}
 		}
+
 		if($all){
 		?>
-		<td width="20%"><a href="/users/funding_btc" class="btn btn-primary  btn-sm btn-block">Funding BTC</a></td>
-		<td width="20%"><a href="/users/funding_ltc" class="btn btn-primary btn-sm btn-block">Funding LTC</a></td>
-		<td width="20%"><a href="/users/funding_fiat" class="btn btn-primary btn-sm btn-block">Funding Fiat</a></td>	
-		<td width="20%"><a href="/<?=$locale?>/users/transactions" class="btn btn-primary btn-sm btn-block">Transactions</a></td>
-		<td width="20%"><a href="/<?=$locale?>/users/settings" class="btn btn-primary btn-sm btn-block">Settings</a></td>
+		<td colspan="5"><h3>Funding</h3>
+		<table class="table"><tr>
+<?php 
+$trades = Trades::find('all');
+$currencies = array();
+$VirtualCurr = array(); $FiatCurr = array();
+foreach($trades as $tr){
+	$first_curr = substr($tr['trade'],0,3);
+	array_push($currencies,$first_curr);
+	$second_curr = substr($tr['trade'],4,3);
+	array_push($currencies,$second_curr);
+
+		if($tr['FirstType']=='Virtual'){
+			array_push($VirtualCurr,$first_curr);
+			}else{
+			array_push($VirtualCurr,$first_curr);
+		}
+		if($tr['SecondType']=='Virtual'){
+			array_push($VirtualCurr,$second_curr);
+			}else{
+			array_push($FiatCurr,$second_curr);
+		}
+	
+	
+	
+}	//for
+	$currencies = array_unique($currencies);
+	$VirtualCurr = array_unique($VirtualCurr);
+	$FiatCurr = array_unique($FiatCurr);
+	foreach($VirtualCurr as $currency){
+		echo '<td><a href="/users/funding/'.$currency.'" class="btn btn-primary btn-sm btn-block"> '.$currency.' </a></td>';
+	}
+	foreach($FiatCurr as $currency){
+		echo '<td><a href="/users/funding_fiat/'.$currency.'" class="btn btn-primary btn-sm btn-block"> '.$currency.' </a></td>';
+	}
+
+?>
+</tr></table>
+</td>
+</tr>
+<tr>
+		<td colspan="1"><a href="/users/transactions" class="btn btn-primary btn-sm btn-block">Transactions</a></td>
+		<td colspan="3">&nbsp;</td>
+		<td colspan="1"><a href="/users/settings" class="btn btn-primary btn-sm btn-block">Settings</a></td>
 	</tr>
 <?php }?>	
 		</table>
