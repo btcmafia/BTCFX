@@ -469,24 +469,21 @@ blockquote {
 	color: white !important;
 }
 
-.navbar-rates > li > a:hover {
-	background-color: white !important;
-	color: #0f0f0f !important;
-	-webkit-transition: background-color 300ms linear;
-	-moz-transition: background-color 300ms linear;
-	-o-transition: background-color 300ms linear;
-	-ms-transition: background-color 300ms linear;
-	transition: background-color 300ms linear;
+.rates{
+	background-color:#000000;
+	color:#FFFFFF;
+	padding:5px;
+	text-align:center
 }
-.navbar-rates > li > a {
-	border-right: 1px solid #cd9d26;
-	border-left: 1px solid #ab8015;
-	width:30%;
-	padding-bottom: 2px;
-	padding-top: 2px;
-	background-color: #e5ae27;
-	color: white !important;
+.rates a{
+color:#CCCCCC;
+padding-right:25px;
+margin:auto;
 }
+.rates a:hover{
+color:#CCCCCC
+}
+
 .footer .navbar-nav > li > a {
 	border-right: 1px solid white;
 	border-left: 1px solid white;
