@@ -1,12 +1,12 @@
 <?php
 use lithium\util\String;
 ?>
-	<div class="col-md-6" >
-		<div class="panel panel-warning">
-			<div class="panel panel-heading">
-			<h2 class="panel-title">Pending orders </h2>
-			</div>
-			<div id="YourOrders" style="height:300px;overflow:auto;padding:0px;margin-top:-20px" class="fade in">			
+		<div class="col-md-6">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+				<h2 class="panel-title"  style="font-weight:bold" >Pending Orders</h2>
+				</div>
+			<div id="YourOrders" style="height:300px;overflow:auto;" class="fade in">			
 			<table class="table table-condensed table-bordered table-hover" style="font-size:11px">
 				<thead>
 					<tr>
