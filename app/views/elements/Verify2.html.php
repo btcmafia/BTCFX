@@ -87,7 +87,8 @@
 	</tr>
 	<tr>
 <?php 		if($all){
-if($FiatCurr!="")	{?>
+
+if(count($FiatCurr)!=0)	{?>
 		<td colspan="2"><a href="/users/funding_fiat/<?=$FiatCurr[0]?>" class="btn btn-primary">Funding <?=$FiatCurr[0]?></a></td>	
 <?php }?>		
 	</tr>

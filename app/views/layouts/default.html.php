@@ -1,3 +1,14 @@
+<?php
+/**
+ * Lithium: the most rad php framework
+ *
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
+ * @license       http://opensource.org/licenses/bsd-license.php The BSD License
+
+ */
+ use lithium\storage\Session;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,6 +47,17 @@ body {
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<?php
+
+if(Session::read('ex')==""){
+		Session::write('ex','BTC/GBP');
+	}else{
+		$ex =	strtoupper(str_replace("_","/",substr($_SERVER['REQUEST_URI'],-7)));
+		Session::write('ex',$ex);			
+}
+$ex = Session::read('ex');
+
+?>
 
 <body <?php if(strtolower($this->_request->controller)=='ex'){ ?> onLoad="UpdateDetails('<?=$ex?>');" <?php }elseif($this->_request->controller!='Sessions' && $this->_request->controller!='Admin'){?> onLoad="CheckServer();" <?php }?>>
 

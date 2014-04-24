@@ -154,13 +154,13 @@ function SellOrderFill(SellOrderPrice,SellOrderAmount){
 	$("#BuyAmount").val(SellOrderAmount)  ;
 	$("#BuyPriceper").val(SellOrderPrice)  ;
 	$("#BuySubmitButton").attr("disabled", "disabled");	
-	$("#BuySubmitButton").attr("class", "btn btn-warning");				
+	$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");				
 }
 function BuyOrderFill(BuyOrderPrice,BuyOrderAmount){
 	$("#SellAmount").val(BuyOrderAmount)  ;
 	$("#SellPriceper").val(BuyOrderPrice)  ;
 	$("#SellSubmitButton").attr("disabled", "disabled");	
-	$("#SellSubmitButton").attr("class", "btn btn-warning");					
+	$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");					
 }
 function ConvertBalance(){
 	BTCRate = $("#BTCRate").val();

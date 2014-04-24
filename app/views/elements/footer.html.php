@@ -2,7 +2,8 @@
 	Copyright &copy; IBWT JD LTD. All rights reserved.</h4>
 	<ul class="nav navbar-nav" style="font-size:11px">
 		<li><a href="/company/contact">Contact</a></li>		
-		<li><a href="/company/aboutus">About</a></li>		
+		<li><a href="/company/aboutus">About</a></li>	
+        <li><a href="http://blog.ibwt.co.uk/">Blog</a></li>	
 		<li><a href="/company/riskmanagement">Risk</a></li>				
 		<li><a href="/company/verification">Verification</a></li>						
 		<li><a href="/company/privacy">Privacy</a></li>		

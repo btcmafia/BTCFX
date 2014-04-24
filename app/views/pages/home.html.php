@@ -4,17 +4,17 @@ use lithium\core\Environment;
 $Comm = Parameters::find('first');
 ?>
 <h2>Welcome to IBWT</h2>
-	<p>First time on this website, no problem follow these simple steps to get your self trading on IBWT</p>
+	<p> IBWT is a UK Bitcoin/Virtual Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</p>
 	<div class="row">
-			<div id="one" class="col-md-4 boxes box1">
+			<div id="one"  onclick="location.href='/users/signup';" style="cursor:pointer;"  class="col-md-4 boxes">
 					<h3>Register Account</h3>
 					<p>Easy and simple registration, experience the IBWT platform with only an email address to get started.</p>
 			</div>
-			<div id="two" class="col-md-4 col-sm-4 boxes box2">
+			<div id="two" onclick="location.href='/ex/x/btc_gbp';" style="cursor:pointer;"  class="col-md-4 col-sm-4 boxes">
 					<h3>Buy and Sell</h3>
 					<p>Choose from a multi-tued of cash and coins for your day to day trades or shopping needs.</p>
 			</div>
-			<div id="three"  class="col-md-4 col-sm-4 boxes box3">
+			<div id="three"  class="col-md-4 col-sm-4 boxes">
 					<h3>Deposit or Withdraw</h3>
 					<p>Withrdraw your coins straight away or have cash sent to you with simple step verfication.</p>
 			</div>
@@ -22,7 +22,11 @@ $Comm = Parameters::find('first');
 			
 			<div class="row">
 					<div class="col-xs-12 col-sm-8">
+<<<<<<< HEAD
 							<h4 class="iconArticle" >IBWT is a Bitcoin/Virtual Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</h4>
+=======
+							<h4 class="iconArticle" >Buy and Sell Bitcoins, Litecoins and other Cryptocurrency via IBWT, low verification, a secure platform, easy to withdraw and deposit. Shop direct from IBWT or withdraw your coins to your own wallet at your own leisure.</h4>
+>>>>>>> Updates
 							<ul class="home-bullets">
 							 <li>Fees are <strong><?=$Comm['value']?>%</strong> per transaction</li>
 							 <li>Simple verification means you could be a full customer in a matter of days</li>

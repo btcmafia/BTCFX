@@ -1,7 +1,7 @@
 	<div class="col-md-6">
 		<div class="panel panel-success">
 			<div class="panel panel-heading">
-			<h2 class="panel-title"  style="font-weight:bold"  href="#">Orders:
+			<h2 class="panel-title"  style="font-weight:bold" href="#">Orders:
 			 Buy <?=$first_curr?> &lt; <?=$second_curr?></h2>
 <?php  foreach($TotalBuyOrders['result'] as $TBO){
 	$BuyAmount = $TBO['Amount'];

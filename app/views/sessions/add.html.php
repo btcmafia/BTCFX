@@ -3,12 +3,9 @@ IBWT has teamed up with <a href="https://okpay.com/" target="_blank">OKPAY</a> t
 </p>
 <div class="row container-fluid">
 	<div class="col-md-6 well" >
-		<div class="panel panel-success">
-			<div class="panel-heading">
-				<h3 class="panel-title">Sign In</h3>
-			</div>
-		</div>
+		
 		<div class="panel-body">
+        <h3 style="margin-top:0; margin-bottom:15px;">Login</h3>
 			<?=$this->form->create(null,array('class'=>'form-group has-error')); ?>
 			<div class="form-group has-error">			
 				<div class="input-group">
@@ -57,13 +54,9 @@ IBWT has teamed up with <a href="https://okpay.com/" target="_blank">OKPAY</a> t
 		</div>
 	</div>
 	<div class="col-md-6 well">
-		<div class="panel panel-success">
-			<div class="panel-heading">
-				<h3 class="panel-title">Sign up / Register</h3>
-			</div>
-		</div>
-		<div class="panel-body">
-		<h3>Sign up</h3>
+	
+		<div style="padding-top:0;" class="panel-body">
+		<h3 style="margin-top:0;">Sign up</h3>
 		Don't have an account. <a href="/users/signup" >Signup</a><br>
 		Please read the <a href="/company/termsofservice">terms of service</a> page before you sign up.<br>
 		<h3>Security</h3>
