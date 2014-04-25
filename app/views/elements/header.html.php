@@ -27,7 +27,7 @@ use app\extensions\action\Functions;
 	<ul class="nav navbar-nav navbar-right">
 		<?php if($user!=""){ ?>
 			<li ><a href='#' class='dropdown-toggle' data-toggle='dropdown' >
-			<?=$user['username']?> <i class='glyphicon glyphicon-chevron-down'></i>
+			<?=$user['username']?> <i class='glyphicon glyphicon-chevron-down'></i>&nbsp;&nbsp;&nbsp;
 			</a>
 			<ul class="dropdown-menu">
 				<li><a href="/users/settings">Settings</a></li>			
@@ -76,7 +76,7 @@ foreach($trades as $tr){
 				<li><a href="/logout">Logout</a></li>
 			</ul>
 			<?php }else{?>
-			<li><a href="/login">Login / Register</a></li>
+			<li><a href="/login">Login / Register &nbsp;&nbsp;&nbsp;</a></li>
 			<?php }?>				
 		</ul>
 </div> <!-- navbar-collapse -->
