@@ -4,7 +4,7 @@ use lithium\core\Environment;
 $Comm = Parameters::find('first');
 ?>
 <h2>Welcome to IBWT</h2>
-	<h4 class="iconArticle" >IBWT is a Digital Currency exchange, offering a fully regulated, secure method, for individuals and businesses to buy or sell bitcoins.</h4>
+	<h4 class="iconArticle" >IBWT is a Digital Currency exchange, offering a secure and safe method for individuals and businesses to buy or sell bitcoins and other viable cryptocurrencies.</h4>
 	<div class="row">
 			<div id="one"  onclick="location.href='/users/signup';" style="cursor:pointer;"  class="col-md-4 boxes">
 					<h3>Register Account</h3>
