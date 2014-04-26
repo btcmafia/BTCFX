@@ -10,6 +10,7 @@ use app\models\File;
 use app\models\Settings;
 use app\models\Trades;
 use app\models\Orders;
+use app\models\Pages;
 use app\models\Requests;
 use app\models\Logins;
 use lithium\data\Connections;
@@ -1667,6 +1668,22 @@ $description = "Admin panel for Orders";
 
 		$Withdrawal = Parameters::find('first');
 		return compact('Withdrawal');	
+	}
+	
+	public function pages(){
+	$pages = Pages::find('all',array('order'=>array('_id'=>1)));
+	if($this->request->data){
+		Pages::find('all',array(
+			'conditions'=>array('_id'=>$this->request->data['_id']))
+		)->save($this->request->data);
+	}
+	return compact('pages');	
+	}
+	public function pageadd(){
+		if($this->request->data){
+			Pages::create()->save($this->request->data);
+		}
+		$this->redirect('admin::pages');		
 	}
 }
 ?>
