@@ -30,7 +30,7 @@
     <link rel="shortcut icon" href="favicon.ico">
 
 
-		<title><?php echo MAIN_TITLE;?>: <?php if(isset($title)){echo $title;} ?></title>
+		<title><?php echo MAIN_TITLE;?> <?php if(isset($title)){echo $title;} ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
