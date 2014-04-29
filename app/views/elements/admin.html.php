@@ -18,7 +18,7 @@
 	<div id="Adminbar" class="btn-group btn-group-xs"> 	
 		<a type="button" class="btn btn-default" href="/Admin/orders">Orders</a>						
 		<a type="button" class="btn btn-default" href="/Admin/api">API</a>
-		<a type="button" class="btn btn-default" href="/Admin/map">map</a>
+		<a type="button" class="btn btn-default" href="/Admin/map">Map</a>
 		<a type="button" class="btn btn-default" href="/Admin/hard">Hard</a>
 	</div>			
 	<div id="Adminbar" class="btn-group btn-group-xs"> 	
