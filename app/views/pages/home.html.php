@@ -1,7 +1,10 @@
 <?php
 use app\models\Parameters;
+use app\models\Pages;
 use lithium\core\Environment; 
 $Comm = Parameters::find('first');
+
+
 ?>
 <h2>Welcome to IBWT</h2>
 	<h4 class="iconArticle" >IBWT is a Digital Currency exchange, offering a secure and safe method for individuals and businesses to buy or sell bitcoins and other viable cryptocurrencies.</h4>

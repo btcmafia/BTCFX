@@ -7,6 +7,15 @@
 
  */
  use lithium\storage\Session;
+ use app\models\Pages;
+ if(!isset($title)){
+		$page = Pages::find('first',array(
+			'conditions'=>array('pagename'=>'home')
+		));
+ 		$title = $page['title'];
+		$keywords = $page['keywords'];
+		$description = $page['description'];
+ }
 
 ?>
 <!DOCTYPE html>
@@ -19,6 +28,8 @@
 		<meta name="description" content="<?php if(isset($description)){echo $description;} ?>">		
     <meta name="author" content="">
     <link rel="shortcut icon" href="favicon.ico">
+
+
 		<title><?php echo MAIN_TITLE;?>: <?php if(isset($title)){echo $title;} ?></title>
 
     <!-- Bootstrap core CSS -->
