@@ -86,6 +86,9 @@ $ex = Session::read('ex');
 		      </ul>
         </div> <!-- sidebar-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
+				<?php echo $this->_render('element', 'admin');?>
+				<?php }?>
 				<?php echo $this->content(); ?>
 					<div class="footer">
 						<?php echo $this->_render('element', 'footer');?>	

@@ -1,5 +1,4 @@
-<div class="well" style="background-image:url(/img/Stamp.png);background-position:bottom right;background-repeat:no-repeat;min-height:600px">
-<h4>Bitcoin Transactions:</h4>
+<h4>Greencoin Transactions:</h4>
 <?php 
 if($StartDate==""){
 $StartDate = gmdate('Y-m-d',mktime(0,0,0,gmdate('m',time()),gmdate('d',time()),gmdate('Y',time()))-60*60*24*30);
@@ -10,7 +9,7 @@ $EndDate=gmdate('Y-m-d',$EndDate->sec);
 }
 ?>
 <div class="col-md-4">
-<form action="/Admin/bitcointransaction" method="post">
+<form action="/Admin/greencointransaction" method="post">
 <div class="input-append date form-control" id="StartDate" data-date="<?=$StartDate?>" data-date-format="yyyy-mm-dd">
 	<input class="span2" size="16" name="StartDate" type="text" value="<?=$StartDate?>" readonly >
 	<span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -20,6 +19,8 @@ $EndDate=gmdate('Y-m-d',$EndDate->sec);
 	<span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
 <input type="submit" value="Get report" class="btn btn-primary btn-block">
+
+
 <div class="alert alert-error" id="alert"><strong></strong></div>
 </form>
 </div>
@@ -39,21 +40,9 @@ $EndDate=gmdate('Y-m-d',$EndDate->sec);
 		<td><?php if($tx['Added']==true){echo "Deposit";}else{echo "Withdrawal";}?></td>
 		<td><a href="/Admin/detail/<?=$tx['username']?>" target="_blank"><?=$tx['username']?></a></td>
 		<td><?=number_format($tx['Amount'],8)?></td>
-		<td><a href="http://blockchain.info/address/<?=$tx['address']?>" target="_blank"><?=$tx['address']?></a></td>
+		<td><a href="http://greencoin.io/blockchain/address/<?=$tx['address']?>" target="_blank"><?=$tx['address']?></a></td>
 	</tr>
 	<?php }?>
 </table>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-</div>
+
 	<script src="/js/admin.js"></script>

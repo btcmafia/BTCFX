@@ -1,9 +1,11 @@
 <div class="well" style="background-image:url(/img/Stamp.png);background-position:bottom right;background-repeat:no-repeat;min-height:600px">
 <h4>Users: <?=$TotalUsers?></h4>
+<div class="col-md-4">
 <form action="/Admin/user" method="post">
-<input type="text" class="span1" value="<?=$pagelength?>" name="pagelength" id="pagelenght">
-<input type="submit" value="Get report" class="btn btn-primary">
+<input type="text" class="form-control" value="<?=$pagelength?>" name="pagelength" id="pagelenght">
+<input type="submit" value="Get report" class="btn btn-primary btn-block" >
 </form>
+</div>
 <?php print_r($page_links);?>
 <table class="table table-condensed table-bordered table-hover" style="font-size:12px ">
 	<thead>

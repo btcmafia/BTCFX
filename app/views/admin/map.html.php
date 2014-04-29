@@ -1,10 +1,9 @@
 <script src="/js/raphael.js"></script>
 <script src="/js/world.js"></script>
-
  <script>
             Raphael("forworldmap", 1000, 400, function () {
                 var r = this;
-                r.rect(0, 0, 1000, 400, 10).attr({
+                r.rect(0, 0, 1000, 400, 0).attr({
                     stroke: "none",
                     fill: "0-#9bb7cb-#adc8da"
                 });
@@ -109,18 +108,11 @@
 				}
 			}
 </script>
-<div class="container">
-	<div class="row-fluid">
-			<div class="row-fluid" style="text-align:center;">
-				<div class="span12">
-					<div id="forworldmap"></div>
-					<!--Awesome world map modified from http://raphaeljs.com/ Raphael, check it out!-->
-				</div>
-			</div>
-		<div id="forworldmapcomment" style="position:absolute;min-height:100px"></div>		
-		</div>
-	</div>
+<div class="col-md-12">
+<h4>Map</h4>
+	<div id="forworldmap"></div>
+		<!--Awesome world map modified from http://raphaeljs.com/ Raphael, check it out!-->
 </div>
-<br>
-<br>
-<br>
+<div id="forworldmapcomment" style="position:absolute;min-height:100px">
+</div>
+

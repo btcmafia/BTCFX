@@ -1,7 +1,8 @@
 
 <h3>User Approval</h3>
+<div class="col-md-4">
 <form name="User_Approval" method="post" action="/Admin/approval" class="form-horizontal">
-	<select name="UserApproval" id="UserApproval">
+	<select name="UserApproval" id="UserApproval" class="form-control">
 		<option value="All" <?php if($UserApproval=='All'){echo " selected";}?>>All</option>
 		<optgroup label="Verified">		
 		<option value="VEmail" <?php if($UserApproval=='VEmail'){echo " selected";}?>>Email</option>
@@ -25,10 +26,11 @@
 		<option value="WVUtility" <?php if($UserApproval=='WVUtility'){echo " selected";}?>>Utility Bill</option>				
 		</optgroup>
 	</select>
-		<input type="text" name="UserSearch" id="UserSearch" placeholder="Username" value="" class="span2">
-		<input type="text" name="EmailSearch" id="EmailSearch" placeholder="Email" value="" class="span2">		
-	<input type="submit" value="Go..." class="btn btn-primary ">
+		<input type="text" name="UserSearch" id="UserSearch" placeholder="Username" value="" class="form-control">
+		<input type="text" name="EmailSearch" id="EmailSearch" placeholder="Email" value="" class="form-control">		
+	<input type="submit" value="Go..." class="btn btn-primary btn-block">
 </form>
+</div>
 <table class="table table-condensed table-bordered table-hover" style=" ">
 	<tr>
 		<th style="text-align:center;">Username</th>
@@ -53,7 +55,7 @@ $i = 1;
 		<?php 
 		if($detail['active']=='Yes' || $detail['active']==''){
 		?>
-		<a href="/Admin/deactivate/<?=$detail['_id']?>" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deactivate user account"><i class="icon-remove"></i></a>
+		<a href="/Admin/deactivate/<?=$detail['_id']?>" class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Deactivate user account"><i class="glyphicon glyphicon-remove"></i></a>
 		<?php }?>
 		<?php 
 		if($detail['active']=='No'){

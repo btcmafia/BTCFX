@@ -1685,5 +1685,31 @@ $description = "Admin panel for Orders";
 		}
 		$this->redirect('admin::pages');		
 	}
+	public function greencointransaction(){
+		if($this->__init()==false){$this->redirect('ex::dashboard');	}	
+		if($this->request->data){
+			$StartDate = new MongoDate(strtotime($this->request->data['StartDate']));
+			$EndDate = new MongoDate(strtotime($this->request->data['EndDate']));			
+		}else{
+			$StartDate = new MongoDate(strtotime(gmdate('Y-m-d H:i:s',mktime(0,0,0,gmdate('m',time()),gmdate('d',time()),gmdate('Y',time()))-60*60*24*30)));
+			$EndDate = new MongoDate(strtotime(gmdate('Y-m-d H:i:s',mktime(0,0,0,gmdate('m',time()),gmdate('d',time()),gmdate('Y',time()))+60*60*24*1)));
+		}
+		
+		$transactions = Transactions::find('all',array(
+			'conditions'=>array(
+				'Currency'=>'XGC',
+				'DateTime'=> array( '$gte' => $StartDate, '$lte' => $EndDate ) ,			
+				),
+			'order'=>array('DateTime'=>-1)
+		));
+$title = "Greencoin Transactions";
+$keywords = "Greencoin Transactions";
+$description = "Admin panel for Litecoin transactions";
+		
+
+		return compact(	'transactions','StartDate','EndDate','title','keywords','description')	;
+		
+	}
+	
 }
 ?>

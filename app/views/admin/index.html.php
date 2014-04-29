@@ -1,4 +1,3 @@
-<div class="well" style="background-image:url(/img/Stamp.png);background-position:bottom right;background-repeat:no-repeat;min-height:600px">
 <h3>Users and Order status - last 30 days</h3>
 <?php 
 if($StartDate==""){
@@ -8,20 +7,21 @@ if($StartDate==""){
 	$StartDate=gmdate('Y-m-d',$StartDate->sec);
 	$EndDate=gmdate('Y-m-d',$EndDate->sec);
 }
-
 ?>
-<form action="/Admin/index" method="post">
-<div class="input-append date" id="StartDate" data-date="<?=$StartDate?>" data-date-format="yyyy-mm-dd">
-	<input class="span2" size="16" name="StartDate" type="text" value="<?=$StartDate?>" readonly>
-	<span class="add-on"><i class="icon-calendar"></i></span>
+<div class="col-md-4">
+<form action="/Admin/index" method="post" >
+<div class="input-append date form-control" id="StartDate" data-date="<?=$StartDate?>" data-date-format="yyyy-mm-dd">
+	<input class="span2" size="16" name="StartDate" type="text" value="<?=$StartDate?>" readonly >
+	<span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
-<div class="input-append date" id="EndDate" data-date="<?=$EndDate?>" data-date-format="yyyy-mm-dd">
+<div class="input-append date form-control" id="EndDate" data-date="<?=$EndDate?>" data-date-format="yyyy-mm-dd">
 	<input class="span2" size="16"  name="EndDate" 	type="text" value="<?=$EndDate?>" readonly>
-	<span class="add-on"><i class="icon-calendar"></i></span>
+	<span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
-<input type="submit" value="Get report" class="btn btn-primary">
+<input type="submit" value="Get report" class="btn btn-primary btn-block">
 <div class="alert alert-error" id="alert"><strong></strong></div>
 </form>
+</div>
 <table class="table table-condensed table-bordered table-hover" style=" ">
 	<tr>
 		<th rowspan="3" style="text-align:center;">Date</th>
@@ -236,22 +236,5 @@ foreach($newYear as $key=>$value){
 	</tr>
 <?php }?>
 </table>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
-</div>
 <script src="/js/admin.js"></script>
