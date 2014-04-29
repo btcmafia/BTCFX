@@ -22,6 +22,10 @@
 		<a type="button" class="btn btn-default" href="/Admin/hard">Hard</a>
 	</div>			
 	<div id="Adminbar" class="btn-group btn-group-xs"> 	
+		<a type="button" class="btn btn-default" href="/Admin/pages">Meta</a>						
+		<a type="button" class="btn btn-default" href="/Admin/trades">Trades</a>								
+	</div>			
+	<div id="Adminbar" class="btn-group btn-group-xs"> 	
 		<a type="button" class="btn btn-default" href="/Admin/down" class="tooltip-x"  rel="tooltip-x" data-placement="top" title="Danger! All users will be logged out and not able to sign in too... You will have to call Nilam to start it!"><i class="glyphicon glyphicon-off"></i></a>
 	</div> 
 </div>
