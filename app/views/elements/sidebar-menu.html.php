@@ -74,7 +74,7 @@ if($this->_request->params['controller']!='api'){
 ?>
     <div id="sidebar"> 
 		<a href="#<?=$currency?>" class="list-group-item item-border" data-toggle="collapse" data-parent="#sidebar">
-			<i class="glyphicon glyphicon-plus"></i> <?=$currency?><span class="badge bg_danger"><?=$count?></span>
+			<i class="glyphicon glyphicon-plus"></i> <?=$currency?> <span class="badge bg_danger"><?=$count?></span>
 		</a>
 			<div id="<?=$currency?>" class="list-group subitem collapse">
 		<?php foreach($exchanges as $exchange){
@@ -88,7 +88,7 @@ if($this->_request->params['controller']!='api'){
 					 }
 					}?>
 					<a href="/ex/x/<?=strtolower(str_replace("/","_",$exchange['trade']))?>" class="list-group-subitem">
-						<i class="glyphicon glyphicon-caret-right"></i><?=$exchange['trade']?><span class="badge btn-success"><?=number_format($price,2)?></span>
+						<i class="glyphicon glyphicon-caret-right"></i><?=$exchange['trade']?> <span class="badge btn-success"><?=number_format($price,2)?></span>
 					</a>				
 				<?php }?>
 			</div> <!-- subitem -->

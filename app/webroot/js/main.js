@@ -1,14 +1,18 @@
 // JS Document
 function UpdateDetails(ex){
-	var delay = 5000;
+	var delay = 10000;
 	var now, before = new Date();
 	GetDetails(ex);
+	var counter = 5;
 	setInterval(function() {
     now = new Date();
     var elapsedTime = (now.getTime() - before.getTime());
+		
+		setInterval(function() {		counter = counter - 1;$("#Timer").html(counter);}	,1000);
     GetDetails(ex);
+		counter = 5;				
     before = new Date();    
-}, 5000);
+}, delay);
 	
 }
 function GetDetails(ex){

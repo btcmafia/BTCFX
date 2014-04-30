@@ -6,7 +6,7 @@ $Comm = Parameters::find('first');
 
 
 ?>
-<h2>Welcome to IBWT</h2>
+<h2><i class="fa fa-square"></i> Welcome to IBWT <i class="fa fa-square"></i></h2>
 	<h4 class="iconArticle" >IBWT is a Digital Currency exchange, offering a secure and safe method for individuals and businesses to buy or sell bitcoins and other viable cryptocurrencies.</h4>
 	<div class="row">
 			<div id="one"  onclick="location.href='/users/signup';" style="cursor:pointer;"  class="col-md-4 boxes">
@@ -27,7 +27,7 @@ $Comm = Parameters::find('first');
 					
 					<h4 class="iconArticle" >Buy and Sell Bitcoins, and other Cryptocurrency via IBWT, low verification, a secure platform, easy to withdraw and deposit. Shop direct from IBWT or withdraw your coins to your own wallet at your own leisure.</h4>
 					<ul class="home-bullets">
-					 <li>Fees are <strong><?=$Comm['value']?>%</strong> per transaction</li>
+					 <li> <i class="fa fa-star"></i> Fees are <strong><?=$Comm['value']?>%</strong> per transaction</li>
 					 <li>Simple verification means you could be a full customer in a matter of days</li>
 					 <li>Security ensured with Cold Storage, SSL 256bit encryption & 2FA</li>
 					 <li>Dedicated Server for an enhanced customer experience</li>
