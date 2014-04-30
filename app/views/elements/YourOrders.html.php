@@ -19,8 +19,7 @@ use lithium\util\String;
 				<?php foreach($YourOrders as $YO){ ?>
 					<tr>
 							<td style="text-align:left ">
-							<a href="/ex/RemoveOrder/<?=String::hash($YO['_id'])?>/<?=$YO['_id']?>/<?=$sel_curr?>" title="Remove this order">
-								<i class="glyphicon glyphicon-remove"></i></a> &nbsp; 
+							<a href="/ex/RemoveOrder/<?=String::hash($YO['_id'])?>/<?=$YO['_id']?>/<?=$sel_curr?>" title="Remove aaaaa this order"><i class="fa fa-times fa-2"></i></a> &nbsp; 
 							<?=$YO['Action']?> <?=$YO['FirstCurrency']?>/<?=$YO['SecondCurrency']?></td>
 						<td style="text-align:right "><?=number_format($YO['PerPrice'],4)?>...</td>
 						<td style="text-align:right "><?=number_format($YO['Amount'],4)?>...</td>

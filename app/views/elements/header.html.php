@@ -30,8 +30,8 @@ use app\extensions\action\Functions;
 			<?=$user['username']?> <i class='glyphicon glyphicon-chevron-down'></i>&nbsp;&nbsp;&nbsp;
 			</a>
 			<ul class="dropdown-menu">
-				<li><a href="/users/settings">Settings</a></li>			
-				<li><a href="/ex/dashboard">Dashboard</a></li>
+				<li><a href="/users/settings"><i class="fa fa-gears"></i> Settings</a></li>			
+				<li><a href="/ex/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
 				<li class="divider"></li>				
 <?php 
 $trades = Trades::find('all');
@@ -59,21 +59,21 @@ foreach($trades as $tr){
 	$VirtualCurr = array_unique($VirtualCurr);
 	$FiatCurr = array_unique($FiatCurr);
 	foreach($VirtualCurr as $currency){
-		echo '<li><a href="/users/funding/'.$currency.'">Funding '.$currency.'</a></li>';
+		echo '<li><a href="/users/funding/'.$currency.'"><i class="fa fa-exchange"></i> Funding '.$currency.'</a></li>';
 	}
 	foreach($FiatCurr as $currency){
-		echo '<li><a href="/users/funding_fiat/'.$currency.'">Funding '.$currency.'</a></li>';
+		echo '<li><a href="/users/funding_fiat/'.$currency.'"><i class="fa fa-exchange"></i> Funding '.$currency.'</a></li>';
 	}
 
 ?>
 
 
 				<li class="divider"></li>								
-				<li><a href="/users/transactions">Transactions</a></li>							
+				<li><a href="/users/transactions"><i class="fa fa-tasks"></i> Transactions</a></li>							
 				<li class="divider"></li>
-				<li><a href="/print/">Print / Cold Storage</a></li>											
+				<li><a href="/print/"><i class="fa fa-print"></i> Print / Cold Storage</a></li>											
 				<li class="divider"></li>												
-				<li><a href="/logout">Logout</a></li>
+				<li><a href="/logout"><i class="fa fa-power-off"></i> Logout</a></li>
 			</ul>
 			<?php }else{?>
 			<li><a href="/login">Login / Register &nbsp;&nbsp;&nbsp;</a></li>

@@ -518,7 +518,7 @@ $YourOrdersHTML = '<table class="table table-condensed table-bordered table-hove
 $YourOrdersHTML = $YourOrdersHTML .'<tr>
 							<td style="text-align:left ">
 							<a href="/ex/RemoveOrder/'.String::hash($YO['_id']).'/'.$YO['_id'].'/'.strtolower($FirstCurrency).'_'.strtolower($SecondCurrency).'" title="Remove this order">
-								<i class="icon-remove"></i></a> &nbsp; 
+								<i class="fa fa-times"></i></a> &nbsp; 
 							'.$YO['Action'].' '.$YO['FirstCurrency'].'/'.$YO['SecondCurrency'].'</td>
 						<td style="text-align:right ">'.number_format($YO['PerPrice'],3).'...</td>
 						<td style="text-align:right ">'.number_format($YO['Amount'],3).'...</td>
@@ -555,5 +555,4 @@ $YourOrdersHTML = $YourOrdersHTML .'				</tbody>
 	}
 
 }
-
 ?>

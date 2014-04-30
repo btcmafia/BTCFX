@@ -554,7 +554,7 @@ class ExController extends \lithium\action\Controller {
 		$keywords = $page['keywords'];
 		$description = $page['description'];
 		$settings = Settings::find('first');
-		
+
 		return compact('title','details','SellOrders','BuyOrders','TotalSellOrders','TotalBuyOrders','YourOrders','YourCompleteOrders','keywords','description','settings','currencyStatus');
 	}
 	

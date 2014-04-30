@@ -134,7 +134,8 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 	?>
 </div>
 <div class="row">
-<?php		echo $this->_render('element', 'YourOrders',array(
+<?php	
+	echo $this->_render('element', 'YourOrders',array(
 			'first_curr' => $first_curr,
 			'second_curr' => $second_curr,
 			'YourOrders' => $YourOrders,		
