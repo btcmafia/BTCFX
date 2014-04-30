@@ -2,20 +2,24 @@
 function UpdateDetails(ex){
 	var delay = 10000;
 	var now, before = new Date();
-	GetDetails(ex);
-	var counter = 5;
+	GetDetails(ex,delay/1000);
 	setInterval(function() {
     now = new Date();
     var elapsedTime = (now.getTime() - before.getTime());
-		
-		setInterval(function() {		counter = counter - 1;$("#Timer").html(counter);}	,1000);
-    GetDetails(ex);
-		counter = 5;				
+    GetDetails(ex,delay/1000);
     before = new Date();    
 }, delay);
 	
 }
-function GetDetails(ex){
+function GetDetails(ex,counter){
+	var refreshID = setInterval(function() {
+		counter = counter - 1;
+		$("#Timer").html(counter);
+		if(counter <= 0){
+			clearInterval(refreshID);
+			return;
+			}
+	}	,1000);	
 	user_id = $("#User_ID").html();
 	if(ex=="/EX/DASHBOARD"){ex = "BTC/GBP";}
 	CheckServer();

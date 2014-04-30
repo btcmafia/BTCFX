@@ -25,7 +25,7 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 				<a data-placement="bottom" title="Latest high price" href="#">High:<strong><span id="HighPrice" class="btn-danger"  style="padding:2px;margin-left:5px"></span></strong></a>
 				<a  data-placement="bottom" title="Latest price" href="#">Last:<strong><span id="LastPrice" class="btn-info"  style="padding:2px;margin-left:5px"></span></strong></a>
 				<a  data-placement="bottom" title="Volume" href="#">Vol:<strong><span id="Volume" class="btn-inverse"  style="padding:2px;margin-left:5px"></span></strong></a>							
-				<a class="pull-right" id="Timer">5</a>
+				<a class="pull-right"><i class="fa fa-spinner fa-spin"></i> <span id="Timer"></span></a>
 		</div>
 		</div>
 	</div>
