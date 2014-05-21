@@ -1,4 +1,5 @@
 app/resources/tmp/*
 app/config/bootstrap/*
+app/config/bttostrap/libraries.php
 app/webroot/documents/*
 app/webroot/qrcode/*
