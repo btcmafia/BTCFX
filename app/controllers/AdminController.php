@@ -1671,6 +1671,7 @@ $description = "Admin panel for Orders";
 	}
 	
 	public function pages(){
+		if($this->__init()==false){			$this->redirect('ex::dashboard');	}	
 	$pages = Pages::find('all',array('order'=>array('_id'=>1)));
 	if($this->request->data){
 		Pages::find('all',array(
