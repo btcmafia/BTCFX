@@ -54,7 +54,7 @@ class ExController extends \lithium\action\Controller {
 		
 		$user = Session::read('member');
 		$id = $user['_id'];
-		if($id==null){$this->redirect(array('controller'=>'ex','action'=>'dashboard/'));}		
+//		if($id==null){$this->redirect(array('controller'=>'ex','action'=>'dashboard/'));}		
 		$details = Details::find('first',
 			array('conditions'=>array('user_id'=>$id))
 		);
