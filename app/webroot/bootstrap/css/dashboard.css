@@ -470,17 +470,16 @@ blockquote {
 }
 
 .rates{
-	background-color:#000000;
 	color:#FFFFFF;
-	padding:5px;
+	margin-top:10px;
 	text-align:center
 }
 .rates a{
-color:#CCCCCC;
+color:#black;;
 padding-right:25px;
 }
 .rates a:hover{
-color:#CCCCCC
+color:#black;
 }
 
 .footer .navbar-nav > li > a {

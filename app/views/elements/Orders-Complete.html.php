@@ -3,7 +3,7 @@
 				<div class="panel-heading">
 				<h2 class="panel-title"  style="font-weight:bold" >Completed orders</h2>
 				</div>
-				<div id="YourCompleteOrders" style="height:300px;overflow:auto;">	
+				<div id="YourCompleteOrders" style="overflow:auto;">	
 			<table class="table table-condensed table-bordered table-hover" style="font-size:11px">
 				<thead>
 					<tr>

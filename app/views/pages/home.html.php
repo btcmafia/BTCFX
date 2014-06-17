@@ -6,7 +6,7 @@ $Comm = Parameters::find('first');
 
 
 ?>
-<h2><i class="fa fa-square"></i> Welcome to IBWT <i class="fa fa-square"></i></h2>
+<h2>Welcome to IBWT </h2>
 	<h4 class="iconArticle" >IBWT is a Digital Currency exchange, offering a secure and safe method for individuals and businesses to buy or sell bitcoins and other viable cryptocurrencies.</h4>
 	<div class="row">
 			<div id="one"  onclick="location.href='/users/signup';" style="cursor:pointer;"  class="col-md-4 boxes">

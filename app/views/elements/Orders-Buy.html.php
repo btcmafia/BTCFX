@@ -8,7 +8,7 @@
 	$BuyTotalAmount = $TBO['TotalAmount'];
 }?>			
 			</div>
-		<div id="BuyOrders" style="height:300px;overflow:auto;margin-top:-20px  ">			
+		<div id="BuyOrders" style="overflow:auto;margin-top:-20px  ">			
 			<table class="table table-condensed table-bordered table-hover"  style="font-size:12px ">
 				<thead>
 					<tr>

@@ -14,10 +14,10 @@
 <table class="table table-condensed">
 	<tr>
 		<td width="50%">Your balance:<br>
-		<span class="btn btn-info btn-block" ><span id="BalanceFirst"><?=$BalanceFirst?></span> <?=$first_curr?></span>
+		<span id="BalanceFirst"><?=$BalanceFirst?></span> <?=$first_curr?>
 		</td>
 		<td>Highest Bid Price<br>
-		<span class="btn btn-success btn-block"><span id="HighestBidPrice">0</span> <?=$second_curr?></span>
+		<span id="HighestBidPrice">0</span> <?=$second_curr?>
 		</td>
 	</tr>
 	<tr>

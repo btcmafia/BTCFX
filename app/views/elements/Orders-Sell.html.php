@@ -8,7 +8,7 @@
 	$SellTotalAmount = $TSO['TotalAmount'];
 }?>			
 			</div>
-		<div id="SellOrders" style="height:300px;overflow:auto;margin-top:-20px ">
+		<div id="SellOrders" style="margin-top:-20px ">
 			<table class="table table-condensed table-bordered table-hover" style="font-size:12px ">
 				<thead>
 					<tr>

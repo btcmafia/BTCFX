@@ -16,13 +16,9 @@ use app\extensions\action\Functions;
 <div class="navbar-collapse collapse">
 	<?php 
 			if(strtolower($this->_request->controller)=='ex'){ ?>
-	<ul class="nav navbar-nav">				
-		<li><a class="header">Digital Currency Exchange</a></li>
-	</ul>
+	
 	<?php }else{?>
-	<ul class="nav navbar-nav">				
-		<li><a class="header">Digital Currency Exchange</a></li>
-	</ul>
+	
 <?php }?>				
 	<ul class="nav navbar-nav navbar-right">
 		<?php if($user!=""){ ?>

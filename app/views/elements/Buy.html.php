@@ -14,10 +14,10 @@
 <table class="table table-condensed " >
 	<tr>
 		<td width="50%">Your balance:<br>
-		<span class="btn btn-info btn-block" ><span id="BalanceSecond"><?=$BalanceSecond?></span> <?=$second_curr?></span>
+		<span id="BalanceSecond"><?=$BalanceSecond?></span> <?=$second_curr?>
 		</td>
 		<td>Lowest Ask Price<br>
-		<span class="btn btn-warning btn-block" ><span id="LowestAskPrice">0</span> <?=$second_curr?></span>
+		<span id="LowestAskPrice">0</span> <?=$second_curr?>
 		</td>
 	</tr>
 	<tr>

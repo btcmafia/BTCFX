@@ -6,7 +6,7 @@ use lithium\util\String;
 				<div class="panel-heading">
 				<h2 class="panel-title"  style="font-weight:bold" >Pending Orders</h2>
 				</div>
-			<div id="YourOrders" style="height:300px;overflow:auto;" class="fade in">			
+			<div id="YourOrders" style="overflow:auto;" class="fade in">			
 			<table class="table table-condensed table-bordered table-hover" style="font-size:11px">
 				<thead>
 					<tr>
