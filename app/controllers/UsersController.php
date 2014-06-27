@@ -1465,5 +1465,80 @@ class UsersController extends \lithium\action\Controller {
 			'Available'=> $Available,
 		)));
 	}
+	
+	public function addcompany(){
+		$user = Session::read('default');
+		$user_id = $user['_id'];
+		if ($user==""){		return $this->redirect('/login');}
+		
+		if ($this->request->data) {
+			$details = Details::find('first',
+				array('conditions'=>array('user_id'=>$user_id))
+			);
+			if($details['company']['verified']=="Yes"){
+				$data['company']['ShortName'] = $details['company']['ShortName'];
+				$data['company']['verified'] = 'Yes';	
+			}else{
+				$data['company']['ShortName'] = $this->request->data['ShortName'];						
+				$data['company']['verified'] = 'No';				
+			}
+			$data['company']['Name'] = $this->request->data['Name'];
+			
+			$data['company']['Address'] = $this->request->data['Address'];			
+			$data['company']['Country'] = $this->request->data['Country'];			
+			$data['company']['Registration'] = $this->request->data['Registration'];			
+			$data['company']['GovernmentURL'] = $this->request->data['GovernmentURL'];			
+			$data['company']['TotalShares'] = (int)$this->request->data['TotalShares'];			
+			for($i=0;$i<10;$i++){
+				$data['company']['share'][$i] = (int)$this->request->data['share'][$i];
+				$data['company']['price'][$i] = (float)$this->request->data['price'][$i];
+				$data['company']['sold'][$i] = (int)$this->request->data['sold'][$i];
+			}
+			$data['company']['id'] = new MongoID;
+
+			Details::find('all',array(
+				'conditions'=>array('user_id'=>$user_id)
+			))->save($data);
+		$view  = new View(array(
+			'loader' => 'File',
+			'renderer' => 'File',
+			'paths' => array(
+				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+			)
+		));
+
+		$email = $user['email'];
+			$body = $view->render(
+				'template',
+				compact('data','user'),
+				array(
+					'controller' => 'users',
+					'template'=>'addcompany',
+					'type' => 'mail',
+					'layout' => false
+				)
+			);
+
+			$transport = Swift_MailTransport::newInstance();
+			$mailer = Swift_Mailer::newInstance($transport);
+	
+			$message = Swift_Message::newInstance();
+			$message->setSubject("Company Registered with ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => 'Company Registered with '.COMPANY_URL));
+			$message->setTo($email);
+			$message->setBody($body,'text/html');
+			$mailer->send($message);
+			
+			
+		}
+
+		
+		$details = Details::find('first',
+			array('conditions'=>array('user_id'=>$user_id))
+		);
+		return compact('details');				
+		
+	}
+	public function addcompanydetail(){}
 }
 ?>

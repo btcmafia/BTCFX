@@ -1,4 +1,3 @@
-<div class="well" style="background-image:url(/img/Stamp.png);background-position:bottom right;background-repeat:no-repeat;min-height:600px">
 <h4>Users: <?=$TotalUsers?></h4>
 <div class="col-md-4">
 <form action="/Admin/user" method="post">
@@ -71,4 +70,3 @@ foreach ($Details as $user){ ?>
 </tbody>
 </table>
 <?php print_r($page_links);?>
-</div>

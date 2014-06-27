@@ -9,6 +9,7 @@
 		<a type="button" class="btn btn-default" href="/Admin/transactions">Deposits</a>
 		<a type="button" class="btn btn-default" href="/Admin/withdrawals">Withdrawals</a>
 		<a type="button" class="btn btn-default" href="/Admin/user">User</a>
+		<a type="button" class="btn btn-default" href="/Admin/company">Company</a>		
 	</div>
 	<div id="Adminbar" class="btn-group btn-group-xs"> 
 		<a type="button" class="btn btn-default" href="/Admin/bitcointransaction">BTC</a>

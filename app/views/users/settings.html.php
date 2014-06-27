@@ -8,7 +8,6 @@ use li3_qrcode\extensions\action\QRcode;
 	if($user['subname']==$company['subname'] && $user['admin']==true){
 	?>
 <!--------- Company ----------->
-
   <div class="panel panel-default">
     <div class="panel-heading"  style="background-color:#D5E2C5">
       <h4 class="panel-title">

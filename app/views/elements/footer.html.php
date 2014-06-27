@@ -11,6 +11,7 @@
 		<li><a href="/company/legal">Legal</a></li>		
 		<li><a href="/company/FAQ">FAQ</a></li>				
 		<li><a href="/company/funding">Funding</a></li>						
+		<li><a href="/company/sellshares">Shares</a></li>						
 		<li><a href="/okpay">OKPAY</a></li>													
 		<li><a href="/API">API</a></li>								
 <!--		<li><a href="/MAPI">Merchant API</a></li>										-->

@@ -9,8 +9,6 @@ use lithium\data\Connections;
 use lithium\storage\Session;
 $trades = Trades::find('all',array('limit'=>$howmany));
 $tradesall = Trades::find('all');
-
-
 		$mongodb = Connections::get('default')->connection;
 		$Rates = Orders::connection()->connection->command(array(
 			'aggregate' => 'orders',

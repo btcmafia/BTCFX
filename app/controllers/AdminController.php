@@ -1711,6 +1711,25 @@ $description = "Admin panel for Litecoin transactions";
 		return compact(	'transactions','StartDate','EndDate','title','keywords','description')	;
 		
 	}
+	public function company(){
+	if($this->__init()==false){			$this->redirect('ex::dashboard');	}	
+	$details = Details::find('all',array(
+		'conditions' => array(
+			'company'=>array('$exists'=>true),
+			'company.verified'=>'No')
+	));
 	
+		return compact(	'details')	;
+	}
+	
+	public function companyverify($id=null){
+	$data = array(
+		"company.verified"=>'Yes'
+	);
+	Details::find('all',array(
+			'conditions'=>array('_id'=>$id)
+	))->save($data);
+	$this->redirect('Admin::company');
+	}
 }
 ?>
