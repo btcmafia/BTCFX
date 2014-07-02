@@ -12,6 +12,15 @@
 .sidebar ul.removeYellow li a:hover{
 	color:#e8a935 !important;
 }
+
+.headTable{
+	background-color:#E5AE27;
+	color:white;
+}
+.rightTable{
+	background-color:#2B2B2B;
+	color:white;
+}
 .tooltip-x {
 	-moz-box-shadow:inset 0px 1px 0px 0px #fff6af;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #fff6af;
@@ -23,7 +32,7 @@
 	background:-ms-linear-gradient(top, #ffec64 5%, #ffab23 100%);
 	background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffec64', endColorstr='#ffab23',GradientType=0);
-
+	color:black;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 	border-radius:4px;
@@ -52,9 +61,7 @@
 body {
 	padding-top: 50px;
 }
-.panel-danger > .panel-heading {
-	
-}
+
 h4 a{
 	color:#333;	
 }
@@ -203,8 +210,7 @@ h4 a{
 }
 @media (min-width: 768px) {
 .main {
-	padding-right: 40px;
-	padding-left: 40px;
+	
 }
 }
 .main .page-header {
@@ -337,6 +343,19 @@ h4 {
 .alert.alert-danger {
     margin-top: 20px;
 }
+
+.table.table{
+	background-color:#eaeaea;
+}
+table.table tr td {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+}
+.row{
+	margin-left:-3px;
+}
+
 .boxes h3 {
 	font-weight: 100;
 }
@@ -355,7 +374,7 @@ h4 {
 	font-weight: 100;
 	background-position: right;
 	margin-top: 10px;
-	border-right: 30px solid #EAEAEA;
+	border-right: 30px solid white;
 	padding: 10px 20px 20px;
 	margin-bottom: 20px;
 }
@@ -505,6 +524,9 @@ color:#black;
 	padding: 9px 0 0 20px;
 	margin-left:0 !important;
 }
+.panel-body{
+	padding:0;
+}
 .navbar {
 	min-height: 62px;
 }
@@ -517,8 +539,8 @@ color:#black;
     height: 124px;
     width: 124px;
 }
-body {background: #EAEAEA;}
-.user-details {position: relative; padding: 0; min-height:600px; border-right:10px solid #eaeaea;}
+body {background: white;;}
+.user-details {position: relative; padding: 0; min-height:503px; border-right:5px dashed #eaeaea;}
 .user-details .user-image {position: relative;  z-index: 1; width: 100%; text-align: center; margin-top:-20px;}
  .user-image img { clear: both; margin: auto; position: relative;}
 

@@ -10,17 +10,21 @@ foreach($virtualcurrencies as $VC){
 }
 ?>
 <div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Dashboard: <?=$user['firstname']?> <?=$user['lastname']?></h3>
-  </div>
+ 
+    <h3 class="titleHeader">Dashboard: <?=$user['firstname']?> <?=$user['lastname']?></h3>
+	
+	    <a href="/users/transactions"  style="padding-right:10px;" class="floatRight">Transactions</a>
+		
+		<a href="/users/settings" class="floatRight">Settings</a>
+ 
   <div class="panel-body">
 		<div class="row">
 		<!--Options-->
 			<div class="col-md-12">
 				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">Your status</h3>
-					</div>
+					
+						<h3 class="globalHead">Your status</h3>
+					
 					<div class="panel-body">
 					<table class="table">
 						<tr>
@@ -28,8 +32,8 @@ foreach($virtualcurrencies as $VC){
 <!-- Email start-->					
 					<?php 
 					if($details['email.verified']=='Yes'){
-					?><a href="#" class="btn btn-success   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok "></i> Email</a><?php }else{
-					?><a href="/users/email/" class="btn btn-warning   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> Email</a><?php }
+					?><a href="#" class="btn btn-success   btn-sm btn-block " rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok "></i> Email</a><?php }else{
+					?><a href="/users/email/" class="btn btn-warning   btn-sm btn-block " rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> Email</a><?php }
 					?>
 						</td>
 <!-- Email end-->										
@@ -46,15 +50,15 @@ foreach($virtualcurrencies as $VC){
 								if(strlen($details[$documents['id'].'.verified'])==0){
 										$alldocuments[$documents['id']]="No";
 						?>
-					<td width="20%"><a href="/users/settings/<?=$documents['id']?>" class="btn   btn-sm btn-block btn-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> <?=$name?></a></td>
+					<td width="20%"><a href="/users/settings/<?=$documents['id']?>" class="btn   btn-sm btn-block btn-warning ```````````````" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> <?=$name?></a></td>
 					<?php }elseif($details[$documents['id'].'.verified']=='No'){
 							$alldocuments[$documents['id']]="Pending";
 					?>
-	<td width="20%"><a href="#" class="btn btn-danger   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Pending verification!"><i class="glyphicon glyphicon-edit"></i> <?=$name?></a></td>
+	<td width="20%"><a href="#" class="btn btn-danger   btn-sm btn-block -x" rel="tooltip-x" data-placement="top" title="Pending verification!"><i class="glyphicon glyphicon-edit"></i> <?=$name?></a></td>
 					<?php }else{
 						$alldocuments[$documents['id']]="Yes";
 					?>
-					<td width="20%"><a href="#" class="btn btn-success   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon-ok glyphicon"></i> <?=$name?></a></td>
+					<td width="20%"><a href="#" class="btn btn-success   btn-sm btn-block" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon-ok glyphicon"></i> <?=$name?></a></td>
 	<?php }
 			}
 			$i++;
@@ -64,8 +68,8 @@ foreach($virtualcurrencies as $VC){
 				<td width="20%">
 					<?php 
 					if($details['mobile.verified']=='Yes'){
-					?><a href="#" class="btn btn-success   btn-sm btn-block tooltip-x" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok"></i> Mobile/Phone</a><?php }else{
-					?><a href="/users/mobile/" class="btn  btn-sm btn-block btn-warning tooltip-x" rel="tooltip-x" data-placement="top" title="Optional!"><i class="glyphicon glyphicon-remove"></i> Mobile/Phone</a><?php }
+					?><a href="#" class="btn btn-success   btn-sm btn-block " rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok"></i> Mobile/Phone</a><?php }else{
+					?><a href="/users/mobile/" class="btn  btn-sm btn-block btn-warning " rel="tooltip-x" data-placement="top" title="Optional!"><i class="glyphicon glyphicon-remove"></i> Mobile/Phone</a><?php }
 					?>
 					</td>
 <!-- Mobile end-->															
@@ -82,7 +86,7 @@ foreach($virtualcurrencies as $VC){
 
 
 		?>
-		<td colspan="5"><h3>Funding</h3>
+		<td colspan="5"><h3 class="globalHead">Fund Your Account</h3>
 		<table class="table"><tr>
 <?php 
 $trades = Trades::find('all');
@@ -124,9 +128,7 @@ foreach($trades as $tr){
 </td>
 </tr>
 <tr>
-		<td colspan="1"><a href="/users/transactions" class="btn btn-primary btn-sm btn-block">Transactions</a></td>
-		<td colspan="3">&nbsp;</td>
-		<td colspan="1"><a href="/users/settings" class="btn btn-primary btn-sm btn-block">Settings</a></td>
+		
 	</tr>
 
 		</table>
@@ -137,14 +139,14 @@ foreach($trades as $tr){
 		<!--Summary-->
 			<div class="col-md-12">
 				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">Summary of accounts</h3>
-					</div>
+				
+					<h3 class="globalHead">Summary of accounts</h3>
+					
 					<div class="panel-body">
 		<table class="table table-condensed table-bordered table-hover">
 			<thead>
 				<tr>
-					<th>Currency</th>
+					<th  class="headTable">Currency</th>
 					<?php 
 					$currencies = array();
 					$trades = Trades::find('all');					
@@ -156,7 +158,7 @@ foreach($trades as $tr){
 					 }	//for
 					$currencies = array_unique($currencies);
 					foreach($currencies as $currency){?>
-					<th style="text-align:center"><?=$currency?></th>
+					<th class="headTable" style="text-align:center"><?=$currency?></th>
 					<?php }?>
 				</tr>
 			</thead>
@@ -198,7 +200,7 @@ foreach($CompletedCommissions['result'] as $C){
 ?>
 			<tbody>
 				<tr>
-					<td><strong>Opening Balance</strong></td>
+					<td class="rightTable"><strong>Opening Balance</strong></td>
 					<?php foreach($currencies as $currency){
 							if(in_array($currency,$virtuals)){
 					?>
@@ -208,7 +210,7 @@ foreach($CompletedCommissions['result'] as $C){
 					<?php }}?>					
 				</tr>
 				<tr>
-					<td><strong>Current Balance</strong><br>
+					<td class="rightTable"><strong>Current Balance</strong><br>
 					(including pending orders)</td>
 					<?php foreach($currencies as $currency){
 						if(in_array($currency,$virtuals)){
@@ -219,7 +221,7 @@ foreach($CompletedCommissions['result'] as $C){
 					<?php }}?>					
 				</tr>
 				<tr>
-					<td><strong>Pending Buy Orders</strong></td>
+					<td class="rightTable"><strong>Pending Buy Orders</strong></td>
 					<?php foreach($currencies as $currency){
 						if(in_array($currency,$virtuals)){
 						?>
@@ -230,7 +232,7 @@ foreach($CompletedCommissions['result'] as $C){
 					}?>					
 				</tr>
 				<tr>
-					<td><strong>Pending Sell Orders</strong></td>
+					<td class="rightTable"> <strong>Pending Sell Orders</strong></td>
 					<?php foreach($currencies as $currency){
 						if(in_array($currency,$virtuals)){
 						?>
@@ -241,7 +243,7 @@ foreach($CompletedCommissions['result'] as $C){
 					}?>					
 				</tr>
 				<tr>
-					<td><strong>After Execution</strong></td>
+					<td class="rightTable"><strong>After Execution</strong></td>
 					<?php foreach($currencies as $currency){
 						if(in_array($currency,$virtuals)){
 						$variablename = $currency."Comm";
@@ -252,8 +254,8 @@ foreach($CompletedCommissions['result'] as $C){
 					<?php }
 					}?>					
 				</tr>
-				<tr>
-					<td><strong>Commissions</strong></td>
+				<tr >
+					<td class="rightTable"><strong>Commissions</strong></td>
 					<?php foreach($currencies as $currency){
 					
 						$variablename = $currency."Comm";
@@ -265,7 +267,7 @@ foreach($CompletedCommissions['result'] as $C){
 					<?php }}?>					
 				</tr>
 				<tr>
-					<td><strong>Complete Buy Orders</strong></td>
+					<td class="rightTable"><strong>Complete Buy Orders</strong></td>
 					<?php foreach($currencies as $currency){
 						if(in_array($currency,$virtuals)){
 						?>
@@ -276,7 +278,7 @@ foreach($CompletedCommissions['result'] as $C){
 					}?>					
 				</tr>
 				<tr>
-					<td><strong>Complete Sell Orders</strong></td>
+					<td class="rightTable"><strong>Complete Sell Orders</strong></td>
 					<?php foreach($currencies as $currency){
 						if(in_array($currency,$virtuals)){
 						?>
@@ -287,7 +289,7 @@ foreach($CompletedCommissions['result'] as $C){
 					}?>					
 				</tr>
 				<tr>
-					<td><strong>Completed Order Commissions</strong></td>
+					<td class="rightTable"><strong>Completed Order Commissions</strong></td>
 					<?php foreach($currencies as $currency){
 							$variablename = "Completed".$currency."Comm";
 							if(in_array($currency,$virtuals)){
