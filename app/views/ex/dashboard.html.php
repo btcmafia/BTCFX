@@ -12,11 +12,9 @@ foreach($virtualcurrencies as $VC){
 <div class="panel panel-default">
  
     <h3 class="titleHeader">Dashboard: <?=$user['firstname']?> <?=$user['lastname']?></h3>
-	
 	    <a href="/users/transactions"  style="padding-right:10px;" class="floatRight">Transactions</a>
-		
-		<a href="/users/settings" class="floatRight">Settings</a>
- 
+		<a href="/users/settings" class="floatRight"  style="padding-right:10px;" >Settings</a>
+		<a href="/print/" class="floatRight">Print / Cold Storage</a>
   <div class="panel-body">
 		<div class="row">
 		<!--Options-->
@@ -50,7 +48,7 @@ foreach($virtualcurrencies as $VC){
 								if(strlen($details[$documents['id'].'.verified'])==0){
 										$alldocuments[$documents['id']]="No";
 						?>
-					<td width="20%"><a href="/users/settings/<?=$documents['id']?>" class="btn   btn-sm btn-block btn-warning ```````````````" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> <?=$name?></a></td>
+					<td width="20%"><a href="/users/settings/<?=$documents['id']?>" class="btn   btn-sm btn-block btn-warning" rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> <?=$name?></a></td>
 					<?php }elseif($details[$documents['id'].'.verified']=='No'){
 							$alldocuments[$documents['id']]="Pending";
 					?>
@@ -81,6 +79,7 @@ foreach($virtualcurrencies as $VC){
 			foreach($alldocuments as $key=>$val){						
 			if($val!='Yes'){
 			$all = false;
+			break;
 			}
 		}
 

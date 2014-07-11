@@ -142,7 +142,7 @@ function initCanvas(ww,hh)
 		<div class="row">
 		<!-- Deposit -->
 			<div class="col-md-6">
-				<div class="panel panel-success">
+				<div class="panel panel-info">
 					<div class="panel-heading">
 						<h3 class="panel-title">Deposit <?=$currencyName?> - <?=$currency?></h3>
 					</div>
@@ -168,7 +168,7 @@ function initCanvas(ww,hh)
 		<!-- Deposit -->
 		<!-- Withdraw -->
 			<div class="col-md-6">
-				<div class="panel panel-warning">
+				<div class="panel panel-info">
 					<div class="panel-heading">
 						<h3 class="panel-title">Withdraw <?=$currencyName?> - <?=$currency?></h3>
 					</div>

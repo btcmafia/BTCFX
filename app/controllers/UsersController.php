@@ -686,7 +686,7 @@ class UsersController extends \lithium\action\Controller {
 		));
 			return compact('details','address','txfee','title','transactions','user','currency','currencyName')	;
 	}
-	public function funding_fiat(){
+	public function funding_fiat($currency=null){
 				$title = "Funding Fiat";
 
 		$user = Session::read('default');
@@ -703,7 +703,8 @@ class UsersController extends \lithium\action\Controller {
 				'Approved'=>'No'
 				)
 		));
-			return compact('details','title','transactions','user')	;
+		$settings = Settings::find('first');		
+			return compact('details','title','transactions','user','settings','currency')	;
 	}
 	public function funding_ltc(){
 				$title = "Funding LTC";

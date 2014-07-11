@@ -15,20 +15,18 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 
 ?>
 <div id="User_ID" style="display:none "><?=$details['user_id']?></div>
-
-				<?php 
-	if(strtolower($this->_request->controller)=='ex'){ 	?>
-	<div class="row" >
-		<div class="col-md-12">
-		<div class="rates">
-				<a data-placement="bottom" title="Latest low price" href="#">Low:<strong><span id="LowPrice" class="btn-success" style="padding:2px;margin-left:5px"></span></strong></a>
-				<a data-placement="bottom" title="Latest high price" href="#">High:<strong><span id="HighPrice" class="btn-danger"  style="padding:2px;margin-left:5px"></span></strong></a>
-				<a  data-placement="bottom" title="Latest price" href="#">Last:<strong><span id="LastPrice" class="btn-info"  style="padding:2px;margin-left:5px"></span></strong></a>
-				<a  data-placement="bottom" title="Volume" href="#">Vol:<strong><span id="Volume" class="btn-inverse"  style="padding:2px;margin-left:5px"></span></strong></a>							
-				<a class="pull-right"><i class="fa fa-spinner fa-spin"></i> <span id="Timer"></span></a>
-		</div>
-		</div>
+<?php if(strtolower($this->_request->controller)=='ex'){ 	?>
+<div class="row" >
+	<div class="col-md-12">
+	<div class="rates">
+		<a class="tooltip-y" data-placement="bottom" title="Latest low price" href="#">Low:<strong><span id="LowPrice" class="btn-success" style="padding:2px;margin-left:5px"></span></strong></a>
+		<a class="tooltip-y" data-placement="bottom" title="Latest high price" href="#">High:<strong><span id="HighPrice" class="btn-danger"  style="padding:2px;margin-left:5px"></span></strong></a>
+		<a class="tooltip-y" data-placement="bottom" title="Latest price" href="#">Last:<strong><span id="LastPrice" class="btn-info"  style="padding:2px;margin-left:5px"></span></strong></a>
+		<a class="tooltip-y" data-placement="bottom" title="Volume" href="#">Vol:<strong><span id="Volume" class="btn-inverse"  style="padding:2px;margin-left:5px"></span></strong></a>							
+		<a class="pull-right "><i class="fa fa-spinner fa-spin"></i> <span id="Timer"></span></a>
 	</div>
+	</div>
+</div>
 	<?php } ?>
 
 <div class="row" >
