@@ -43,7 +43,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 </style>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800italic' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800italic' rel='stylesheet' type='text/css'>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="/bootstrap/js/bootstrap-datepicker.js"></script>	
@@ -70,7 +70,6 @@ if(Session::read('ex')==""){
 $ex = Session::read('ex');
 
 ?>
-
 <body <?php if(strtolower($this->_request->controller)=='ex'){ ?> onLoad="UpdateDetails('<?=$ex?>');" <?php }elseif($this->_request->controller!='Sessions' && $this->_request->controller!='Admin'){?> onLoad="CheckServer();" <?php }?>>
 
     <div style="padding-right:0;" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
