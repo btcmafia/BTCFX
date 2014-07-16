@@ -1731,5 +1731,7 @@ $description = "Admin panel for Litecoin transactions";
 	))->save($data);
 	$this->redirect('Admin::company');
 	}
+	
+	public function trades(){}
 }
 ?>

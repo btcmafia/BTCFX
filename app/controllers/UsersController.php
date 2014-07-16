@@ -291,30 +291,38 @@ class UsersController extends \lithium\action\Controller {
 		$qrCodeUrl = $ga->getQRCodeGoogleUrl("IBWT-".$details['username'], $secret);
 		
 		
-		$image_utility = File::find('first',array(
-			'conditions'=>array('details_utility_id'=>(string)$details['_id'])
+		$image_address = File::find('first',array(
+			'conditions'=>array('details_address_id'=>(string)$details['_id'])
 		));
-		if($image_utility['filename']!=""){
-				$imagename_utility = $image_utility['_id'].'_'.$image_utility['filename'];
-					$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_utility;
-				file_put_contents($path, $image_utility->file->getBytes());
+		if($image_address['filename']!=""){
+				$imagename_address = $image_address['_id'].'_'.$image_address['filename'];
+					$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_address;
+				file_put_contents($path, $image_address->file->getBytes());
 		}
 
 		$image_government = File::find('first',array(
 			'conditions'=>array('details_government_id'=>(string)$details['_id'])
 		));
-
 		if($image_government['filename']!=""){
 				$imagename_government = $image_government['_id'].'_'.$image_government['filename'];
 				$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_government;
 				file_put_contents($path, $image_government->file->getBytes());
 		}		
 
+		$image_bank = File::find('first',array(
+			'conditions'=>array('details_bank_id'=>(string)$details['_id'])
+		));
+		if($image_bank['filename']!=""){
+				$imagename_bank = $image_bank['_id'].'_'.$image_bank['filename'];
+				$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_bank;
+				file_put_contents($path, $image_bank->file->getBytes());
+		}		
+
 			$details = Details::find('first',
 				array('conditions'=>array('user_id'=> (string) $id))
 			);		
 				$settings = Settings::find('first');
-		return compact('details','user','title','qrCodeUrl','secret','option','imagename_utility','imagename_government','settings');
+		return compact('details','user','title','qrCodeUrl','secret','option','imagename_address','imagename_government','imagename_bank','settings');
 	}
 	
 	

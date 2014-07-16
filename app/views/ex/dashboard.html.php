@@ -30,7 +30,7 @@ foreach($virtualcurrencies as $VC){
 <!-- Email start-->					
 					<?php 
 					if($details['email.verified']=='Yes'){
-					?><a href="#" class="btn btn-success   btn-sm btn-block " rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok "></i> Email</a><?php }else{
+					?><a href="#" class="btn btn-success   btn-sm btn-block" rel="tooltip-x" data-placement="top" title="Completed!"><i class="glyphicon glyphicon-ok "></i> Email</a><?php }else{
 					?><a href="/users/email/" class="btn btn-warning   btn-sm btn-block " rel="tooltip-x" data-placement="top" title="Compulsary to transact!"><i class="glyphicon glyphicon-remove"></i> Email</a><?php }
 					?>
 						</td>
@@ -162,22 +162,30 @@ foreach($trades as $tr){
 				</tr>
 			</thead>
 <?php 
-foreach($YourOrders['Buy']['result'] as $YO){
-	$Buy[$YO['_id']['FirstCurrency']] = $Buy[$YO['_id']['FirstCurrency']] + $YO['Amount'];
-	$BuyWith[$YO['_id']['SecondCurrency']] = $BuyWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
-}					
-foreach($YourOrders['Sell']['result'] as $YO){
-	$Sell[$YO['_id']['FirstCurrency']] = $Sell[$YO['_id']['FirstCurrency']] + $YO['Amount'];
-	$SellWith[$YO['_id']['SecondCurrency']] = $SellWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
-}					
-foreach($YourCompleteOrders['Buy']['result'] as $YCO){
-	$ComBuy[$YCO['_id']['FirstCurrency']] = $ComBuy[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
-	$ComBuyWith[$YCO['_id']['SecondCurrency']] = $ComBuyWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
-}					
-foreach($YourCompleteOrders['Sell']['result'] as $YCO){
-	$ComSell[$YCO['_id']['FirstCurrency']] = $ComSell[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
-	$ComSellWith[$YCO['_id']['SecondCurrency']] = $ComSellWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
-}					
+if(count($YourOrders['Buy']['result'])>0){
+	foreach($YourOrders['Buy']['result'] as $YO){
+		$Buy[$YO['_id']['FirstCurrency']] = $Buy[$YO['_id']['FirstCurrency']] + $YO['Amount'];
+		$BuyWith[$YO['_id']['SecondCurrency']] = $BuyWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
+	}
+}
+if(count($YourOrders['Sell']['result'])>0){
+	foreach($YourOrders['Sell']['result'] as $YO){
+		$Sell[$YO['_id']['FirstCurrency']] = $Sell[$YO['_id']['FirstCurrency']] + $YO['Amount'];
+		$SellWith[$YO['_id']['SecondCurrency']] = $SellWith[$YO['_id']['SecondCurrency']] + $YO['TotalAmount'];					
+	}
+}
+if(count($YourCompleteOrders['Buy']['result'])>0){
+	foreach($YourCompleteOrders['Buy']['result'] as $YCO){
+		$ComBuy[$YCO['_id']['FirstCurrency']] = $ComBuy[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
+		$ComBuyWith[$YCO['_id']['SecondCurrency']] = $ComBuyWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
+	}
+}
+if(count($YourCompleteOrders['Sell']['result'])>0){
+	foreach($YourCompleteOrders['Sell']['result'] as $YCO){
+		$ComSell[$YCO['_id']['FirstCurrency']] = $ComSell[$YCO['_id']['FirstCurrency']] + $YCO['Amount'];
+		$ComSellWith[$YCO['_id']['SecondCurrency']] = $ComSellWith[$YCO['_id']['SecondCurrency']] + $YCO['TotalAmount'];					
+	}
+}
 ?>			
 <?php
 foreach($Commissions['result'] as $C){
@@ -321,41 +329,53 @@ foreach($CompletedCommissions['result'] as $C){
 				<tr>
 					<th colspan="4">Pending orders</th>
 				</tr>
-				<?php foreach ($TotalOrders['Buy']['result'] as $r){ ?>
+				<?php 
+				if(count($TotalOrders['Buy']['result'])>0){
+					foreach ($TotalOrders['Buy']['result'] as $r){ ?>
 					<tr>
 						<td><?=$r['_id']['Action']?> <?=$r['_id']['FirstCurrency']?> with <?=$r['_id']['SecondCurrency']?></td>
 						<td style="text-align:right "><?=number_format($r['Amount'],8)?></td>
 						<td style="text-align:right "><?=number_format($r['TotalAmount'],8)?></td>						
 						<td style="text-align:right "><?=number_format($r['TotalAmount']/$r['Amount'],8)?></td>												
 					</tr>
-				<?php }?>
-				<?php foreach ($TotalOrders['Sell']['result'] as $r){ ?>
+				<?php }
+				}?>
+				<?php 
+				if(count($TotalOrders['Sell']['result'])>0){
+					foreach ($TotalOrders['Sell']['result'] as $r){ ?>
 					<tr>
 						<td><?=$r['_id']['Action']?> <?=$r['_id']['FirstCurrency']?> with <?=$r['_id']['SecondCurrency']?></td>
 						<td style="text-align:right "><?=number_format($r['Amount'],8)?></td>
 						<td style="text-align:right "><?=number_format($r['TotalAmount'],8)?></td>						
 						<td style="text-align:right "><?=number_format($r['TotalAmount']/$r['Amount'],8)?></td>																		
 					</tr>
-				<?php }?>
+				<?php }
+				}?>
 				<tr>
 					<th colspan="4">Completed orders</th>
 				</tr>
-				<?php foreach ($TotalCompleteOrders['Buy']['result'] as $r){ ?>
+				<?php 
+				if(count($TotalCompleteOrders['Buy']['result'])>0){
+					foreach ($TotalCompleteOrders['Buy']['result'] as $r){ ?>
 					<tr>
 						<th><?=$r['_id']['Action']?> <?=$r['_id']['FirstCurrency']?> with <?=$r['_id']['SecondCurrency']?></th>
 						<th style="text-align:right "><?=number_format($r['Amount'],8)?></th>
 						<th style="text-align:right "><?=number_format($r['TotalAmount'],8)?></th>						
 						<td style="text-align:right "><?=number_format($r['TotalAmount']/$r['Amount'],8)?></td>																		
 					</tr>
-				<?php }?>
-				<?php foreach ($TotalCompleteOrders['Sell']['result'] as $r){ ?>
+				<?php }
+				}?>
+				<?php 
+				if(count($TotalCompleteOrders['Sell']['result'])>0){
+				foreach ($TotalCompleteOrders['Sell']['result'] as $r){ ?>
 					<tr>
 						<th><?=$r['_id']['Action']?> <?=$r['_id']['FirstCurrency']?> with <?=$r['_id']['SecondCurrency']?></th>
 						<th style="text-align:right "><?=number_format($r['Amount'],8)?></th>
 						<th style="text-align:right "><?=number_format($r['TotalAmount'],8)?></th>						
 						<td style="text-align:right "><?=number_format($r['TotalAmount']/$r['Amount'],8)?></td>																		
 					</tr>
-				<?php }?>
+				<?php }
+				}?>
 		</table>
 					</div>
 				</div>
