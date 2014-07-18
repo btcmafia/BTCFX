@@ -309,4 +309,4 @@ $(function() {
  $('.tooltip-y').tooltip(); 
  $("input:text:visible:first").focus();
 });
-</script><?php //echo $this->content(); ?>
+</script><?php echo $this->content(); ?>

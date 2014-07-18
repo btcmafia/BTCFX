@@ -35,6 +35,9 @@ class Backup extends \lithium\console\Command {
 			"/backup/VCCoUK/transactions.metadata.json",
 			"/backup/VCCoUK/users.bson",
 			"/backup/VCCoUK/users.metadata.json",
+			"/.bitcoin/wallet.dat",
+			"/.litecoin/wallet.dat",			
+			"/.greencoin/wallet.dat",			
 		);
 //if true, good; if false, zip creation failed
 		$result = $this->create_zip($files_to_zip,BACKUP_DIR.'Backup.zip',true);
