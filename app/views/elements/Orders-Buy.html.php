@@ -25,15 +25,17 @@
 				</thead>
 				<tbody>
 					<?php 
-					$BuyOrderAmount = 0;
+					$BuyOrderAmount = 0;$FillBuyOrderAmount = 0;
 					foreach($BuyOrders['result'] as $BO){
+						if($user['_id']!=$BO['_id']['user_id']){
+							$FillBuyOrderAmount = $FillBuyOrderAmount + round($BO['Amount'],8);
+						}
 						$BuyOrderPrice = round($BO['_id']['PerPrice'],8);
-						$BuyOrderAmount = $BuyOrderAmount + round($BO['Amount'],8);
-					
+						$BuyOrderAmount = $BuyOrderAmount + round($BO['Amount'],8);						
 					?>
-					<tr onClick="BuyOrderFill(<?=$BuyOrderPrice?>,<?=$BuyOrderAmount?>);" style="cursor:pointer" 
+					<tr onClick="BuyOrderFill(<?=$BuyOrderPrice?>,<?=$FillBuyOrderAmount?>);" style="cursor:pointer" 
 					 class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Sell <?=$BuyOrderAmount?> <?=$first_curr?> at <?=$BuyOrderPrice?> <?=$second_curr?>">
-						<td style="text-align:right"><?=$BO['No']?><?=$BO['_id']['username']?></td>											
+						<td style="text-align:right"><?=$BO['No']?></td>											
 						<td style="text-align:right"><?=number_format(round($BO['_id']['PerPrice'],8),8)?></td>
 						<td style="text-align:right"><?=number_format(round($BO['Amount'],8),8)?></td>
 						<td style="text-align:right"><?=number_format(round($BO['_id']['PerPrice']*$BO['Amount'],8),8)?></td>																	

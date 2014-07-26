@@ -449,6 +449,7 @@ $description = "Admin panel for approval";
 		if($image_utility['filename']!=""){
 				$imagename_utility = $image_utility['_id'].'_'.$image_utility['filename'];
 				$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_utility;
+				
 				file_put_contents($path, $image_utility->file->getBytes());
 		}
 			$this->_render['layout'] = 'image';
@@ -894,7 +895,7 @@ $description = "Admin panel for withdrawal";
 		$this->redirect('Admin::transactions');	
 	}
 	
-		public function approvewithdrawal(){
+	public function approvewithdrawal(){
 	if($this->__init()==false){$this->redirect('ex::dashboard');	}
 	if($this->request->data){
 		$Amount = $this->request->data['Amount'];
@@ -983,7 +984,7 @@ $description = "Admin panel for withdrawal";
 		$this->redirect('Admin::withdrawals');	
 	}
 
-		public function deletewithdrawal($id=null){
+	public function deletewithdrawal($id=null){
 	if($this->__init()==false){$this->redirect('ex::dashboard');	}	
 		$Transactions = Transactions::remove('all',array(
 		'conditions'=>array(
@@ -993,7 +994,7 @@ $description = "Admin panel for withdrawal";
 		$this->redirect('Admin::withdrawals');	
 	}	
 
-		public function rejectwithdrawal($id=null,$reason=null){
+	public function rejectwithdrawal($id=null,$reason=null){
 	if($this->__init()==false){$this->redirect('ex::dashboard');	}	
 		$Authuser = Session::read('member');
 		$AuthBy = $Authuser['username'];

@@ -1378,7 +1378,7 @@ class UsersController extends \lithium\action\Controller {
 	
 	}
 	
-		public function addbankdetails(){
+	public function addbankdetails(){
 		$user = Session::read('default');
 		$user_id = $user['_id'];
 		$data = array();
@@ -1392,7 +1392,7 @@ class UsersController extends \lithium\action\Controller {
 		}
 		return $this->redirect('Users::settings');
 	}
-		public function addbankBussdetails(){
+	public function addbankBussdetails(){
 		$user = Session::read('default');
 		$user_id = $user['_id'];
 		$data = array();
