@@ -756,28 +756,33 @@ class UsersController extends \lithium\action\Controller {
 						'secret'=>$secret)
 				));
 				if(count($details)!=0){
-					$tx = Transactions::create();
-					$data = array(
-						'DateTime' => new \MongoDate(),
-						'TransactionHash' => $transaction_hash,
-						'username' => $details['username'],
-						'address'=>$input_address,							
-						'Amount'=> (float)number_format($value_in_btc,8),
-						'Currency'=> 'BTC',						
-						'Added'=>true,
-					);							
-					$tx->save($data);
-				
-				$dataDetails = array(
-						'balance.BTC' => (float)number_format((float)$details['balance.BTC'] + (float)$value_in_btc,8),
-					);
-							$details = Details::find('all',
-								array(
-										'conditions'=>array(
-											'user_id'=>$userid,
-											'secret'=>$secret
-										)
-									))->save($dataDetails);
+
+				$Transactions = Transactions::find('first',array(
+							'conditions'=>array('TransactionHash' => $transaction_hash)
+						));
+					if($Transactions['_id']==""){
+						$tx = Transactions::create();
+						$data = array(
+							'DateTime' => new \MongoDate(),
+							'TransactionHash' => $transaction_hash,
+							'username' => $details['username'],
+							'address'=>$input_address,							
+							'Amount'=> (float)number_format($value_in_btc,8),
+							'Currency'=> 'BTC',						
+							'Added'=>true,
+						);							
+						$tx->save($data);
+						$dataDetails = array(
+							'balance.BTC' => (float)number_format((float)$details['balance.BTC'] + (float)$value_in_btc,8),
+						);
+						$details = Details::find('all',
+							array(
+							'conditions'=>array(
+								'user_id'=>$userid,
+								'secret'=>$secret
+							)
+						))->save($dataDetails);
+					}
 				}
 // Send email to client for payment receipt, if invoice number is present. or not
 
