@@ -89,5 +89,6 @@ If you have no printer (or ran out of ink) please make sure you copy the followi
 <p>	You can fund your IBWT account with bank wire transfers via OKPAY. Please refer to the link above if you do not already have an OKPAY account.</p>
 <p>OKPAY transfer takes the standard 5-7 days (due to the traditional fiat banking system), yet once your OKPAY account is credited, you can instantly credit your IBWT account.</p>
 <p>All deposits via OKPAY can be conducted via sending funds to <strong>deposit@ibwt.co.uk</strong> when you are logged into your OKPAY account.</p>
+<p>For OKPAY deposit & withdrawal fees please see - <a href="https://www.okpay.com/en/services/fees.html" target="_blank">https://www.okpay.com/en/services/fees.html</a></p>
 	</div>
 </div>
