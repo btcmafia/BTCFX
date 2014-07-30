@@ -31,7 +31,9 @@ class APIController extends \lithium\action\Controller {
 			'order'=> array('DateTime'=>-1)
 		));
 		Requests::create()->save($data);
+		
 		if($_SERVER['REMOTE_ADDR']=='198.50.222.223'){return true;}
+		if($_SERVER['REMOTE_ADDR']=='107.20.80.120'){return true;}		
 		if(in_array($username,array(
 		"IBWTUserA","IBWTUserB","IBWTUserC","IBWTUserD"
 		))){return true;}
