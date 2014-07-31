@@ -34,17 +34,12 @@
                     <h3>Nilam Doctor</h3>
                     <span class="help-block">Lead Developer</span>
                 </div>
-               
-               
                 <div class="user-body">
                     <div class="tab-content">
                         <div id="information2" class="tab-pane active">
                             <h4>About Me</h4>
                             <p>He is a lifetime member of the Bitcoin Foundation, an expert in IT security, and has provided strategic guidance to organisations with regard to technology and education. He is currently developing bitcoin projects to help the virtual digital currency grow into a viable mainstream currency, towards this end he is also developing "GreenCoin", a local digital currency.</p>
                         </div>
-                       
-                       
-                        
                     </div>
                 </div>
             </div>
@@ -66,19 +61,9 @@
                     <div class="tab-content">
                         <div id="information3" class="tab-pane active">
                             <h4>About Me</h4>
-                            <p>Brent is an experienced web developer from Devon, with a deep passion for
-online media in all its varying formats. From an early age he has been
-focused on his career path. This choice has led him to specialise his web
-and graphic technologies expertise. He has eight years experience within
-professional environments, alongside five years' experience within
-commercial settings. He's has been a bitcoiner since 2010.
-
- 
-</p>
+                            <p>Brent is an experienced web developer from Devon, with a deep passion for online media in all its varying formats. From an early age he has been focused on his career path. This choice has led him to specialise his web and graphic technologies expertise. He has eight years experience within professional environments, alongside five years' experience within commercial settings. He's has been a bitcoiner since 2010.
+														</p>
                         </div>
-                       
-                       
-                        
                     </div>
                 </div>
             </div>
@@ -98,16 +83,32 @@ commercial settings. He's has been a bitcoiner since 2010.
                     <div class="tab-content">
                         <div id="information3" class="tab-pane active">
                             <h4>About Me</h4>
-                            <p>Christie graduated as a software engineer and has a wide range of industry
-experience, including embedded systems, instrumentation, interfaces,
-automated trading, control systems and robotics.  Christie has been involved
-with bitcoin and bitcoin mining since 2011 and is currently developing a
-bitcoin ATM for IBWT.</p>
+                            <p>Christie graduated as a software engineer and has a wide range of industry experience, including embedded systems, instrumentation, interfaces, automated trading, control systems and robotics.  Christie has been involved with bitcoin and bitcoin mining since 2011 and is currently developing a bitcoin ATM for IBWT.</p>
                         </div>
-                       
-                       
-                        
                     </div>
                 </div>
-            </div>
         </div>
+    </div>
+		<div style="margin-top:20px;" class="col-sm-4 col-md-4 user-details">
+            <div class="user-image">
+                <img src="/img/leefear.jpg" alt="Lee Fear"  class="img-circle">
+            </div>
+            <div class="user-info-block">
+                <div class="user-heading">
+                    <h3>Lee Fear</h3>
+                    <span class="help-block">Web Developer</span>
+                </div>
+               
+                <div class="user-body">
+                    <div class="tab-content">
+                        <div id="information3" class="tab-pane active">
+                            <h4>About Me</h4>
+                            <p>Lee Fear has 16+ years experience as a hardware and software computer engineer. Since 2003 he has delved into the website creation process, gaining experience in HTML, CSS and PHP. Working for a long list of clients, his skill-set covers, but is not limited to, dealing with basic HTML pages, PHP, MySQL, integration, customer registrations, products and databases. His charity work includes voluntarily creating and maintaining charity sites, as something to give back to the community. He believes in equal opportunities and that this should also exist within the financial sector.</p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+ 

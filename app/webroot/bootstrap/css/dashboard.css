@@ -560,7 +560,7 @@ color:#black;
     width: 124px;
 }
 body {background: white;;}
-.user-details {position: relative; padding: 0; min-height:503px; border-right:5px dashed #eaeaea;}
+.user-details {position: relative; padding: 0; min-height:603px; border-right:5px dashed #eaeaea;}
 .user-details .user-image {position: relative;  z-index: 1; width: 100%; text-align: center; margin-top:-20px;}
  .user-image img { clear: both; margin: auto; position: relative;}
 
