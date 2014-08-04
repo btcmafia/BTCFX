@@ -1222,8 +1222,9 @@ class UsersController extends \lithium\action\Controller {
 		$title = "Deposit";
 	
 		$user = Session::read('default');
-
-		if ($user==""){		return $this->redirect('/login');}
+		if ($user==""){return $this->redirect('/login');exit;}
+		
+		
 		$id = $user['_id'];
 
 		$details = Details::find('first',
@@ -1253,6 +1254,7 @@ class UsersController extends \lithium\action\Controller {
 				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
 			)
 		));
+
 		$body = $view->render(
 			'template',
 			compact('details','data','user'),
@@ -1278,8 +1280,6 @@ class UsersController extends \lithium\action\Controller {
 		$message->setBody($body,'text/html');
 		
 		$mailer->send($message);
-
-
 
 		return compact('title','details','data','user');			
 	}
