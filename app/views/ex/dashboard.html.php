@@ -76,13 +76,13 @@ foreach($virtualcurrencies as $VC){
 <?php	
 
 		$all = true;
-			foreach($alldocuments as $key=>$val){						
+/*			foreach($alldocuments as $key=>$val){						
 			if($val!='Yes'){
 			$all = false;
 			break;
 			}
 		}
-
+*/
 
 		?>
 		<td colspan="5"><h3 class="globalHead">Fund Your Account</h3>
