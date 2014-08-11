@@ -64,7 +64,7 @@ foreach ($Details	as $tx){?>
 			</select><br>
 			
 			<form action="/admin/approvetransaction" method="post" class="form form-horizontal">
-				<input type="text" name="Amount" id="Amount" value="<?=$tx['Amount']?>" max="<?=$tx['Amount']?>" min="1" class="col-md-1 tooltip-y" rel="tooltip-x" data-placement="top" title="Only numbers no comma ">
+				<input type="text" name="Amount" id="Amount" value="<?=$tx['Amount']?>" max="<?=$tx['Amount']?>" min="1" class="col-md-2 form-control tooltip-y" rel="tooltip-x" data-placement="top" title="Only numbers no comma ">
 				<input type="hidden" name="id" id="id" value="<?=$tx['_id']?>">
 				<input type="hidden" name="Currency" id="Currency" value="<?=$tx['Currency']?>">				
 				<br>
