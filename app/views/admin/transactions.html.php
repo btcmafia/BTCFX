@@ -52,10 +52,10 @@ foreach ($Details	as $tx){?>
 			<td><?php if($tx['Added']==true){echo "Deposit";}else{echo "Withdraw";}?></td>
 			<td style="text-align:center"><?=$tx['Approved']?></td>			
 			<td>
-			<a href="/admin/sendemailtransaction/<?=$tx['_id']?>" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Send customer an email to deposit funds in our bank">Send Approval</a><br>
+			<a href="/admin/sendemailtransaction/<?=$tx['_id']?>" class="tooltip-y " rel="tooltip-x" data-placement="top" title="Send customer an email to deposit funds in our bank">Send Approval</a><br>
 			
-			<a href="/admin/deletetransaction/<?=$tx['_id']?>" class="tooltip-x" rel="tooltip-x" data-placement="top" title="Cannot be recovered">Delete</a>
-			<a href="/admin/rejecttransaction/<?=$tx['_id']?>/D1"  class="tooltip-x" rel="tooltip-x" data-placement="top" title="User will be sent an email about rejection, cannot be recovered">Reject ></a><br>
+			<a href="/admin/deletetransaction/<?=$tx['_id']?>" class="tooltip-y" rel="tooltip-x" data-placement="top" title="Cannot be recovered">Delete</a>
+			<a href="/admin/rejecttransaction/<?=$tx['_id']?>/D1"  class="tooltip-y" rel="tooltip-x" data-placement="top" title="User will be sent an email about rejection, cannot be recovered">Reject ></a><br>
 			
 			<select id="RejectReason" class="form-control col-md-2" onChange="RejectReason(this.value);">
 			<?php foreach($reasons as $reason){	?>
