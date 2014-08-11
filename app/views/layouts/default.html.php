@@ -84,14 +84,17 @@ $ex = Session::read('ex');
           <ul class="nav nav-sidebar">
             <li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> MARKETS</a></li>
 						<?php echo $this->_render('element', 'sidebar-menu');?>		
-            <li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>						
-						<?php echo $this->_render('element', 'share-menu');?>								
+            <li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>
+						<?php echo $this->_render('element', 'share-menu');?>
 		      </ul>
         </div> <!-- sidebar-->
-				<?php }?>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<?php }?>
+        
 				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
+					<div class="col-md-12 main">				
 					<?php echo $this->_render('element', 'admin');?>
+				<?php }else{?>
+					<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<?php }?>
 				<?php echo $this->content(); ?>
 					<div class="footer">
