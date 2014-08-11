@@ -17,7 +17,7 @@
 
 $i = 0;
 foreach ($Details	as $tx){?>
-		<tr <?php if(($i%2)==0){?>style="background-color:#999"<?php }else{?>style="background-color:#666"<?php }?>>
+		<tr <?php if(($i%2)==0){?>style="background-color:#999"<?php }else{?>style="background-color:#ddd"<?php }?>>
 			<td><?=gmdate('Y-M-d H:i:s',$tx['DateTime']->sec)?></td>
 			<td><a href="/Admin/detail/<?=$tx['username']?>" target="_blank"><?=$tx['username']?></a><br>
 				<span class="label
@@ -42,7 +42,7 @@ foreach ($Details	as $tx){?>
 						</span>
 			</td>
 			<td style="text-align:right "><?=$tx['Currency']?><br>
-						<span class="label label-important">Withdrawals:<br>
+						<span class="label label-warning">Withdrawals:<br>
 						<?=number_format($tx['FundsOut']['USD'],2)?> USD<br>
 						<?=number_format($tx['FundsOut']['CAD'],2)?> CAD<br>						
 						<?=number_format($tx['FundsOut']['EUR'],2)?> EUR<br>
@@ -64,17 +64,17 @@ foreach ($Details	as $tx){?>
 			</select><br>
 			
 			<form action="/admin/approvetransaction" method="post" class="form form-horizontal">
-				<input type="text" name="Amount" id="Amount" value="<?=$tx['Amount']?>" max="<?=$tx['Amount']?>" min="1" class="span1 tooltip-x" rel="tooltip-x" data-placement="top" title="Only numbers no comma ">
+				<input type="text" name="Amount" id="Amount" value="<?=$tx['Amount']?>" max="<?=$tx['Amount']?>" min="1" class="col-md-1 tooltip-y" rel="tooltip-x" data-placement="top" title="Only numbers no comma ">
 				<input type="hidden" name="id" id="id" value="<?=$tx['_id']?>">
 				<input type="hidden" name="Currency" id="Currency" value="<?=$tx['Currency']?>">				
 				<br>
-				<input type="submit" value="Deposit to ibwt" class="btn btn-primary tooltip-x" rel="tooltip-x" data-placement="top" title="Approve this transaction">
+				<input type="submit" value="Deposit to ibwt" class="btn btn-primary tooltip-y" rel="tooltip-x" data-placement="top" title="Approve this transaction">
 			</form>
 			
 			</td>
 		</tr>
 <?php  foreach($tx['Previous'] as $pt){ ?>
-		<tr <?php if(($i%2)==0){?>style="background-color:#999"<?php }else{?>style="background-color:#eee"<?php }?>>
+		<tr <?php if(($i%2)==0){?>style="background-color:#aaa"<?php }else{?>style="background-color:#eee"<?php }?>>
 			<td><?=gmdate('Y-M-d H:i:s',$pt['DateTime']->sec)?></td>
 			<td><?=$tx['username']?></td>
 			<td>Previous Transaction </td>
