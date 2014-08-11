@@ -79,6 +79,7 @@ $ex = Session::read('ex');
     </div> <!-- navbar-fixed-top -->
     <div class="container-fluid">
       <div class="row">
+			<?php if(strtolower($this->_request->controller)!='admin'){ ?>
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> MARKETS</a></li>
@@ -87,9 +88,10 @@ $ex = Session::read('ex');
 						<?php echo $this->_render('element', 'share-menu');?>								
 		      </ul>
         </div> <!-- sidebar-->
+				<?php }?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
-				<?php echo $this->_render('element', 'admin');?>
+					<?php echo $this->_render('element', 'admin');?>
 				<?php }?>
 				<?php echo $this->content(); ?>
 					<div class="footer">
