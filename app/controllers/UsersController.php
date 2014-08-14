@@ -1290,90 +1290,92 @@ class UsersController extends \lithium\action\Controller {
 		$details = Details::find('first',
 			array('conditions'=>array('user_id'=> (string) $id))
 		);
-		$AccountName = $this->request->data['AccountName'];
-		$SortCode = $this->request->data['SortCode'];
-		$AccountNumber = $this->request->data['AccountNumber'];		
-		$AccountNameBuss = $this->request->data['AccountNameBuss'];
-		$SortCodeBuss = $this->request->data['SortCodeBuss'];
-		$AccountNumberBuss = $this->request->data['AccountNumberv'];		
-		$CompanyNameBuss = $this->request->data['CompanyNameBuss'];		
-		$CompanyNumberBuss = $this->request->data['CompanyNumberBuss'];				
-		$PostalName = $this->request->data['PostalName'];		
-		$PostalStreet = $this->request->data['PostalStreet'];		
-		$PostalCity = $this->request->data['PostalCity'];		
-		$PostalAddress = $this->request->data['PostalAddress'];		
-		$PostalZip = $this->request->data['PostalZip'];		
-		$PostalCountry = $this->request->data['PostalCountry'];		
-		$WithdrawalMethod = $this->request->data['WithdrawalMethod'];
-		$WithdrawalCharges = $this->request->data['WithdrawalCharges'];		
-		$amountFiat = $this->request->data['WithdrawAmountFiat'];
-		$Currency = $this->request->data['WithdrawCurrency']; 
-		$Reference = $this->request->data['WithdrawReference']; 		
-		$okpayEmail = $this->request->data['okpay_email']; 				
-		$data = array(
-				'DateTime' => new \MongoDate(),
-				'username' => $details['username'],
-				'Amount'=> (float)$amountFiat,
-				'Currency' => $Currency,					
-				'Added'=>false,
-				'Reference'=>$Reference,
-				'AccountName'=>$AccountName,
-				'SortCode'=>$SortCode,
-				'AccountNumber'=>$AccountNumber,
-				'AccountNameBuss'=>$AccountNameBuss,
-				'SortCodeBuss'=>$SortCodeBuss,
-				'AccountNumberBuss'=>$AccountNumberBuss,
-				'CompanyNumberBuss'=>$CompanyNumberBuss,				
-				'CompanyNameBuss'=>$CompanyNameBuss,								
-				'WithdrawalMethod' => $WithdrawalMethod,
-				'WithdrawalCharges' => $WithdrawalCharges,
-				'okpayEmail' => $okpayEmail,				
-				'Postal'=>array(
-					'Name' => $PostalName,
-					'Address' => $PostalAddress,					
-					'Street' => $PostalStreet,					
-					'City' => $PostalCity,					
-					'Zip' => $PostalZip,					
-					'Country' => $PostalCountry,					
-				),
-				'Approved'=>'No'
-		);
-		$tx = Transactions::create();
-		$tx->save($data);
 
-		$view  = new View(array(
-			'loader' => 'File',
-			'renderer' => 'File',
-			'paths' => array(
-				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-			)
-		));
-		$body = $view->render(
-			'template',
-			compact('details','data','user'),
-			array(
-				'controller' => 'users',
-				'template'=>'withdraw',
-				'type' => 'mail',
-				'layout' => false
-			)
-		);	
+		if($this->request->data){
+			$AccountName = $this->request->data['AccountName'];
+			$SortCode = $this->request->data['SortCode'];
+			$AccountNumber = $this->request->data['AccountNumber'];		
+			$AccountNameBuss = $this->request->data['AccountNameBuss'];
+			$SortCodeBuss = $this->request->data['SortCodeBuss'];
+			$AccountNumberBuss = $this->request->data['AccountNumberv'];		
+			$CompanyNameBuss = $this->request->data['CompanyNameBuss'];		
+			$CompanyNumberBuss = $this->request->data['CompanyNumberBuss'];				
+			$PostalName = $this->request->data['PostalName'];		
+			$PostalStreet = $this->request->data['PostalStreet'];		
+			$PostalCity = $this->request->data['PostalCity'];		
+			$PostalAddress = $this->request->data['PostalAddress'];		
+			$PostalZip = $this->request->data['PostalZip'];		
+			$PostalCountry = $this->request->data['PostalCountry'];		
+			$WithdrawalMethod = $this->request->data['WithdrawalMethod'];
+			$WithdrawalCharges = $this->request->data['WithdrawalCharges'];		
+			$amountFiat = $this->request->data['WithdrawAmountFiat'];
+			$Currency = $this->request->data['WithdrawCurrency']; 
+			$Reference = $this->request->data['WithdrawReference']; 		
+			$okpayEmail = $this->request->data['okpay_email']; 				
+			$data = array(
+					'DateTime' => new \MongoDate(),
+					'username' => $details['username'],
+					'Amount'=> (float)$amountFiat,
+					'Currency' => $Currency,					
+					'Added'=>false,
+					'Reference'=>$Reference,
+					'AccountName'=>$AccountName,
+					'SortCode'=>$SortCode,
+					'AccountNumber'=>$AccountNumber,
+					'AccountNameBuss'=>$AccountNameBuss,
+					'SortCodeBuss'=>$SortCodeBuss,
+					'AccountNumberBuss'=>$AccountNumberBuss,
+					'CompanyNumberBuss'=>$CompanyNumberBuss,				
+					'CompanyNameBuss'=>$CompanyNameBuss,								
+					'WithdrawalMethod' => $WithdrawalMethod,
+					'WithdrawalCharges' => $WithdrawalCharges,
+					'okpayEmail' => $okpayEmail,				
+					'Postal'=>array(
+						'Name' => $PostalName,
+						'Address' => $PostalAddress,					
+						'Street' => $PostalStreet,					
+						'City' => $PostalCity,					
+						'Zip' => $PostalZip,					
+						'Country' => $PostalCountry,					
+					),
+					'Approved'=>'No'
+			);
+			$tx = Transactions::create();
+			$tx->save($data);
 
-		$transport = Swift_MailTransport::newInstance();
-		$mailer = Swift_Mailer::newInstance($transport);
+			$view  = new View(array(
+				'loader' => 'File',
+				'renderer' => 'File',
+				'paths' => array(
+					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+				)
+			));
+			$body = $view->render(
+				'template',
+				compact('details','data','user'),
+				array(
+					'controller' => 'users',
+					'template'=>'withdraw',
+					'type' => 'mail',
+					'layout' => false
+				)
+			);	
 
-		$message = Swift_Message::newInstance();
-		$message->setSubject("Withdraw from ".COMPANY_URL);
-		$message->setFrom(array(NOREPLY => 'Withdraw from '.COMPANY_URL));
-		$message->setTo($user['email']);
-		$message->addBcc(MAIL_1);
-		$message->addBcc(MAIL_2);			
-		$message->addBcc(MAIL_3);		
+			$transport = Swift_MailTransport::newInstance();
+			$mailer = Swift_Mailer::newInstance($transport);
 
-		$message->setBody($body,'text/html');
-		
-		$mailer->send($message);
+			$message = Swift_Message::newInstance();
+			$message->setSubject("Withdraw from ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => 'Withdraw from '.COMPANY_URL));
+			$message->setTo($user['email']);
+			$message->addBcc(MAIL_1);
+			$message->addBcc(MAIL_2);			
+			$message->addBcc(MAIL_3);		
 
+			$message->setBody($body,'text/html');
+			
+			$mailer->send($message);
+		}
 		return compact('title','details','data','user');			
 	
 	}
