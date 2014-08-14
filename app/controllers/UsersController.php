@@ -1224,64 +1224,59 @@ class UsersController extends \lithium\action\Controller {
 		$user = Session::read('default');
 		if ($user==""){return $this->redirect('/login');exit;}
 		
-		
 		$id = $user['_id'];
 
 		$details = Details::find('first',
 			array('conditions'=>array('user_id'=> (string) $id))
 		);
-		$amountFiat = $this->request->data['AmountFiat'];
-		$Currency = $this->request->data['Currency']; 
-		$Reference = $this->request->data['Reference']; 		
-		$DepositMethod = $this->request->data['DepositMethod'];
-		$data = array(
-				'DateTime' => new \MongoDate(),
-				'username' => $details['username'],
-				'Amount'=> (float)$amountFiat,
-				'Currency'=> $Currency,					
-				'Added'=>true,
-				'Reference'=>$Reference,
-				'DepositMethod'=>$DepositMethod,				
-				'Approved'=>'No'
-		);
-		$tx = Transactions::create();
-		$tx->save($data);
+		if($this->request->data){
+			$amountFiat = $this->request->data['AmountFiat'];
+			$Currency = $this->request->data['Currency']; 
+			$Reference = $this->request->data['Reference']; 		
+			$DepositMethod = $this->request->data['DepositMethod'];
+			$data = array(
+					'DateTime' => new \MongoDate(),
+					'username' => $details['username'],
+					'Amount'=> (float)$amountFiat,
+					'Currency'=> $Currency,					
+					'Added'=>true,
+					'Reference'=>$Reference,
+					'DepositMethod'=>$DepositMethod,				
+					'Approved'=>'No'
+			);
+			$tx = Transactions::create();
+			$tx->save($data);
 
-		$view  = new View(array(
-			'loader' => 'File',
-			'renderer' => 'File',
-			'paths' => array(
-				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-			)
-		));
-
-		$body = $view->render(
-			'template',
-			compact('details','data','user'),
-			array(
-				'controller' => 'users',
-				'template'=>'deposit',
-				'type' => 'mail',
-				'layout' => false
-			)
-		);	
-
-		$transport = Swift_MailTransport::newInstance();
-		$mailer = Swift_Mailer::newInstance($transport);
-
-		$message = Swift_Message::newInstance();
-		$message->setSubject("Deposit to ".COMPANY_URL);
-		$message->setFrom(array(NOREPLY => 'Deposit to '.COMPANY_URL));
-		$message->setTo($user['email']);
-		$message->addBcc(MAIL_1);
-		$message->addBcc(MAIL_2);			
-		$message->addBcc(MAIL_3);		
-
-		$message->setBody($body,'text/html');
-		
-		$mailer->send($message);
-
-		return compact('title','details','data','user');			
+			$view  = new View(array(
+				'loader' => 'File',
+				'renderer' => 'File',
+				'paths' => array(
+					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+				)
+			));
+			$body = $view->render(
+				'template',
+				compact('details','data','user'),
+				array(
+					'controller' => 'users',
+					'template'=>'deposit',
+					'type' => 'mail',
+					'layout' => false
+				)
+			);	
+			$transport = Swift_MailTransport::newInstance();
+			$mailer = Swift_Mailer::newInstance($transport);
+			$message = Swift_Message::newInstance();
+			$message->setSubject("Deposit to ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => 'Deposit to '.COMPANY_URL));
+			$message->setTo($user['email']);
+			$message->addBcc(MAIL_1);
+			$message->addBcc(MAIL_2);			
+			$message->addBcc(MAIL_3);		
+			$message->setBody($body,'text/html');
+			$mailer->send($message);
+		}
+			return compact('title','details','data','user');			
 	}
 	
 	public function withdraw(){
