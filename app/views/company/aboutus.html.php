@@ -91,7 +91,7 @@
     </div>
 		<div style="margin-top:20px;" class="col-sm-4 col-md-4 user-details">
             <div class="user-image">
-                <img src="/img/leefear.jpg" alt="Lee Fear"  class="img-circle">
+                <img src="/img/lee.jpg" alt="Lee Fear"  class="img-circle">
             </div>
             <div class="user-info-block">
                 <div class="user-heading">
