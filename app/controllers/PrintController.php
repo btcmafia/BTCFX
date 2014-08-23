@@ -18,8 +18,6 @@ class PrintController extends \lithium\action\Controller {
 
 			$email = "support@ibwt.co.uk";
 
-
-
 if ($handle = opendir(VANITY_OUTPUT_DIR)) {
     while (false !== ($entry = readdir($handle))) {
 		 if ($entry != "." && $entry != "..") {
@@ -28,12 +26,6 @@ if ($handle = opendir(VANITY_OUTPUT_DIR)) {
     }
     closedir($handle);
 }
-
-
-
-
-
-
 
 			$cmd = '/bin/vanitygen -i -o "'.VANITY_OUTPUT_DIR.$email.'_0.txt" 1';
 			exec($cmd);
@@ -58,13 +50,14 @@ if ($handle = opendir(VANITY_OUTPUT_DIR)) {
 					'key' => $privkey,
 					)
 				);
-				
+
 		$view  = new View(array(
 		'paths' => array(
 			'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
 			'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
 		)
 		));
+		
 		echo $view->render(
 		'all',
 		compact('data'),
@@ -75,7 +68,7 @@ if ($handle = opendir(VANITY_OUTPUT_DIR)) {
 			'layout' =>'print'
 		)
 		);	
-
+		
 		unlink(QR_OUTPUT_DIR.$addressp.'.png');
 		unlink(QR_OUTPUT_DIR.$privkey.'.png');
 		unlink(VANITY_OUTPUT_DIR.$email.'_0.txt');
