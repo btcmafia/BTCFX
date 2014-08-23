@@ -599,14 +599,14 @@ foreach ($settings['documents'] as $document){
     <div class="panel-heading"  style="background-color:#D5E2C5">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?=$document['id']?>">
-					<?=$document['name']?> - <?=$document['alias']?>
+					<?=$document['name']?> <?=$document['alias']?>
         </a>
       </h4>
     </div>
     <div id="collapse<?=$document['id']?>" class="panel-collapse <?php if($option==$document['id']){?><?php }else{?>collapse<?php }?>">
       <div class="panel-body">
-				<h3><?=$document['name']?> - <?=$document['alias']?></h3>
-						<p>Upload a JPG file with a maximum size of 1MB.</p>
+				<h3><?=$document['name']?> <?=$document['alias']?></h3>
+						<p>PDF or JPG (1MB max for JPG/PDF)</p>
 						<?=$this->form->create(null, array('type' => 'file')); ?>
 						<?=$this->form->field('file', array('type' => 'file','label'=>'')); ?><br>
 						<?=$this->form->field('option',array('type'=>'hidden','value'=>$document['id'])); ?>												
