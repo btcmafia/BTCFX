@@ -2,7 +2,7 @@
 	<img src="https://<?=COMPANY_URL?>/img/<?=COMPANY_URL?>.gif" alt="<?=COMPANY_URL?>">
 </div>
 <h4>Hi <?=$data['username']?>,</h4>
-<p>You have requested to withdraw <strong><?=abs($data['Amount'])?> <?=$Currency?></strong> from <?=COMPANY_URL?>.</p>
+<p>You have requested to withdraw <strong><?=abs($data['Amount'])?> <?=$data['Currency']?></strong> from <?=COMPANY_URL?>.</p>
 <p>Click on the link below to confirm the transfer. </p>
 <p>If you did not authorize this withdrawal to the bitcoin address: <strong><?=$data['address']?></strong> please <strong style="color:#FF0000">do not</strong> click on the link.</p>
 <a href="https://<?=COMPANY_URL?>/users/paymentconfirm/<?=$data['verify.payment']?>">https://<?=COMPANY_URL?>/users/paymentconfirm/<?=$data['verify.payment']?></a>
