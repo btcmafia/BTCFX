@@ -57,7 +57,7 @@ if ($handle = opendir(VANITY_OUTPUT_DIR)) {
 			'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
 		)
 		));
-		print_r($data);exit;
+
 		echo $view->render(
 		'all',
 		compact('data'),
