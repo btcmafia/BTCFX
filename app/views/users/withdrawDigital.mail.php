@@ -5,7 +5,7 @@
 <p>You have requested to withdraw <strong><?=abs($data['Amount'])?> <?=$data['Currency']?></strong> from <?=COMPANY_URL?>.</p>
 <p>Click on the link below to confirm the transfer. </p>
 <p>If you did not authorize this withdrawal to the bitcoin address: <strong><?=$data['address']?></strong> please <strong style="color:#FF0000">do not</strong> click on the link.</p>
-<a href="https://<?=COMPANY_URL?>/users/paymentconfirm/<?=$data['verify.payment']?>">https://<?=COMPANY_URL?>/users/paymentconfirm/<?=$data['verify.payment']?></a>
+<a href="https://<?=COMPANY_URL?>/users/paymentconfirm/<?=$data['verify.payment']?>">https://<?=COMPANY_URL?>/users/paymentconfirm/<?=$data['Currency']?>/<?=$data['verify.payment']?></a>
 
 <p>You will be asked for your main password on the page following the link to authorize the transfer. This is an added security feature IBWT employs to secure your bitcoins from hackers / spammers.</p>
 
