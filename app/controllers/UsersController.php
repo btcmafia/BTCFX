@@ -674,9 +674,26 @@ class UsersController extends \lithium\action\Controller {
 
 			break;
 
-			case "MAX":
-			$currencyName = "Maxcoin";
-			$my_address = MAXCOIN_ADDRESS;			
+			case "MSC":
+			$currencyName = "Mastercoin";
+			$mastercoin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
+				
+			if($details[$currency.'newaddress']=="" || $details[$currency.'newaddress']=="Yes"){
+				$address = $mastercoin->getnewaddress($user['username']);
+			}else{
+				if($details['mastercoinaddress'][0]==""){
+					$address = $mastercoin->getnewaddress($user['username']);
+				}else{
+					$address = $details['mastercoinaddress'][0];
+				}
+			}
+			$data = array(
+				'mastercoinaddress.0' => $address,
+				$currency.'newaddress'=>'No'
+			);
+			Details::find('all',array(
+				'conditions'=>array('username'=>$user['username'])
+			))->save($data);
 			break;
 		}
 		// End of /////////////////// Change of code required when Virtual Currency added		

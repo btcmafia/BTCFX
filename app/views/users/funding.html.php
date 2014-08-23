@@ -164,7 +164,28 @@ function initCanvas(ww,hh)
 					
 					</div>
 				</div>				
+			<?php if($currency=="MSC"){?>
+			Use MasterCoin client to send your MasterCoins to the above address using:
+			<code>send_MP(senderaddress, <?=$address?>,<br>
+			1, amount);</code><br>
+			Where 1 is MasterCoin propertyID as<br>
+			<code>{<br>
+    "name" : "MasterCoin",<br>
+    "category" : "N/A",<br>
+    "subcategory" : "N/A",<br>
+    "data" : "***data***",<br>
+    "url" : "www.mastercoin.org",<br>
+    "divisible" : true,<br>
+    "issuer" : "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P",<br>
+    "creationtxid" : "0000000000000000000000000000000000000000000000000000000000000000",<br>
+    "fixedissuance" : false,<br>
+    "totaltokens" : 0.00000000<br>
+}<br>
+</code>
+			<?php }?>
 			</div>		
+			
+			
 		<!-- Deposit -->
 		<!-- Withdraw -->
 			<div class="col-md-6">
@@ -244,6 +265,27 @@ function initCanvas(ww,hh)
 					
 					</div>
 				</div>				
+				
+				<?php if($currency=="MSC"){?>
+			We will send your MasterCoins to the above address using:
+			<code>send_MP(senderaddress, addressw,<br>
+			1, amount);</code><br>
+			Where 1 is MasterCoin propertyID as<br>
+			<code>{<br>
+    "name" : "MasterCoin",<br>
+    "category" : "N/A",<br>
+    "subcategory" : "N/A",<br>
+    "data" : "***data***",<br>
+    "url" : "www.mastercoin.org",<br>
+    "divisible" : true,<br>
+    "issuer" : "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P",<br>
+    "creationtxid" : "0000000000000000000000000000000000000000000000000000000000000000",<br>
+    "fixedissuance" : false,<br>
+    "totaltokens" : 0.00000000<br>
+}<br>
+</code>
+			<?php }?>
+				
 			</div>		
 		<!-- Withdraw -->					
 		</div>
