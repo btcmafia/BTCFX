@@ -863,7 +863,7 @@ class UsersController extends \lithium\action\Controller {
 				compact('data','details','tx','currency'),
 				array(
 					'controller' => 'users',
-					'template'=>'withdraw',
+					'template'=>'withdrawDigital',
 					'type' => 'mail',
 					'layout' => false
 				)
