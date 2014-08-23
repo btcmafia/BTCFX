@@ -43,7 +43,7 @@ foreach($data as $d){
 				$btc = $value." BTC";
 				$btcword = ucwords($function->number_to_words($value))." BTC";
 				$image = '0';
-		//		print_r($address);
+				print_r($address);
 				$pdf->AddPage('P');
 				$pdf->Image(LITHIUM_APP_PATH.'/webroot/img/bitcoin-ibwt-v.jpg', 30, 10, 143, 267, '', '', '', false, 300, '', false, false, 0);
 				
