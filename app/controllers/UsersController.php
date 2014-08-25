@@ -997,6 +997,7 @@ class UsersController extends \lithium\action\Controller {
 					$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
 				}
 			}
+			
 			if($txid!=null){
 					$data = array(
 						'DateTime' => new \MongoDate(),
@@ -1015,58 +1016,58 @@ class UsersController extends \lithium\action\Controller {
 					))->save($data);
 			}
 			
-			$transaction = Transactions::find('first',array(
-				'conditions'=>array(
-					'verify.payment'=>$verify,
-					'username'=>$username,
-					'Currency'=>$currency,					
-					'Paid'=>'Yes'
+				$transaction = Transactions::find('first',array(
+					'conditions'=>array(
+						'verify.payment'=>$verify,
+						'username'=>$username,
+						'Currency'=>$currency,					
+						'Paid'=>'Yes'
 					)
-			));			
-			$balance = (float)$details['balance.'.$currency] - (float)$amount;
-			$balance = (float)($balance) + (float)$fee;
-				$dataDetails = array(
+				));			
+				$balance = (float)$details['balance.'.$currency] - (float)$amount;
+				$balance = (float)($balance) + (float)$fee;
+					$dataDetails = array(
 						'balance.'.$currency => (float)number_format($balance,8),
 					);
 
 					$details = Details::find('all',
-					array(
-						'conditions'=>array(
-						'user_id'=> (string) $id
+						array(
+							'conditions'=>array(
+							'user_id'=> (string) $id
 						)
-				))->save($dataDetails);
-						$view  = new View(array(
-				'loader' => 'File',
-				'renderer' => 'File',
-				'paths' => array(
-					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-				)
-			));
-			$body = $view->render(
-				'template',
-				compact('transaction','details','txid','currency'),
-				array(
-					'controller' => 'users',
-					'template'=>'withdrawSent',
-					'type' => 'mail',
-					'layout' => false
-				)
-			);
+					))->save($dataDetails);
+					$view  = new View(array(
+						'loader' => 'File',
+						'renderer' => 'File',
+						'paths' => array(
+						'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+						)
+					));
+					$body = $view->render(
+						'template',
+						compact('transaction','details','txid','currency'),
+						array(
+							'controller' => 'users',
+							'template'=>'withdrawSent',
+							'type' => 'mail',
+							'layout' => false
+						)
+					);
 
-			$transport = Swift_MailTransport::newInstance();
-			$mailer = Swift_Mailer::newInstance($transport);
-	
-			$message = Swift_Message::newInstance();
-			$message->setSubject($currency." sent from ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => $currency.' sent from '.COMPANY_URL));
-			$message->setTo($email);
-			$message->addBcc(MAIL_1);
-			$message->addBcc(MAIL_2);			
-			$message->addBcc(MAIL_3);		
+				$transport = Swift_MailTransport::newInstance();
+				$mailer = Swift_Mailer::newInstance($transport);
+		
+				$message = Swift_Message::newInstance();
+				$message->setSubject($currency." sent from ".COMPANY_URL);
+				$message->setFrom(array(NOREPLY => $currency.' sent from '.COMPANY_URL));
+				$message->setTo($email);
+				$message->addBcc(MAIL_1);
+				$message->addBcc(MAIL_2);			
+				$message->addBcc(MAIL_3);		
 
-			$message->setBody($body,'text/html');
-			$txmessage = number_format($amount,8) . $currency ."  transfered to ".$address;
-			$mailer->send($message);
+				$message->setBody($body,'text/html');
+				$txmessage = number_format($amount,8) . $currency ."  transfered to ".$address;
+				$mailer->send($message);
 			}
 			return compact('txmessage','txid','json_url','json_feed','title','currency');
 		}
