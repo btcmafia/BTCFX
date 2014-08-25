@@ -279,7 +279,7 @@ function initCanvas(ww,hh)
 								</tr>
 								<tr>
 									<td>
-										<a href="/Users/removetransaction/<?=String::hash($transactions['_id'])?>/<?=$transactions['_id']?>/funding/<?=$transactions['Currency']?>"><i class="icon-remove"></i> <?=number_format($transactions['Amount'],8)?> <?=$transactions['Currency']?></a>
+										<a href="/Users/removetransaction/<?=String::hash($transactions['_id'])?>/<?=$transactions['_id']?>/funding/<?=$transactions['Currency']?>">REMOVE <i class="fa fa-remove"></i> <?=number_format($transactions['Amount'],8)?> <?=$transactions['Currency']?></a>
 									</td>
 								</tr>
 							</table>
