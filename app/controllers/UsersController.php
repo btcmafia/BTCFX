@@ -991,7 +991,7 @@ class UsersController extends \lithium\action\Controller {
 				
 			$comment = "User: ".$details['username']."; Address: ".$address."; Amount:".$amount.";";
 			
-			if($currency=='LTC' || $currency=='XGC')
+			if($currency=='LTC' || $currency=='XGC'){
 				if((float)$details['balance.'.$currency]>=(float)$amount){
 					$settxfee = $coin->settxfee($fee);
 					$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
