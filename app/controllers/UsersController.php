@@ -1069,7 +1069,17 @@ class UsersController extends \lithium\action\Controller {
 				$txmessage = number_format($amount,8) . $currency ."  transfered to ".$address;
 				$mailer->send($message);
 			}
-			return compact('txmessage','txid','json_url','json_feed','title','currency');
+			
+			$transactions = Transactions::find('first',array(
+				'conditions'=>array(
+				'username'=>$user['username'],
+				'Added'=>false,
+				'Currency'=>$currency,
+				'Paid'=>'No'
+				)
+			));
+
+			return compact('txmessage','txid','json_url','json_feed','title','currency','transactions');
 		}
 		
 	}

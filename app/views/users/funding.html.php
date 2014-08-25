@@ -194,6 +194,10 @@ function initCanvas(ww,hh)
 						<h3 class="panel-title">Withdraw <?=$currencyName?> - <?=$currency?></h3>
 					</div>
 					<div class="panel-body">
+					
+					<?php 
+					if(count($transactions)==0){
+					?>
 							<table class="table table-condensed table-bordered table-hover">
 								<tr style="background-color: #FEECE0">
 									<td><?=$currencyName?> - <?=$currency?> balance</td>
@@ -262,7 +266,24 @@ function initCanvas(ww,hh)
 									</td>
 								</tr>
 							</table>
-					
+							<?php }else{?>
+							<table class="table table-condensed table-bordered table-hover">
+								<tr style="background-color:#CFFDB9">
+									<td><?=$t('Withdrawal request')?></td>
+								</tr>
+								<tr>
+									<td style="height:325px ">
+									You have already made a withdrawal request for <strong><?=number_format($transactions['Amount'],8)?> <?=$transactions['Currency']?></strong> . Please check your email and complete the request. If you want to cancel the request, please send an email to <a href="mailto:support@ibwt.co.uk" >support@ibwt.co.uk</a>
+									If your want to delete this request please yourself, you can click on the link below:
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<a href="/Users/removetransaction/<?=String::hash($transactions['_id'])?>/<?=$transactions['_id']?>/funding/<?=$transactions['Currency']?>"><i class="icon-remove"></i> <?=number_format($transactions['Amount'],8)?> <?=$transactions['Currency']?></a>
+									</td>
+								</tr>
+							</table>
+							<?php }?>
 					</div>
 				</div>				
 				
