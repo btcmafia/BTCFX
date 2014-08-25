@@ -936,6 +936,7 @@ class UsersController extends \lithium\action\Controller {
 				$secondpassword=BITCOIN_SECOND;
 				$amount = abs($transaction['Amount']);
 				if($details['balance.BTC']<=$amount){return false;}			
+				
 				$fee = $transaction['txFee'];
 				$address = $transaction['address'];
 				$satoshi = (float)$amount * 100000000;
@@ -978,8 +979,8 @@ class UsersController extends \lithium\action\Controller {
 				switch($currency){
 					case "LTC":
 						$coin = new Litecoin('http://'.LITECOIN_WALLET_SERVER.':'.LITECOIN_WALLET_PORT,LITECOIN_WALLET_USERNAME,LITECOIN_WALLET_PASSWORD);
-					
 					break;
+
 					case "XGC":
 						$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
 							
@@ -989,10 +990,10 @@ class UsersController extends \lithium\action\Controller {
 		// End for /////////////////// Change of code required when Virtual Currency added
 				
 			$comment = "User: ".$details['username']."; Address: ".$address."; Amount:".$amount.";";
-										
-			if((float)$details['balance.'.$currency]>=(float)$amount){
+			
+			if($currency=='LTC' || $currency=='XGC')
+				if((float)$details['balance.'.$currency]>=(float)$amount){
 					$settxfee = $coin->settxfee($fee);
-
 					$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
 				if($txid!=null){
 			
@@ -1011,8 +1012,8 @@ class UsersController extends \lithium\action\Controller {
 							'Paid'=>'No'
 							)
 					))->save($data);
+				}
 			}
-			
 			
 			$transaction = Transactions::find('first',array(
 				'conditions'=>array(
@@ -1027,13 +1028,14 @@ class UsersController extends \lithium\action\Controller {
 				$dataDetails = array(
 						'balance.'.$currency => (float)number_format($balance,8),
 					);
-				$details = Details::find('all',
+
+					$details = Details::find('all',
 					array(
-							'conditions'=>array(
-								'user_id'=> (string) $id
-							)
-						))->save($dataDetails);
-			$view  = new View(array(
+						'conditions'=>array(
+						'user_id'=> (string) $id
+						)
+				))->save($dataDetails);
+						$view  = new View(array(
 				'loader' => 'File',
 				'renderer' => 'File',
 				'paths' => array(
