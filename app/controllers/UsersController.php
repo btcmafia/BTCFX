@@ -985,33 +985,34 @@ class UsersController extends \lithium\action\Controller {
 							
 					break;
 				}
+			}
 		// End for /////////////////// Change of code required when Virtual Currency added
 				
-				$comment = "User: ".$details['username']."; Address: ".$address."; Amount:".$amount.";";
+			$comment = "User: ".$details['username']."; Address: ".$address."; Amount:".$amount.";";
 										
-				if((float)$details['balance.'.$currency]>=(float)$amount){
-						$settxfee = $coin->settxfee($fee);
+			if((float)$details['balance.'.$currency]>=(float)$amount){
+					$settxfee = $coin->settxfee($fee);
 
-						$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
-					if($txid!=null){
-				
-						$data = array(
-							'DateTime' => new \MongoDate(),
-							'TransactionHash' => $txid,
-							'Added'=>false,
-							'Paid'=>'Yes',
-							'Transfer'=>$comment,
-						);							
-						$transaction = Transactions::find('first',array(
-							'conditions'=>array(
-								'verify.payment'=>$verify,
-								'username'=>$username,
-								'Currency'=>$currency,
-								'Paid'=>'No'
-								)
-						))->save($data);
-				}
+					$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
+				if($txid!=null){
+			
+					$data = array(
+						'DateTime' => new \MongoDate(),
+						'TransactionHash' => $txid,
+						'Added'=>false,
+						'Paid'=>'Yes',
+						'Transfer'=>$comment,
+					);							
+					$transaction = Transactions::find('first',array(
+						'conditions'=>array(
+							'verify.payment'=>$verify,
+							'username'=>$username,
+							'Currency'=>$currency,
+							'Paid'=>'No'
+							)
+					))->save($data);
 			}
+			
 			
 			$transaction = Transactions::find('first',array(
 				'conditions'=>array(
