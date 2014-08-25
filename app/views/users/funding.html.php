@@ -269,7 +269,7 @@ function initCanvas(ww,hh)
 							<?php }else{?>
 							<table class="table table-condensed table-bordered table-hover">
 								<tr style="background-color:#CFFDB9">
-									<td><?=$t('Withdrawal request')?></td>
+									<td>Withdrawal request</td>
 								</tr>
 								<tr>
 									<td style="height:325px ">
