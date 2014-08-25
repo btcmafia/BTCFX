@@ -1027,7 +1027,7 @@ class UsersController extends \lithium\action\Controller {
 				$balance = (float)$details['balance.'.$currency] - (float)$amount;
 				$balance = (float)($balance) + (float)$fee;
 					$dataDetails = array(
-						'balance.'.$currency => (float)number_format($balance,8),
+						'balance.'.$currency => (float)$balance,
 					);
 
 					$details = Details::find('all',
