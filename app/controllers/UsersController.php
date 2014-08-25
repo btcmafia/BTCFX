@@ -1472,7 +1472,7 @@ class UsersController extends \lithium\action\Controller {
 	
 	}
 	
-	public function removetransaction($TransactionID,$ID,$url){
+	public function removetransaction($TransactionID,$ID,$url,$currency){
 		$Transaction = Transactions::find('first', array(
 			'conditions' => array('_id' => new MongoID($ID))
 		));
@@ -1480,7 +1480,7 @@ class UsersController extends \lithium\action\Controller {
 			if(String::hash($Transaction['_id'])==$TransactionID){
 				$Remove = Transactions::remove(array('_id'=>$ID));
 			}
-		return $this->redirect('/Users/'.$url);
+		return $this->redirect('/Users/'.$url.'/'.$currency);
 	}
 	
 	public function username($username=null){
