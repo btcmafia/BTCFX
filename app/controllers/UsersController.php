@@ -915,20 +915,20 @@ class UsersController extends \lithium\action\Controller {
 			));
 			$id = $user['_id'];
 			$email = $user['email'];
-		}
-		if($id==""){return $this->redirect('/login');}
-		$details = Details::find('first',
-			array('conditions'=>array('user_id'=> (string) $id))
-		);
+		
+			if($id==""){return $this->redirect('/login');}
+			$details = Details::find('first',
+				array('conditions'=>array('user_id'=> (string) $id))
+			);
 			$amount = abs($transaction['Amount']);
 
-		if($details['balance.'.$currency]<=$amount){
-			$txmessage = "Not Sent! Amount does not match!";
-			return compact('txmessage');
-		}			
+			if($details['balance.'.$currency]<=$amount){
+				$txmessage = "Not Sent! Amount does not match!";
+				return compact('txmessage');
+			}			
 
-		if ($this->request->data) {
-		///////////////////Special for bitcoin as it uses blockchain!		
+		
+			///////////////////Special for bitcoin as it uses blockchain!		
 		
 			if($currency=='BTC'){
 				$guid=BITCOIN_GUID;
@@ -1014,7 +1014,7 @@ class UsersController extends \lithium\action\Controller {
 							'Paid'=>'No'
 							)
 					))->save($data);
-			}
+			
 			
 				$transaction = Transactions::find('first',array(
 					'conditions'=>array(
@@ -1071,6 +1071,7 @@ class UsersController extends \lithium\action\Controller {
 			}
 			return compact('txmessage','txid','json_url','json_feed','title','currency');
 		}
+		
 	}
 
 	public function paymentltc(){
