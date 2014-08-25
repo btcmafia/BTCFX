@@ -950,7 +950,7 @@ class UsersController extends \lithium\action\Controller {
 						'DateTime' => new \MongoDate(),
 						'TransactionHash' => $txid,
 						'Paid'=>'Yes',
-						'Transfer'=>$message,
+						'Transfer'=>$txmessage,
 					);							
 					$transaction = Transactions::find('first',array(
 						'conditions'=>array(
@@ -961,9 +961,9 @@ class UsersController extends \lithium\action\Controller {
 					))->save($data);
 				}
 			}else{
-						print_r($currency);
-						print_r($address);
-						print_r($comment);
+//						print_r($currency);
+//						print_r($address);
+//						print_r($comment);
 			
 				$amount =  abs($transaction['Amount']);
 				if($details['balance.'.$currency]<=$amount){return false;}		
@@ -981,7 +981,7 @@ class UsersController extends \lithium\action\Controller {
 					
 					break;
 					case "XGC":
-		$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+						$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
 							
 					break;
 				}
@@ -1012,6 +1012,7 @@ class UsersController extends \lithium\action\Controller {
 						))->save($data);
 				}
 			}
+			
 			$transaction = Transactions::find('first',array(
 				'conditions'=>array(
 					'verify.payment'=>$verify,
@@ -1043,7 +1044,7 @@ class UsersController extends \lithium\action\Controller {
 				compact('transaction','details','txid','currency'),
 				array(
 					'controller' => 'users',
-					'template'=>'withdraw_sent',
+					'template'=>'withdrawSent',
 					'type' => 'mail',
 					'layout' => false
 				)

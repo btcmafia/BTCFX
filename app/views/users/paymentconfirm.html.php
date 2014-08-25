@@ -1,3 +1,4 @@
+<?php if(count($transaction)!=0){?>
 <h4>Withdraw <?=abs($transaction['Amount'])?> <?=$currency?> to <?=$transaction['address']?></h4>
 <div class="row">
 	<div class="col-md-6 well" >
@@ -10,3 +11,5 @@
 	</form>
 	</div>
 </div>
+<?php }?>
+<h4>You have withdrawn the <?=$currency?> or no transaction is authorised!</h4>
