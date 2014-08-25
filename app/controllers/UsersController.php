@@ -999,23 +999,23 @@ class UsersController extends \lithium\action\Controller {
 			}
 			
 			if($txid!=null){
-					$data = array(
-						'DateTime' => new \MongoDate(),
-						'TransactionHash' => $txid,
-						'Added'=>false,
-						'Paid'=>'Yes',
-						'Transfer'=>$comment,
-					);							
-					$transaction = Transactions::find('first',array(
-						'conditions'=>array(
-							'verify.payment'=>$verify,
-							'username'=>$username,
-							'Currency'=>$currency,
-							'Paid'=>'No'
-							)
-					))->save($data);
-			
-			
+				$data = array(
+					'DateTime' => new \MongoDate(),
+					'TransactionHash' => $txid,
+					'Added'=>false,
+					'Paid'=>'Yes',
+					'Transfer'=>$comment,
+				);							
+				$transaction = Transactions::find('all',array(
+					'conditions'=>array(
+						'verify.payment'=>$verify,
+						'username'=>$username,
+						'Currency'=>$currency,
+						'Paid'=>'No'
+						)
+				))->save($data);
+		
+		
 				$transaction = Transactions::find('first',array(
 					'conditions'=>array(
 						'verify.payment'=>$verify,
