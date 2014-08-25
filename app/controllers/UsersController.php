@@ -995,8 +995,9 @@ class UsersController extends \lithium\action\Controller {
 				if((float)$details['balance.'.$currency]>=(float)$amount){
 					$settxfee = $coin->settxfee($fee);
 					$txid = $coin->sendfrom('NilamDoctor', $address, (float)$amount,(int)1,$comment);
-				if($txid!=null){
-			
+				}
+			}
+			if($txid!=null){
 					$data = array(
 						'DateTime' => new \MongoDate(),
 						'TransactionHash' => $txid,
@@ -1012,7 +1013,6 @@ class UsersController extends \lithium\action\Controller {
 							'Paid'=>'No'
 							)
 					))->save($data);
-				}
 			}
 			
 			$transaction = Transactions::find('first',array(
