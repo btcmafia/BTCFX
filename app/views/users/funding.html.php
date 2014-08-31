@@ -272,7 +272,7 @@ function initCanvas(ww,hh)
 									<td>Withdrawal request</td>
 								</tr>
 								<tr>
-									<td style="height:325px ">
+									<td style="height:305px ">
 									You have already made a withdrawal request for <strong><?=number_format($transactions['Amount'],8)?> <?=$transactions['Currency']?></strong> . Please check your email and complete the request. If you want to cancel the request, please send an email to <a href="mailto:support@ibwt.co.uk" >support@ibwt.co.uk</a>
 									If your want to delete this request yourself, you can click on the link below:
 									</td>

@@ -671,7 +671,6 @@ class UsersController extends \lithium\action\Controller {
 			Details::find('all',array(
 				'conditions'=>array('username'=>$user['username'])
 			))->save($data);
-
 			break;
 
 			case "MSC":
