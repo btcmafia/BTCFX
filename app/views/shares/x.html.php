@@ -2,8 +2,8 @@
 use app\extensions\action\Functions;
 $function = new Functions;
 ?>
-<h4><?=$company['company']['Name']?></h4>
-<h3>Buy shares of <?=$company['company']['Name']?> (<?=$company['company']['ShortName']?>) with BTC</h3>
+<h4>Company: <?=$company['company']['Name']?></h4>
+<h3>Buy shares of <?=$company['company']['Name']?> (<?=$company['company']['ShortName']?>) with BTC <small style="color:red">Beta</small></h3>
 <?php
 $BalanceFirst = $details['balance'][$first_curr];
 if (is_null($BalanceFirst)){$BalanceFirst = 0;}

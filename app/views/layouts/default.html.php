@@ -80,14 +80,16 @@ $ex = Session::read('ex');
     <div class="container-fluid">
       <div class="row">
 			<?php if(strtolower($this->_request->controller)!='admin'){ ?>
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> MARKETS</a></li>
+					<div class="col-sm-3 col-md-2 sidebar">
+						<ul class="nav nav-sidebar">
+							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> MARKETS</a></li>
 						<?php echo $this->_render('element', 'sidebar-menu');?>		
-            <li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>
+							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>
 						<?php echo $this->_render('element', 'share-menu');?>
-		      </ul>
-        </div> <!-- sidebar-->
+							<li class="active"><a href="/users/settings"> <i class="fa fa-gears"></i> Settings</a></li>
+							<li class="active"><a href="/ex/dashboard"> <i class="fa fa-dashboard"></i> Dashboard</a></li>						
+						</ul>
+					</div> <!-- sidebar-->
 			<?php }?>
         
 				<?php if(strtolower($this->_request->controller)=='admin'){ ?>

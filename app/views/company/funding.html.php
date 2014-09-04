@@ -90,5 +90,20 @@ If you have no printer (or ran out of ink) please make sure you copy the followi
 <p>OKPAY transfer takes the standard 5-7 days (due to the traditional fiat banking system), yet once your OKPAY account is credited, you can instantly credit your IBWT account.</p>
 <p>All deposits via OKPAY can be conducted via sending funds to <strong>deposit@ibwt.co.uk</strong> when you are logged into your OKPAY account.</p>
 <p>For OKPAY deposit & withdrawal fees please see - <a href="https://www.okpay.com/en/services/fees.html" target="_blank">https://www.okpay.com/en/services/fees.html</a></p>
+<h3>Withdraw Direct To Your UK Bank</h3>
+<img src="/img/Funding direct to bank.png" class="col-md-12"/>
+<p>Requirements:
+	<ul>
+    <li>Verified UK bank account.</li>
+	</ul>
+</p>
+ 
+<p>The withdrawal fee for this service is a flat &pound;2.</p>
+<p>Direct bank deposits are processed within 24 hours of being received, not counting bank holidays, Sundays, or acts beyond IBWT’s control.</p>
+<p>Our hard currency withdrawals is limited by our liquidity, please check when making a withdrawal request that our liquidity is within your request range otherwise your withdrawal may be rejected.</p>
+</p>To withdraw hard currency direct to your bank please use the Fiat funding options from either your dashboard or your drop down menu (top right) when logged in. Then change your Withdrawal Method from OKPAY to Bank – Personal.</p>
+<p>Put in the amount requested (IBWT will only process GBP for this type of withdrawal at this time), and click Send email to admin for approval.</p>
+<p>We will then receive your request and process your withdrawal.</p>
 	</div>
+	
 </div>

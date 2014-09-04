@@ -90,6 +90,7 @@ if($this->_request->params['controller']!='api'){
 					</a>				
 				<?php }?>
 			</div> <!-- subitem -->
+			
 		</div> <!-- sidebar -->           
-<?php }	//for?>
+		<?php }	//for?>
 <?php }	//if?>
