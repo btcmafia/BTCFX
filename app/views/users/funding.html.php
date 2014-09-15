@@ -231,7 +231,7 @@ function initCanvas(ww,hh)
 									<?php
 									$max = (float)$details['balance.'.$currency];
 									?>
-											<?=$this->form->field('amount', array('label'=>'Amount', 'placeholder'=>'0.0', 'class'=>'form-control', 'max'=>$max,'min'=>'0.001','onFocus'=>'SuccessButtonDisable();','maxlenght'=>10,'type'=>'number','step'=>'0.00000001')); ?>
+											<?=$this->form->field('amount', array('label'=>'Amount', 'placeholder'=>'0.0', 'class'=>'form-control', 'max'=>$max,'min'=>'0.0','onFocus'=>'SuccessButtonDisable();','maxlenght'=>10,'type'=>'number','step'=>'0.00000001')); ?>
 											<div id="AmountError" style="display:none " class="alert alert-danger">Amount incorrect!</div>
 											<input type="hidden" id="maxValue" value="<?=$max?>" name="maxValue">
 											<input type="hidden" id="txFee" value="<?=$txfee?>" name="txFee">							<br>

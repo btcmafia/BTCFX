@@ -309,6 +309,12 @@ function CheckCurrencyPayment(currency){
 	address = $("#currencyaddress").val();
 	$("#AmountError").hide();
 	if(address==""){return false;}
+	if(parseFloat(amount)<=0){
+		$("#AmountError").show();
+		return false;
+	}else{
+	$("#AmountError").hide();
+	}
 	amount = $("#Amount").val();
 	if(amount==""){return false;}
 	maxValue = $("#maxValue").val();
