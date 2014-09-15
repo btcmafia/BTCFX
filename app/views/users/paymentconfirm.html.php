@@ -2,7 +2,7 @@
 <h4>Withdraw <?=abs($transaction['Amount'])?> <?=$currency?> to <?=$transaction['address']?></h4>
 <div class="row">
 	<div class="col-md-6 well" >
-	<form action="/users/paymentAdmin/" method="post" id="PaymentForm" class="form-group">
+	<form action="/users/paymentadmin/" method="post" id="PaymentForm" class="form-group">
 	<input type="hidden" name="username" id="Username" value="<?=$transaction['username']?>" class="form-control"/>
 	<input type="hidden" name="currency" id="Currency" value="<?=$currency?>" class="form-control"/>	
 	<input type="hidden" id="verify" value="<?=$transaction['verify.payment']?>" name="verify" class="form-control">
