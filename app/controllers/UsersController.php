@@ -887,16 +887,29 @@ class UsersController extends \lithium\action\Controller {
 		return compact('data','details','user','currency');
 	}
 
-	
-	public function payment(){
-			$title = "Payment";
 
+	public function paymentadminconfirm($currency=null,$id = null){
+		if ($id==""){return $this->redirect('/login');}
+		$transaction = Transactions::find('first',array(
+			'conditions'=>array(
+				'verify.payment'=>$id,
+				'Currency'=>$currency,
+				'Paid'=>'No'
+				)
+		));
+		$username = $transaction['username'];
+		return compact('transaction','username','currency');
+
+	}
+	public function paymentadmin(){
 		if ($this->request->data) {
 			$verify = $this->request->data['verify'];
 			$username = $this->request->data['username'];
 			$password = $this->request->data['password'];
 			$currency = $this->request->data['currency'];
-
+			if($password==""){
+				return $this->redirect(array('controller'=>'users','action'=>'paymentconfirm/'.$currency.'/'.$verify));
+			}
 			$transaction = Transactions::find('first',array(
 				'conditions'=>array(
 					'verify.payment'=>$verify,
@@ -910,6 +923,107 @@ class UsersController extends \lithium\action\Controller {
 				'conditions' => array(
 					'username' => $username,
 					'password' => String::hash($password),
+				)
+			));
+			$id = $user['_id'];
+			$email = $user['email'];
+		
+			if($id==""){
+				return $this->redirect(array('controller'=>'users','action'=>'paymentconfirm/'.$currency.'/'.$verify));
+			}
+			$transaction = Transactions::find('first',array(
+				'conditions'=>array(
+					'verify.payment'=>$verify,
+					'username'=>$username,
+					'Currency'=>$currency,
+					'Paid'=>'No'
+					)
+			));
+			$view  = new View(array(
+				'loader' => 'File',
+				'renderer' => 'File',
+				'paths' => array(
+					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+				)
+			));
+			$data = array(
+				'username'=>$username,
+				'verify'=>$verify,
+				'Currency'=>$currency,
+				'address'=>$transaction['address'],
+				'Amount'=>$transaction['Amount'],
+			);
+			$body = $view->render(
+				'template',
+				compact('data'),
+				array(
+					'controller' => 'users',
+					'template'=>'withdrawadmin',
+					'type' => 'mail',
+					'layout' => false
+				)
+			);
+
+			$transport = Swift_MailTransport::newInstance();
+			$mailer = Swift_Mailer::newInstance($transport);
+	
+			$message = Swift_Message::newInstance();
+			$message->setSubject($currency." Admin Approval from ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => $currency.' Admin Approval email '.COMPANY_URL));
+			$message->setTo('admin@ibwt.co.uk');
+			$message->addBcc(MAIL_1);
+			$message->addBcc(MAIL_2);			
+			$message->addBcc(MAIL_3);		
+
+			$message->setBody($body,'text/html');
+			
+			$mailer->send($message);
+		
+		}
+	}
+	public function payment(){
+			$title = "Payment";
+
+		if ($this->request->data) {
+			$verify = $this->request->data['verify'];
+			$username = $this->request->data['username'];
+			$password = $this->request->data['password'];
+			$admin = $this->request->data['admin'];
+			$currency = $this->request->data['currency'];
+			
+			
+			
+			if($password==""){
+				return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
+			}
+			if($admin==""){
+				return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
+			}
+			
+			$useradmin = Users::find('first',array(
+				'conditions'=>array(
+					'username'=>$admin,
+					'password' => String::hash($password),
+					)
+			));
+			$pos = strrpos($useradmin['email'], 'ibwt.co.uk');
+			if ($pos === false) { // note: three equal signs
+   return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
+			}
+
+			
+			$transaction = Transactions::find('first',array(
+				'conditions'=>array(
+					'verify.payment'=>$verify,
+					'username'=>$username,
+					'Currency'=>$currency,
+					'Paid'=>'No'
+					)
+			));
+
+			$user = Users::find('first',array(
+				'conditions' => array(
+					'username' => $username,
 				)
 			));
 			$id = $user['_id'];
@@ -951,6 +1065,7 @@ class UsersController extends \lithium\action\Controller {
 						'TransactionHash' => $txid,
 						'Paid'=>'Yes',
 						'Transfer'=>$txmessage,
+						'Admin'=>$admin,
 					);							
 					$transaction = Transactions::find('first',array(
 						'conditions'=>array(
@@ -1004,6 +1119,7 @@ class UsersController extends \lithium\action\Controller {
 					'Added'=>false,
 					'Paid'=>'Yes',
 					'Transfer'=>$comment,
+					'Admin'=$admin
 				);							
 				$transaction = Transactions::find('all',array(
 					'conditions'=>array(
