@@ -8,6 +8,7 @@
 	<input type="hidden" id="verify" value="<?=$transaction['verify.payment']?>" name="verify" class="form-control">
 	<?=$this->form->field('admin', array('type' => 'text', 'label'=>'Admin Username', 'placeholder'=>'username','class'=>'form-control')); ?><br>
 	<?=$this->form->field('password', array('type' => 'password', 'label'=>'Password', 'placeholder'=>'password','class'=>'form-control')); ?><br>
+	<?=$this->form->field('totp', array('type' => 'password', 'label'=>'Google TOTP', 'placeholder'=>'Google TOTP','class'=>'form-control','maxlength'=>6)); ?><br>
 	<h4><?php 
 		print_r($txmessage);	
 	?></h4>

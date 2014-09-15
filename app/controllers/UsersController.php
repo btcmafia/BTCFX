@@ -989,8 +989,8 @@ class UsersController extends \lithium\action\Controller {
 			$username = $this->request->data['username'];
 			$password = $this->request->data['password'];
 			$admin = $this->request->data['admin'];
+			$totp = $this->request->data['totp'];
 			$currency = $this->request->data['currency'];
-			
 			
 			
 			if($password==""){
@@ -1010,6 +1010,22 @@ class UsersController extends \lithium\action\Controller {
 			if ($pos === false) { // note: three equal signs
    return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
 			}
+			$detailadmin = Details::find('first',array(
+				'conditions'=>array(
+					'username'=>$admin,
+				)
+			));
+
+			$ga = new GoogleAuthenticator();
+			if($totp==""){
+				return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
+			}else{
+				$checkResult = $ga->verifyCode($detailadmin['secret'], $totp, 2);		
+				if ($checkResult!=1) {
+					return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
+				}
+			}
+
 
 			
 			$transaction = Transactions::find('first',array(
