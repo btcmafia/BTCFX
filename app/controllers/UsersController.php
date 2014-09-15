@@ -1119,7 +1119,7 @@ class UsersController extends \lithium\action\Controller {
 					'Added'=>false,
 					'Paid'=>'Yes',
 					'Transfer'=>$comment,
-					'Admin'=$admin
+					'Admin'=>$admin
 				);							
 				$transaction = Transactions::find('all',array(
 					'conditions'=>array(
