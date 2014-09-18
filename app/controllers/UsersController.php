@@ -554,27 +554,28 @@ class UsersController extends \lithium\action\Controller {
 		if($key==null){	return $this->redirect('login');}
 		return compact('key');
 	}
-	public function password(){
+		public function password(){
 		if($this->request->data){
 
 			$details = Details::find('first', array(
 				'conditions' => array(
-					'key' => $this->request->data['key']
+					'key' => $this->request->data['key'],
 				),
 				'fields' => array('user_id')
 			));
 			$msg = "Password Not Changed!";
 //			print_r($details['user_id']);
 			if($details['user_id']!=""){
-						if($this->request->data['password'] == $this->request->data['password2']){
-//					print_r($this->request->data['password']);
+					if($this->request->data['password'] == $this->request->data['password2']){
+//					print_r($this->request->data['oldpassword']);
 					$user = Users::find('first', array(
 						'conditions' => array(
 							'_id' => $details['user_id'],
-							'email' => $this->request->data['email'],
 						)
 					));
-
+				if($user['password']==String::hash($this->request->data['oldpassword'])){
+//					print_r($details['user_id']);
+					
 					$data = array(
 						'password' => String::hash($this->request->data['password']),
 					);
@@ -582,13 +583,13 @@ class UsersController extends \lithium\action\Controller {
 					$user = Users::find('all', array(
 						'conditions' => array(
 							'_id' => $details['user_id'],
-							'email' => $this->request->data['email'],
 						)
 					))->save($data,array('validate' => false));
 					
 					if($user){
 						$msg = "Password changed!";
 					}
+				}
 
 				}else{
 					$msg = "New password does not match!";
