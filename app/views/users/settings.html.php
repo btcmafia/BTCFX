@@ -408,7 +408,7 @@ use li3_qrcode\extensions\action\QRcode;
     <div class="panel-heading"  style="background-color:#D5E2C5">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapseBank">
-					Financial Details
+					Financial Details (Bank)
         </a>
       </h4>
     </div>
@@ -599,7 +599,7 @@ foreach ($settings['documents'] as $document){
     <div class="panel-heading"  style="background-color:#D5E2C5">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?=$document['id']?>">
-					<?=$document['name']?> <?=$document['alias']?>
+					<?=$document['name']?> <?=$document['alias']?> (Upload)
         </a>
       </h4>
     </div>
