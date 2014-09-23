@@ -10,10 +10,11 @@
 	<li><a href="/files/Creating Secure Wallet Backups.pdf" target="_blank">Creating Secure Wallet Backups</a></li>
 </ul>
 </blockquote>
-<blockquote><strong>Alternative Coins</strong>
-		<ul class="unstyled">
-			<li><a href="https://litecoin.org/" target="_blank">Litecoin</a></li>
-			<li><a href="https://litecoin.info/Main_Page" target="_blank">Litecoin Information</a></li>
+<blockquote style="background-color:white"><strong>Alternative Coins</strong>
+		<ul class="list-unstyled">
+			<li><a href="https://litecoin.org/" target="_blank"><img src="/img/Litecoin.png" width="350"></a></li><br>
+			<li><a href="https://litecoin.info/Main_Page" target="_blank"><img src="/img/litecoin wiki.png" width="350"></a></li><br>
+			<li><a href="http://www.mastercoin.org/" target="_blank"><img src="/img/mastercoin.png" width="350"></a></li>
 		</ul>
 </blockquote>	
 <blockquote  style="background-color:white"><strong>Charity</strong>
@@ -30,34 +31,31 @@
 	<li><a href="https://www.khanacademy.org/economics-finance-domain/core-finance/money-and-banking/bitcoin/v/bitcoin-what-is-it" target="_blank">Khan Academy</a></li>
 </ul>
 </blockquote>
-<blockquote><strong>Organisations</strong>
-	<ul class="unstyled">
-		<li><a href="https://bitcoinfoundation.org" target="_blank">Bitcoin Foundation</a></li>
-		<li><a href="http://bitcoin.org" target="_blank">Bitcoin Organisation</a></li>		
-	</ul>
-</blockquote>
-
-<blockquote><strong>Statistics & Charts</strong>
-	<ul class="unstyled">
-		<li><a href="http://blockchain.info/charts" target="_blank">Blockchain</a></li>
-		<li><a href="http://bitcoincharts.com/" target="_blank">Bitcoin Charts</a></li>		
-		<li><a href="https://bitcoinaverage.com/#GBP" target="_blank">Bitcoin Average</a></li>
-	</ul>
-</blockquote>
-
-<blockquote><strong>News</strong>
+<blockquote style="background-color:white"><strong>Organisations</strong>
 	<ul class="list-unstyled">
-		<li><a href="http://bitcoinmagazine.com/" target="_blank"><img src="/img/bitcoin magazine logo.png"></a></li>
-		<li><a href="http://cointelegraph.com/" target="_blank"><img src="/img/coin-telegraph-logo.png"></a></li>
-		<li><a href="http://www.coindesk.com/" target="_blank">Coindesk</a></li>		
-		<li><a href="http://thegenesisblock.com/" target="_blank">Genesis Block</a></li>
-		<li><a href="http://letstalkbitcoin.com/" target="_blank">Let's Talk Bitcoin</a></li>		
+		<li><a href="https://bitcoinfoundation.org" target="_blank"><img src="/img/bitcoin-foundation.jpg" width="350"></a></li><br>
+		<li><a href="http://bitcoin.org" target="_blank"><img src="/img/bitcoin-org-egg.jpg" width="350"></a></li>		
 	</ul>
 </blockquote>
 
-<blockquote><strong>Merchant Directories</strong>
+<blockquote  style="background-color:white"><strong>Statistics & Charts</strong>
+	<ul class="list-unstyled">
+		<li><a href="http://blockchain.info/" target="_blank"><img src="/img/Blockchain.jpg" width="350"/></a></li><br>
+		<li><a href="http://bitcoincharts.com/" target="_blank"><img src="/img/Bitcoin charts.png" width="350"></a></li><br>		
+		<li><a href="https://bitcoinaverage.com/#GBP" target="_blank"><img src="/img/Bitcoin avg.png" width="350"></a></li>
+	</ul>
+</blockquote>
+
+<blockquote  style="background-color:white"><strong>News</strong><br>
+	<ul class="list-unstyled">
+		<li><a href="http://bitcoinmagazine.com/" target="_blank"><img src="/img/bitcoin magazine logo.png" width="350" ></a></li><br>
+		<li><a href="http://cointelegraph.com/" target="_blank"><img src="/img/coin-telegraph-logo.png" width="350"></a></li>
+	</ul>
+</blockquote>
+
+<blockquote style="background-color:white"><strong>Merchant Directories</strong>
 	<ul class="list-unstyled">
 		<li ><a href="http://www.wheretospendbitcoins.co.uk/" target="_blank"><h2><strong style="color:black;border:1px solid black;padding:4px;background-color:white">Where to Spend Bitcoins UK</strong></h2></li><br>
-		<li><a href="http://coinmap.org/" target="_blank"><img src="/img/Coinmap logo.png"></a></li>
+		<li><a href="http://coinmap.org/" target="_blank"><img src="/img/Coinmap logo.png" width="350"></a></li>
 	</ul>
 </blockquote>
