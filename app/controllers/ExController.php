@@ -73,6 +73,12 @@ class ExController extends \lithium\action\Controller {
 
 			$Action = $this->request->data['Action'];
 			if($Action == "Buy"){
+				if((float)$this->request->data['BuyAmount']<=0){
+					$this->redirect($this->request->params);
+				}
+				if((float)$this->request->data['BuyPriceper']<=0){
+					$this->redirect($this->request->params);
+				}				
 				$PendingAction = 'Sell';
 				$FirstCurrency = $this->request->data['BuyFirstCurrency'];
 				$SecondCurrency = $this->request->data['BuySecondCurrency'];
@@ -94,6 +100,12 @@ class ExController extends \lithium\action\Controller {
 			}
 			
 			if($Action == "Sell"){
+				if((float)$this->request->data['SellAmount']<=0){
+					$this->redirect($this->request->params);
+				}
+				if((float)$this->request->data['SellPriceper']<=0){
+					$this->redirect($this->request->params);
+				}				
 				$PendingAction = 'Buy';			
 				$FirstCurrency = $this->request->data['SellFirstCurrency'];
 				$SecondCurrency = $this->request->data['SellSecondCurrency'];
