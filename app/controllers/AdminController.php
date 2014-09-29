@@ -151,7 +151,7 @@ class AdminController extends \lithium\action\Controller {
 	
 		$new = array();
 		
-  	$days = ($EndDate->sec - $StartDate->sec)/(60*60*24);
+  $days = ($EndDate->sec - $StartDate->sec)/(60*60*24);
 		for($i=0;$i<=$days;$i++){
 			$date = gmdate('Y-m-d',($EndDate->sec)-$i*60*60*24);
 			$new[$date] = array();

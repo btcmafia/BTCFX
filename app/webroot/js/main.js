@@ -69,8 +69,18 @@ function BuyFormCalculate (){
 	SecondCurrency = $('#BuySecondCurrency').val();
 	BuyAmount = $('#BuyAmount').val();
 	BuyPriceper = $('#BuyPriceper').val();
-	if(BuyAmount=="" || BuyAmount==0){return false;}
-	if(BuyPriceper=="" || BuyPriceper==0){return false;}
+	if(BuyAmount=="" || BuyAmount<=0){
+			$("#BuySummary").html("Amount less than Zero!");
+			$("#BuySubmitButton").attr("disabled", "disabled");
+			$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
+		return false;
+	}
+	if(BuyPriceper=="" || BuyPriceper<=0){
+		$("#BuySummary").html("Price less than Zero!");
+		$("#BuySubmitButton").attr("disabled", "disabled");
+		$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
+		return false;
+	}
 	TotalValue = BuyAmount * BuyPriceper;
 	TotalValue = TotalValue.toFixed(6);
 	$("#BuyTotal").html(TotalValue);
@@ -115,8 +125,18 @@ function SellFormCalculate (){
 	SecondCurrency = $('#SellSecondCurrency').val();
 	SellAmount = $('#SellAmount').val();
 	SellPriceper = $('#SellPriceper').val();
-if(SellAmount=="" || SellAmount==0){return false;}
-if(SellPriceper=="" || SellPriceper==0){return false;}
+	if(SellAmount=="" || SellAmount<=0){
+		$("#SellSummary").html("Amount less than Zero!");
+		$("#SellSubmitButton").attr("disabled", "disabled");
+		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
+		return false;
+	}
+	if(SellPriceper=="" || SellPriceper<=0){
+		$("#SellSummary").html("Price less than Zero!");
+		$("#SellSubmitButton").attr("disabled", "disabled");
+		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
+		return false;
+	}
 
 	TotalValue = SellAmount * SellPriceper;
 	TotalValue = TotalValue.toFixed(6);
