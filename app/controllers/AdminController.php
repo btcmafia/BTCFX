@@ -1734,5 +1734,85 @@ $description = "Admin panel for Litecoin transactions";
 	}
 	
 	public function trades(){}
+	
+	public function RemoveCompletedOrder($ID){
+	if($this->__init()==false){			$this->redirect('ex::dashboard');	}	
+		$Orders = Orders::find('first', array(
+			'conditions' => array('_id' => new MongoID($ID))
+		));
+		$data = array(
+			'page.refresh' => true
+		);
+		Details::find('all')->save($data);
+
+		if($Orders['Completed']=='Y')		{
+			$details = Details::find('first', array(
+				'conditions' => array('user_id'=>(string)$Orders['user_id'])
+			));
+			if($Orders['Action']=='Buy'){
+				$balanceFirst = 'balance.'.$Orders['FirstCurrency'];
+				$balanceSecond = 'balance.'.$Orders['SecondCurrency'];
+				$data = array(
+					$balanceSecond => (float)($details[$balanceSecond] + $Orders['PerPrice']*$Orders['Amount'])
+				);
+
+				$details = Details::find('all', array(
+					'conditions' => array(
+						'user_id'=>$Orders['user_id'], 'username'=>$Orders['username']
+						)
+				))->save($data);
+				
+				$fromUser = Details::find('first', array(
+					'conditions' => array('user_id'=>(string)$Orders['Transact']['user_id'])
+				));
+				$data = array(
+					$balanceFirst => (float)($fromUser[$balanceFirst] + (float)$Orders['Amount'])
+				);
+				$details = Details::find('all', array(
+					'conditions' => array(
+						'user_id'=>$Orders['Transact']['user_id'], 'username'=>$Orders['Transact']['username']
+						)
+				))->save($data);
+				
+			}
+			if($Orders['Action']=='Sell'){
+				$balanceFirst = 'balance.'.$Orders['FirstCurrency'];
+				$balanceSecond = 'balance.'.$Orders['SecondCurrency'];
+				$data = array(
+					$balanceFirst => (float)($details[$balanceFirst] + (float)$Orders['Amount'])
+				);
+		
+				$details = Details::find('all', array(
+					'conditions' => array(
+						'user_id'=>$Orders['user_id'], 
+						'username'=>$Orders['username']
+						)
+				))->save($data);
+				
+				$fromUser = Details::find('first', array(
+					'conditions' => array('user_id'=>(string)$Orders['Transact']['user_id'])
+				));
+				$data = array(
+					$balanceSecond => (float)($fromUser[$balanceSecond] + $Orders['PerPrice']*$Orders['Amount'])
+				);
+				$details = Details::find('all', array(
+					'conditions' => array(
+						'user_id'=>$Orders['Transact']['user_id'], 'username'=>$Orders['Transact']['username']
+						)
+				))->save($data);
+				
+			}
+			
+			$Remove = Orders::remove(array('_id'=>$ID));
+			
+				$data = array(
+				'page.refresh' => true
+				);
+				Details::find('all')->save($data);
+			
+		}
+		$this->redirect(array('controller'=>'Admin','action'=>"orders"));		
+	}
+
 }
 ?>
