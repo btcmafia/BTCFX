@@ -1742,11 +1742,11 @@ $description = "Admin panel for Litecoin transactions";
 			'conditions' => array('_id' => new MongoID($ID))
 	));
 
-	print_r($Orders['_id']);
+/*	print_r($Orders['_id']);
 	print_r("<br>");
 	print_r($Orders['Transact']['id']);
 	print_r("<br>");
-	
+*/	
 		if($Orders['Completed']=='Y')		{
 			$details = Details::find('first', array(
 				'conditions' => array('user_id'=>(string)$Orders['user_id'])
@@ -1757,10 +1757,10 @@ $description = "Admin panel for Litecoin transactions";
 				$data = array(
 					$balanceSecond => (float)($details[$balanceSecond] + $Orders['PerPrice']*$Orders['Amount'])
 				);
-				print_r($Orders['username']);
+/*				print_r($Orders['username']);
 				print_r($details[$balanceSecond]);
 				print_r($data);
-				
+				*/
 				$details = Details::find('all', array(
 					'conditions' => array(
 						'user_id'=>$Orders['user_id'], 'username'=>$Orders['username']
@@ -1773,10 +1773,10 @@ $description = "Admin panel for Litecoin transactions";
 				$data = array(
 					$balanceFirst => (float)($fromUser[$balanceFirst] + (float)$Orders['Amount'])
 				);
-				print_r($Orders['Transact']['username']);
+/*				print_r($Orders['Transact']['username']);
 				print_r($fromUser[$balanceFirst]);
 				print_r($data);
-				
+		*/		
 				$details = Details::find('all', array(
 					'conditions' => array(
 						'user_id'=>$Orders['Transact']['user_id'], 'username'=>$Orders['Transact']['username']
@@ -1790,10 +1790,10 @@ $description = "Admin panel for Litecoin transactions";
 				$data = array(
 					$balanceFirst => (float)($details[$balanceFirst] + (float)$Orders['Amount'])
 				);
-				print_r($Orders['username']);
+/*				print_r($Orders['username']);
 				print_r($details[$balanceFirst]);
 				print_r($data);
-				
+		*/		
 				$details = Details::find('all', array(
 					'conditions' => array(
 						'user_id'=>$Orders['user_id'], 
@@ -1808,10 +1808,10 @@ $description = "Admin panel for Litecoin transactions";
 					$balanceSecond => (float)($fromUser[$balanceSecond] + $Orders['PerPrice']*$Orders['Amount'])
 				);
 				
-				print_r($Orders['Transact']['username']);
+/*				print_r($Orders['Transact']['username']);
 				print_r($fromUser[$balanceSecond]);
 				print_r($data);
-				
+		*/		
 				$details = Details::find('all', array(
 					'conditions' => array(
 						'user_id'=>$Orders['Transact']['user_id'], 'username'=>$Orders['Transact']['username']
