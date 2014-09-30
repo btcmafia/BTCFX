@@ -1758,6 +1758,7 @@ $description = "Admin panel for Litecoin transactions";
 					$balanceSecond => (float)($details[$balanceSecond] + $Orders['PerPrice']*$Orders['Amount'])
 				);
 				print_r($Orders['username']);
+				print_r($details[$balanceSecond]);
 				print_r($data);
 				
 				$details = Details::find('all', array(
@@ -1773,6 +1774,7 @@ $description = "Admin panel for Litecoin transactions";
 					$balanceFirst => (float)($fromUser[$balanceFirst] + (float)$Orders['Amount'])
 				);
 				print_r($Orders['Transact']['username']);
+				print_r($fromUser[$balanceFirst]);
 				print_r($data);
 				
 				$details = Details::find('all', array(
@@ -1789,6 +1791,7 @@ $description = "Admin panel for Litecoin transactions";
 					$balanceFirst => (float)($details[$balanceFirst] + (float)$Orders['Amount'])
 				);
 				print_r($Orders['username']);
+				print_r($details[$balanceFirst]);
 				print_r($data);
 				
 				$details = Details::find('all', array(
@@ -1806,6 +1809,7 @@ $description = "Admin panel for Litecoin transactions";
 				);
 				
 				print_r($Orders['Transact']['username']);
+				print_r($fromUser[$balanceSecond]);
 				print_r($data);
 				
 				$details = Details::find('all', array(
