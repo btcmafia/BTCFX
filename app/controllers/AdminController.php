@@ -1819,7 +1819,7 @@ $description = "Admin panel for Litecoin transactions";
 				))->save($data);
 				
 			}
-			exit;
+			
 			$Remove = Orders::remove(array('_id'=>$Orders['_id']));
 			$Remove = Orders::remove(array('_id'=>$Orders['Transact']['id']));
 			
