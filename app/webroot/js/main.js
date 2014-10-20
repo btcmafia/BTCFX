@@ -91,6 +91,7 @@ function BuyFormCalculate (){
 			Commission = $('#BuyCommission').val();
 			Fees = BuyAmount * Commission / 100;
 			Fees = Fees.toFixed(5);
+			if(Fees<=0){return false;}
 			$("#BuyFee").html(Fees);	
 			$('#BuyCommissionAmount').val(Fees);
 			$('#BuyCommissionCurrency').val(FirstCurrency);			
@@ -147,6 +148,7 @@ function SellFormCalculate (){
 			$("#SellCommission").val(ReturnValues['Commission']);			
 			Commission = $('#SellCommission').val();;	
 			Fees = TotalValue * Commission / 100;
+			if(Fees<=0){return false;}
 			Fees = Fees.toFixed(5);
 			$("#SellFee").html(Fees);	
 			$('#SellCommissionAmount').val(Fees);
@@ -228,6 +230,12 @@ function SendPassword(){
 			}else{
 				$("#TOTPPassword").hide();
 			}
+			if(ReturnValues['EmailPasswordSecurity']=="true"){
+				$("#LoginEmailPassword").show();
+			}else{
+				$("#LoginEmailPassword").hide();
+			}
+			
 		}
 	);
 }
@@ -484,6 +492,11 @@ function CheckPassword(value){
 	}
 	}
 
+	function EmailPasswordSecurity(value){
+		$.getJSON('/Users/EmailPasswordSecurity/'+value,
+		function(ReturnValues){});
+	}
+	
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
