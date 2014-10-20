@@ -22,12 +22,12 @@
 	</tr>
 	<tr>
 		<td>
-		<?=$this->form->field('SellAmount', array('label'=>'Amount '.$first_curr,'class'=>'form-control col-md-1 numbers', 'value'=>0, 'onBlur'=>'$("#SellSubmitButton").attr("disabled", "disabled");','min'=>'0','max'=>'99999999','maxlength'=>'10','type'=>'number','step'=>'0.00000001')); ?>				
+		<?=$this->form->field('SellAmount', array('label'=>'Amount '.$first_curr,'class'=>'form-control col-md-1 numbers', 'value'=>0, 'onBlur'=>'$("#SellSubmitButton").attr("disabled", "disabled");','min'=>'0.0001','max'=>'9999','maxlength'=>'10','type'=>'number','step'=>'0.00001')); ?>				
 		</td>
 		<td>
 			<label for="SellPriceper">Price per <?=$first_curr?></label>
 		<div class="input-group">					
-			<input class="col-md-1 form-control numbers" id="SellPriceper" name="SellPriceper" type="number"  onBlur='$("#SellSubmitButton").attr("disabled", "disabled");' min="0" max="99999999" maxlength="10" step="0.00000001">
+			<input class="col-md-1 form-control numbers" id="SellPriceper" name="SellPriceper" type="number"  onBlur='$("#SellSubmitButton").attr("disabled", "disabled");' min="0.0001" max="9999" maxlength="10" step="0.00001">
 			<span class="input-group-addon"> <strong><?=$second_curr?></strong></span>
 		</div>				
 		</td>				
