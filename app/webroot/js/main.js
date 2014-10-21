@@ -230,11 +230,11 @@ function SendPassword(){
 			}else{
 				$("#TOTPPassword").hide();
 			}
-			if(ReturnValues['EmailPasswordSecurity']=="true"){
-				$("#LoginEmailPassword").show();
-			}else{
-				$("#LoginEmailPassword").hide();
-			}
+//			if(ReturnValues['EmailPasswordSecurity']=="true"){
+//				$("#LoginEmailPassword").show();
+//			}else{
+//				$("#LoginEmailPassword").hide();
+//			}
 			
 		}
 	);
@@ -492,10 +492,10 @@ function CheckPassword(value){
 	}
 	}
 
-	function EmailPasswordSecurity(value){
-		$.getJSON('/Users/EmailPasswordSecurity/'+value,
-		function(ReturnValues){});
-	}
+//	function EmailPasswordSecurity(value){
+//		$.getJSON('/Users/EmailPasswordSecurity/'+value,
+//		function(ReturnValues){});
+//	}
 	
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
