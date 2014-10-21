@@ -12,6 +12,7 @@ use app\models\Settings;
 use app\models\Orders;
 use app\models\Trades;
 use app\models\Pages;
+use app\models\Parameters;
 use lithium\data\Connections;
 use MongoID;
 use \Graph;
@@ -70,6 +71,9 @@ class ExController extends \lithium\action\Controller {
 			Trades::find('all',array(
 				'conditions' => array('trade'=>$title)
 			))->save($data);
+			$commission = Parameters::find('first',
+				array('conditions'=>array('commission'=>true))
+			);
 
 			$Action = $this->request->data['Action'];
 			if($Action == "Buy"){
@@ -90,11 +94,15 @@ class ExController extends \lithium\action\Controller {
 				$FirstCurrency = $this->request->data['BuyFirstCurrency'];
 				$SecondCurrency = $this->request->data['BuySecondCurrency'];
 				$Commission = $this->request->data['BuyCommission'];
-				$CommissionAmount = $this->request->data['BuyCommissionAmount'];				
+//				$CommissionAmount = $this->request->data['BuyCommissionAmount'];				
+				
 				$CommissionCurrency = $this->request->data['BuyCommissionCurrency'];								
 				$Amount = $this->request->data['BuyAmount'];
 				$PerPrice = $this->request->data['BuyPriceper'];
 				$BalanceAmount = $details['balance'][$SecondCurrency];
+				
+				$CommissionAmount = $Amount * $commission['value'] / 100 ;
+				
 				$NewBalanceAmount = round($BalanceAmount - ($Amount * $PerPrice),8);
 				$Currency = 'balance.'.$SecondCurrency;
 				// Update balance of user with NewBalance Amount
@@ -123,11 +131,12 @@ class ExController extends \lithium\action\Controller {
 				$FirstCurrency = $this->request->data['SellFirstCurrency'];
 				$SecondCurrency = $this->request->data['SellSecondCurrency'];
 				$Commission = $this->request->data['SellCommission'];
-				$CommissionAmount = $this->request->data['SellCommissionAmount'];				
+//				$CommissionAmount = $this->request->data['SellCommissionAmount'];				
 				$CommissionCurrency = $this->request->data['SellCommissionCurrency'];								
 				$Amount = $this->request->data['SellAmount'];
 				$PerPrice = $this->request->data['SellPriceper'];				
 				$BalanceAmount = $details['balance'][$FirstCurrency];
+				$CommissionAmount = $Amount * $PerPrice * $commission['value'] / 100;
 				$NewBalanceAmount = round($BalanceAmount - ($Amount),8);
 				$Currency = 'balance.'.$FirstCurrency;
 				// Update balance of user with NewBalance Amount				
