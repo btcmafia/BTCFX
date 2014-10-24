@@ -477,6 +477,7 @@ class UsersController extends \lithium\action\Controller {
 	}
 	public function forgotpassword(){
 		if($this->request->data){
+			$msg = "Password reset link sent to your email address!";
 			$user = Users::find('first',array(
 				'conditions' => array(
 					'email' => $this->request->data['email']
@@ -528,6 +529,8 @@ class UsersController extends \lithium\action\Controller {
 			$mailer->send($message);
 			}
 		}
+		
+		return compact('msg');
 	}
 
 	public function addbank(){
