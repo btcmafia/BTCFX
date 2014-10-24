@@ -382,36 +382,38 @@ class UsersController extends \lithium\action\Controller {
 		if($details['TOTP.Validate']==true && $details['TOTP.Login']==true){
 			$totp = "Yes";
 		}
-		
-		$view  = new View(array(
-			'loader' => 'File',
-			'renderer' => 'File',
-			'paths' => array(
-				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-			)
-		));
-		$email = $users['email'];
-			$body = $view->render(
-				'template',
-				compact('users','oneCode','username'),
-				array(
-					'controller' => 'users',
-					'template'=>'onecode',
-					'type' => 'mail',
-					'layout' => false
+		if($details['EmailPasswordSecurity']=="true" || $details['EmailPasswordSecurity']==null){
+			$view  = new View(array(
+				'loader' => 'File',
+				'renderer' => 'File',
+				'paths' => array(
+					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
 				)
-			);
+			));
+			$email = $users['email'];
+				$body = $view->render(
+					'template',
+					compact('users','oneCode','username'),
+					array(
+						'controller' => 'users',
+						'template'=>'onecode',
+						'type' => 'mail',
+						'layout' => false
+					)
+				);
 
-			$transport = Swift_MailTransport::newInstance();
-			$mailer = Swift_Mailer::newInstance($transport);
-	
-			$message = Swift_Message::newInstance();
-			$message->setSubject("Sign in password for ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => 'Sign in password from '.COMPANY_URL));
-			$message->setTo($email);
-			$message->setBody($body,'text/html');
-			$mailer->send($message);
-			return $this->render(array('json' => array("Password"=>"Password sent to email","TOTP"=>$totp)));
+				$transport = Swift_MailTransport::newInstance();
+				$mailer = Swift_Mailer::newInstance($transport);
+		
+				$message = Swift_Message::newInstance();
+				$message->setSubject("Sign in password for ".COMPANY_URL);
+				$message->setFrom(array(NOREPLY => 'Sign in password from '.COMPANY_URL));
+				$message->setTo($email);
+				$message->setBody($body,'text/html');
+				$mailer->send($message);
+			}
+			
+			return $this->render(array('json' => array("Password"=>"Password sent to email","TOTP"=>$totp,"EmailPasswordSecurity"=>$details['EmailPasswordSecurity'])));
 	}
 	public function SaveTOTP(){
 		$user = Session::read('default');
@@ -564,41 +566,47 @@ class UsersController extends \lithium\action\Controller {
 				'fields' => array('user_id')
 			));
 			$msg = "Password Not Changed!";
-//			print_r($details['user_id']);
+			print_r($details['user_id']);
+
 			if($details['user_id']!=""){
-					if($this->request->data['password'] == $this->request->data['password2']){
-//					print_r($this->request->data['oldpassword']);
+				if($this->request->data['password'] == $this->request->data['password2']){
+//					print_r($this->request->data['password']);
+					
 					$user = Users::find('first', array(
 						'conditions' => array(
 							'_id' => $details['user_id'],
 						)
 					));
-				if($user['password']==String::hash($this->request->data['oldpassword'])){
-//					print_r($details['user_id']);
-					
-					$data = array(
-						'password' => String::hash($this->request->data['password']),
-					);
-//					print_r($data);
-					$user = Users::find('all', array(
-						'conditions' => array(
-							'_id' => $details['user_id'],
-						)
-					))->save($data,array('validate' => false));
-					
-					if($user){
-						$msg = "Password changed!";
+//					print_r($user['password']);
+						if($user['password']!=String::hash($this->request->data['password'])){
+							print_r($details['user_id']);
+							
+							$data = array(
+							'password' => String::hash($this->request->data['password']),
+							);
+//							print_r($data);
+							
+							$user = Users::find('all', array(
+								'conditions' => array(
+								'_id' => $details['user_id'],
+								)
+							))->save($data,array('validate' => false));
+					//		print_r($user);
+						
+							if($user){
+								$msg = "Password changed!";
+							}
+						}else{
+								$msg = "Password same as old password!";
+						}
+					}else{
+						$msg = "New password does not match!";
 					}
-				}
-
-				}else{
-					$msg = "New password does not match!";
-				}
 			}
 		}
-
-	return compact('msg');
+		return compact('msg');
 	}
+	
 	public function funding($currency=null){
 				$currency = strtoupper($currency);
 				$title = "Funding ".$currency;
@@ -1715,6 +1723,23 @@ class UsersController extends \lithium\action\Controller {
 		return compact('details');				
 		
 	}
-	public function addcompanydetail(){}
+	public function addcompanydetail(){
+		$user = Session::read('default');
+		$user_id = $user['_id'];
+		if ($user==""){		return $this->redirect('/login');}
+
+	}
+	public function EmailPasswordSecurity($value=false){
+		$user = Session::read('default');
+		$user_id = $user['_id'];
+		if ($user==""){		return $this->redirect('/login');}
+		$data = array(
+			'EmailPasswordSecurity' => $value
+		);
+		$conditions = array('user_id'=>$user_id);
+		$details = Details::update($data,$conditions);
+		
+		return $this->render(array('json' => array("Updated"=>$value)));
+	}
 }
 ?>
