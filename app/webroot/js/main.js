@@ -75,12 +75,25 @@ function BuyFormCalculate (){
 			$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
 		return false;
 	}
+	if(BuyAmount>9999){
+			$("#BuySummary").html("Amount greater than 10000!");
+			$("#BuySubmitButton").attr("disabled", "disabled");
+			$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
+		return false;
+	}
 	if(BuyPriceper=="" || BuyPriceper<=0){
 		$("#BuySummary").html("Price less than Zero!");
 		$("#BuySubmitButton").attr("disabled", "disabled");
 		$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
 		return false;
 	}
+	if(BuyPriceper>9999){
+		$("#BuySummary").html("Price greater than 10000!");
+		$("#BuySubmitButton").attr("disabled", "disabled");
+		$("#BuySubmitButton").attr("class", "btn btn-warning btn-block");
+		return false;
+	}
+
 	TotalValue = BuyAmount * BuyPriceper;
 	TotalValue = TotalValue.toFixed(6);
 	$("#BuyTotal").html(TotalValue);
@@ -132,8 +145,20 @@ function SellFormCalculate (){
 		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
 		return false;
 	}
+	if(SellAmount>9999){
+		$("#SellSummary").html("Amount greater than 10000!");
+		$("#SellSubmitButton").attr("disabled", "disabled");
+		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
+		return false;
+	}
 	if(SellPriceper=="" || SellPriceper<=0){
 		$("#SellSummary").html("Price less than Zero!");
+		$("#SellSubmitButton").attr("disabled", "disabled");
+		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
+		return false;
+	}
+	if(SellPriceper>9999){
+		$("#SellSummary").html("Price greater than 10000!");
 		$("#SellSubmitButton").attr("disabled", "disabled");
 		$("#SellSubmitButton").attr("class", "btn btn-warning btn-block");		
 		return false;
@@ -496,7 +521,6 @@ function CheckPassword(value){
 //		$.getJSON('/Users/EmailPasswordSecurity/'+value,
 //		function(ReturnValues){});
 //	}
-	
 function validateEmail(email) { 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
