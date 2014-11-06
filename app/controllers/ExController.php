@@ -620,10 +620,10 @@ class ExController extends \lithium\action\Controller {
 		$functions = new Functions();
 		$OnlineUsers = 	$functions->OnlineUsers();
 		foreach($trades as $t){
-			$TotalOrders['Buy'] = $this->TotalOrders('Buy',substr($t['trade'],0,3),substr($t['trade'],4,3));
-			$TotalOrders['Sell'] = $this->TotalOrders('Sell',substr($t['trade'],0,3),substr($t['trade'],4,3));			
-			$TotalCompleteOrders['Buy'] = $this->TotalCompleteOrders('Buy',substr($t['trade'],0,3),substr($t['trade'],4,3));
-			$TotalCompleteOrders['Sell'] = $this->TotalCompleteOrders('Sell',substr($t['trade'],0,3),substr($t['trade'],4,3));						
+			$TotalOrders['Buy'] = $this->TotalOrders($id,'Buy',substr($t['trade'],0,3),substr($t['trade'],4,3));
+			$TotalOrders['Sell'] = $this->TotalOrders($id,'Sell',substr($t['trade'],0,3),substr($t['trade'],4,3));			
+			$TotalCompleteOrders['Buy'] = $this->TotalCompleteOrders($id,'Buy',substr($t['trade'],0,3),substr($t['trade'],4,3));
+			$TotalCompleteOrders['Sell'] = $this->TotalCompleteOrders($id,'Sell',substr($t['trade'],0,3),substr($t['trade'],4,3));						
 		}
 		$title = "Dashboard";
 		$keywords = "Dashboard, trading platform, bitcoin exchange, we trust, United Kingdom, UK";
@@ -724,7 +724,7 @@ $description = "Dashboard for trading platform for bitcoin exchange in United Ki
 	
 	}
 
-	public function TotalOrders($Action,$FirstCurrency,$SecondCurrency){
+	public function TotalOrders($id,$Action,$FirstCurrency,$SecondCurrency){
 		$mongodb = Connections::get('default')->connection;
 		$TotalOrders = Orders::connection()->connection->command(array(
 			'aggregate' => 'orders',
@@ -743,6 +743,7 @@ $description = "Dashboard for trading platform for bitcoin exchange in United Ki
 				array('$match'=>array(
 					'Completed'=>'N',
 					'Action'=>$Action,										
+					'user_id'=>$id
 					)),
 				array('$group' => array( '_id' => array(
 						'Action'=>'$Action',				
@@ -799,7 +800,7 @@ $description = "Dashboard for trading platform for bitcoin exchange in United Ki
 		));
 	return $YourCompleteOrders;
 	}
-	public function TotalCompleteOrders($Action,$FirstCurrency,$SecondCurrency){
+	public function TotalCompleteOrders($id,$Action,$FirstCurrency,$SecondCurrency){
 		$mongodb = Connections::get('default')->connection;
 		$TotalCompleteOrders = Orders::connection()->connection->command(array(
 			'aggregate' => 'orders',
@@ -818,6 +819,7 @@ $description = "Dashboard for trading platform for bitcoin exchange in United Ki
 				array('$match'=>array(
 					'Completed'=>'Y',
 					'Action'=>$Action,										
+					'user_id'=>$id
 					)),
 				array('$group' => array( '_id' => array(
 						'Action'=>'$Action',				
