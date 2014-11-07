@@ -338,6 +338,7 @@ class AdminController extends \lithium\action\Controller {
 					$details = Details::find('all',array(
 						'conditions'=>array(
 						'phone.verified'=>'No',
+						'phone.error'=>0,
 						'username'=>array('$in'=>$usernames)
 						)
 					));
@@ -366,6 +367,7 @@ class AdminController extends \lithium\action\Controller {
 					$details = Details::find('all',array(
 						'conditions'=>array(
 						'utility.verified'=>'No',
+						'utility.error'=>0,
 						'username'=>array('$in'=>$usernames)
 						)
 					));
