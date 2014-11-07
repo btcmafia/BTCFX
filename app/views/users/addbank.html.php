@@ -13,7 +13,7 @@
 foreach($details as  $d){
 ?>
 <?=$this->form->create('',array('url'=>'/users/addbankdetails','class'=>'')); ?>
-<?=$this->form->field('accountname', array('label'=>'1. Account name','placeholder'=>'Account name','value'=>$d['bank']['accountname'],'class'=>'form-control')); ?>
+<?=$this->form->field('accountname', array('label'=>'1. Account holder(s) name','placeholder'=>'Account name','value'=>$d['bank']['accountname'],'class'=>'form-control')); ?>
 <?=$this->form->field('sortcode', array('label'=>'2. Sort code / MICR','placeholder'=>'Sort code','value'=>$d['bank']['sortcode'],'class'=>'form-control' )); ?>
 <?=$this->form->field('accountnumber', array('label'=>'3. Account number','placeholder'=>'Account number','value'=>$d['bank']['accountnumber'],'class'=>'form-control' )); ?>
 <?=$this->form->field('bankname', array('label'=>'4. Bank name','placeholder'=>'Bank name','value'=>$d['bank']['bankname'] ,'class'=>'form-control')); ?>
