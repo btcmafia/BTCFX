@@ -22,7 +22,8 @@
 			<td><?=$Transactions['Currency']?></td>
 		</tr>		
 </table>
-
+<p>Withdrawal Type: OKPAY (or bank if appropriate)</p>
+<p>And the withdrawal charge for OKPAY withdrawal should say 1 (we'll just leave it as 1 of the denomination that is being withdrawn)</p>
 <p>Thanks,<br>
 <?=NOREPLY?></p>
 
