@@ -356,6 +356,7 @@ class AdminController extends \lithium\action\Controller {
 					$details = Details::find('all',array(
 						'conditions'=>array(
 						'government.verified'=>'No',
+						'government.error'=>0,
 						'username'=>array('$in'=>$usernames)
 						)
 					));
