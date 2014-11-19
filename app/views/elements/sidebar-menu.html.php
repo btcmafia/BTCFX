@@ -70,7 +70,7 @@ if($this->_request->params['controller']!='api'){
 		));
 		$count = count($exchanges);
 ?>
-    <div id="sidebar"> 
+ <div id="sidebar"> 
 		<a href="#<?=$currency?>" class="list-group-item item-border" data-toggle="collapse" data-parent="#sidebar">
 			<i class="glyphicon glyphicon-plus"></i> <?=$currency?> <span class="badge bg_danger"><?=$count?></span>
 		</a>

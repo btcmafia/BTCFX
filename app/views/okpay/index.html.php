@@ -18,11 +18,19 @@
 </div>
 <p style="background-color:white;padding:2px;width:500px;margin:auto;border:1px solid #dddddd ">Then you will be able to fund your IBWT account via OKPAY.</p><br>
 <img src="/img/Stamp.png" alt="IBWT"><br><br>
+
+
+
+
+
+
+
 <div style="background-color:white;padding:2px;width:800px;margin:auto;border:1px solid #dddddd ">
-	<p>You will need submit standard information and get a verified account with OKPAY to transfer funds via a wire transfer.</p>
-Once you have your funds in your OKPAY account, conduct your deposit request via the <a href="/users/funding_fiat">Funding Fiat</a> window, whilst logged into your IBWT account. Then send the equal funds to <strong>deposit@ibwt.co.uk</strong> via your <a href="https://www.okpay.com">OKPAY</a> account.</p>
-<p>The transaction will be verified and your IBWT account will be credited within 24 hours.<br>
-IBWT operates this service every day, excluding Sunday.</p>
+	<p>You will to need submit standard information and get a verified account with OKPAY to transfer funds via a wire transfer.</p>
+<p>
+Once you have your funds in your OKPAY account, conduct your deposit request via the <a href="/users/funding_fiat">Funding Fiat</a> window, whilst logged into your IBWT account, then send the equal amount of funds to <strong>deposit@ibwt.co.uk</strong> via your <a href="https://www.okpay.com">OKPAY</a> account.</p>
+<p>The transaction will be verified and your IBWT account will be credited within 24 hours.
+IBWT operates this service Monday to Saturday.</p>
 	<p  style="background-color:white;padding:2px;width:600px;margin:auto;border:1px solid red "><strong>Please make sure that you include your IBWT deposit reference in the comment.</strong></p><br>
 </div><br>
 	<img src="/img/OkPay-HowtoPay.png" alt="OKPAY - How to pay!"><br><br>

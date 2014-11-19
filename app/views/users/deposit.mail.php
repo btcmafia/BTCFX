@@ -25,6 +25,13 @@ if($data['DepositMethod']=='okpay'){
 <p>Send payment to: deposit@ibwt.co.uk through <a href="http://okpay.com" target="_blank"><strong>OKPAY</strong></a></p>
 </blockquote>
 <?php }?>
+<?php
+if($data['DepositMethod']=='egopay'){
+?>
+<blockquote>
+<p>Send payment to: deposit@ibwt.co.uk through <a href=" https://www.egopay.com/personal/what-is-egopay" target="_blank"><strong>EGOPAY</strong></a></p>
+</blockquote>
+<?php }?>
 <table style="border:2px solid black ">
 		<tr>
 			<td>Reference:</td>
