@@ -1,4 +1,4 @@
-<div class="container-fluid" style="text-align:center ">
+<div class="container-fluid" style="text-align:center;margin-top:10px ">
 <p  style="background-color:white;padding:2px;width:500px;margin:auto;border:1px solid #dddddd "><strong>You can fund your OKPAY account via a bank wire transfer.</strong></p><br>
 <!-- Begin OKPAY Logo --><a HREF="https://www.okpay.com/?rbp=IBWT" target="_blank"><IMG SRC="https://www.okpay.com/img/partners/rbp_banner.gif" BORDER="0" ALT="Sign up for OKPAY and start accepting payments instantly."></a><!-- End OKPAY Logo --><br>
 <br>
