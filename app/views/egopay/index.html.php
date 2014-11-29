@@ -9,8 +9,7 @@ EgoPay is a global payment processor, which enables you to send money to your fr
 With EgoPay you can reach international companies and feed your ego. Enjoy our convenient system, residual referral system and friendly customer support.
 </p>		
 </div>
-<p style="background-color:white;padding:2px;width:500px;margin:auto;border:1px solid #dddddd ">Then you will be able to fund your IBWT account via EGOPAY.
-</p><br>
+
 <img src="/img/Stamp.png" alt="IBWT"><br><br>
 
 <div style="background-color:white;padding:2px;width:800px;margin:auto;border:1px solid #dddddd ">
@@ -20,4 +19,7 @@ With EgoPay you can reach international companies and feed your ego. Enjoy our c
 
 <p>The transaction will be verified and your IBWT account will be credited within 24 hours.
 IBWT operates this service Monday to Saturday.</p>
+<p>You will get an IBWT reference (your account name followed by some numbers) when you make your deposit request on your IBWT account, please make sure you use this when depositing to IBWT via EGOPAY.</p>
+<p style="background-color:white;padding:2px;width:500px;margin:auto;border:1px solid #dddddd ">
+</p><br><img src="/img/egopay2.png" title="EGOPAY">
 </div>
