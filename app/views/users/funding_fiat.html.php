@@ -248,5 +248,5 @@ Mail withdrawals must be in denominations of &pound;5.<br>
 			</table>
 		</form>
 	</div>
-	See our <a href="/withdrawals">Withdrawal</a> information to see current status of withdrawals. Please consider withdrawals via <a href="/okpay">OKPAY</a> / EGOPAY if Hard Currency is unavailable.
+	See our <a href="/company/funding">Withdrawal</a> information to see current status of withdrawals. Please consider withdrawals via <a href="/okpay">OKPAY</a> / EGOPAY if Hard Currency is unavailable.
 </div>
