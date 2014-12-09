@@ -259,9 +259,17 @@ class UsersController extends \lithium\action\Controller {
 		$details = Details::find('first',
 			array('conditions'=>array('user_id'=> (string) $id))
 		);
-		
+							$uploadOk = 1;
 		if ($this->request->data) {
-				$option = $this->request->data['option'];
+			$imageFileType = pathinfo($this->request->data['file']['name'],PATHINFO_EXTENSION);
+			
+			if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+					$msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+					$uploadOk = 0;
+					return $this->redirect('Users::settings',compact('msg'));		
+			} 
+	if($uploadOk=1){
+			$option = $this->request->data['option'];
 				$data = array(
 					$option => $this->request->data['file'],
 					$option.'.verified'=>'No',
@@ -290,7 +298,7 @@ class UsersController extends \lithium\action\Controller {
 
 		$qrCodeUrl = $ga->getQRCodeGoogleUrl("IBWT-".$details['username'], $secret);
 		
-		
+				
 		$image_address = File::find('first',array(
 			'conditions'=>array('details_address_id'=>(string)$details['_id'])
 		));
@@ -317,12 +325,13 @@ class UsersController extends \lithium\action\Controller {
 				$path = LITHIUM_APP_PATH . '/webroot/documents/'.$imagename_bank;
 				file_put_contents($path, $image_bank->file->getBytes());
 		}		
-
+	}
 			$details = Details::find('first',
 				array('conditions'=>array('user_id'=> (string) $id))
 			);		
 				$settings = Settings::find('first');
-		return compact('details','user','title','qrCodeUrl','secret','option','imagename_address','imagename_government','imagename_bank','settings');
+				
+		return compact('details','user','title','qrCodeUrl','secret','option','imagename_address','imagename_government','imagename_bank','settings','msg');
 	}
 	
 	

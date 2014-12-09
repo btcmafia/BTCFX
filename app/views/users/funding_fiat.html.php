@@ -68,6 +68,14 @@
 				</div>
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2">
+				<p>You will need a verified <a href="https://ibwt.co.uk/okpay" target="_blank">OKPAY</a> account to deposit a variety of global denominations or deposit via VISA or MASTERCARD</p>
+			<p>You will need a verified EGOPAY account to deposit USD or other denominations through <a href="https://ibwt.co.uk/egopay" target="_blank">EGOKPAY</a></p>
+			<p><a href="https://ibwt.co.uk/company/funding">BOTH methods (OKPAY & EGOPAY)</a> are conducted via bank wire transfers</p>
+			<p>Hard Currency deposit currently ONLY available for <a href="https://ibwt.co.uk/company/funding">GBP denomination</a></p>
+				</td>
+			</tr>
 			<tr  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Once verified and processed your funds will be mailed.">
 				<td colspan="2" style="text-align:center ">
 				<input type="hidden" name="Reference" id="Reference" value="<?=$Reference?>">
@@ -248,5 +256,5 @@ Mail withdrawals must be in denominations of &pound;5.<br>
 			</table>
 		</form>
 	</div>
-	See our <a href="/company/funding">Withdrawal</a> information to see current status of withdrawals. Please consider withdrawals via <a href="/okpay">OKPAY</a> / EGOPAY if Hard Currency is unavailable.
+	See our <a href="/company/funding">Withdrawal</a> information to see current status of withdrawals. Please consider withdrawals via <a href="/okpay">OKPAY</a> / <a href="/egopay" target="_blank">EGOPAY</a> if Hard Currency is unavailable.
 </div>

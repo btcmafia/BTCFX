@@ -1,6 +1,6 @@
 <div class="container-fluid" style="text-align:center;margin-top:10px ">
 <p  style="background-color:white;padding:2px;width:500px;margin:auto;border:1px solid #dddddd "><strong>Funding USD, EURO or More to Your IBWT Account Via EGOPAY</strong></p><br>
-<a href="https://www.egopay.com/personal/what-is-egopay" target="_blank"> <img src="/img/egopay.jpg" alt="egopay" text="egopay"></a>
+<a href="https://www.egopay.com/personal/what-is-egopay" target="_blank"> <img src="/img/egopay_new_logo1.png" alt="egopay" text="egopay"></a>
 <br>
 <br>
 <div style="background-color:white;padding:6px;width:800px;margin:auto;border:1px solid #dddddd;text-align:center;">

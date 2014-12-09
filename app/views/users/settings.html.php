@@ -594,6 +594,7 @@ Only required if you wish to withdraw hard currency.
 <?php
 foreach ($settings['documents'] as $document){
 	if($document['required']){
+		if($document['name']!="Financial Details"){
 ?>
   <div class="panel panel-default">
     <div class="panel-heading"  style="background-color:#D5E2C5">
@@ -606,12 +607,13 @@ foreach ($settings['documents'] as $document){
     <div id="collapse<?=$document['id']?>" class="panel-collapse <?php if($option==$document['id']){?><?php }else{?>collapse<?php }?>">
       <div class="panel-body">
 				<h3><?=$document['name']?> <?=$document['alias']?></h3>
-						<p>PDF or JPG (1MB max for JPG/PDF)</p>
+						<p>ONLY JPG (1MB max for JPG)</p>
 						<?=$this->form->create(null, array('type' => 'file')); ?>
 						<?=$this->form->field('file', array('type' => 'file','label'=>'')); ?><br>
 						<?=$this->form->field('option',array('type'=>'hidden','value'=>$document['id'])); ?>												
 						<?=$this->form->submit('Save',array('class'=>'btn btn-primary')); ?>
 						<?=$this->form->end(); ?>
+						<?=$msg?>
 							<?php if($details[$document['id'].'.verified']=="No"){?>
 							<p class="label label-warning">Waiting for approval</p>
 							<?php	}else{?>
@@ -627,6 +629,7 @@ foreach ($settings['documents'] as $document){
     </div>
   </div>
 <?php }
+		}
 }?>
 
 <!--------- Security ----------->
@@ -641,6 +644,16 @@ foreach ($settings['documents'] as $document){
     <div id="collapseSecurity" class="panel-collapse <?php if($option=="security"){?><?php }else{?>collapse<?php }?>">
       <div class="panel-body">
 				<h3>Security</h3>
+			<table class="table">
+				<tr>
+					<td>Enable Email Login Password security 
+					<input type="checkbox" name="EmailPasswordSecurity" id="EmailPasswordSecurity" 
+					<?php if($details['EmailPasswordSecurity']=='true'){echo " checked ";}?>
+					onChange="EmailPasswordSecurity(this.checked);">
+					</td>
+				</tr>
+			</table>
+
 		<?php 
 		if($details['TOTP.Security']==false || $details['TOTP.Security']==""){?>
 		<table class="table">
