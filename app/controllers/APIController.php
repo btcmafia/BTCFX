@@ -34,6 +34,7 @@ class APIController extends \lithium\action\Controller {
 		
 		if($_SERVER['REMOTE_ADDR']=='198.50.222.223'){return true;}
 		if($_SERVER['REMOTE_ADDR']=='107.20.80.120'){return true;}		
+		if($_SERVER['REMOTE_ADDR']=='178.62.83.36'){return true;}		//bittybot.co.uk
 		if(in_array($username,array(
 		"IBWTUserA","IBWTUserB","IBWTUserC","IBWTUserD"
 		))){return true;}
