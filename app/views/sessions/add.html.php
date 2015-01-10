@@ -1,11 +1,15 @@
+<?php
+
+?>
+
 <p class="alert alert-danger">
-IBWT has teamed up with <a href="https://okpay.com/" target="_blank">OKPAY</a> to allow international access to its platform, please see our latest <a href="/files/News Release 30-01-14.pdf" title="News Release">News Release</a> for more details...
-</p>
+You can fund your <a href="/" >IBWT</a> account with <a href="/company/funding">Hard Currency</a> (UK only) or via bank wire transfers through <a href="/okpay">OKPAY</a> or <a href="/egopay">EGOPAY</a> </p>
 <div class="row container-fluid">
 	<div class="col-md-6 well" >
 		
 		<div class="panel-body">
         <h3 style="margin-top:0; margin-bottom:15px;">Login</h3>
+								<p>Please make sure you enter your <span style="color:red">username</span>, not your email. Your username & password are <span style="color:red">case sensitive</span>!</p>
 			<?=$this->form->create(null,array('class'=>'form-group has-error')); ?>
 			<div class="form-group has-error">			
 				<div class="input-group">
@@ -24,7 +28,7 @@ IBWT has teamed up with <a href="https://okpay.com/" target="_blank">OKPAY</a> t
 				</div>
 			</div>				
 
-			<div class="alert alert-danger"  id="LoginEmailPassword">
+			<div class="alert alert-danger"  id="LoginEmailPassword" style="display:none">
 				<div class="form-group has-error">			
 					<div class="input-group">
 						<span class="input-group-addon">
@@ -61,7 +65,10 @@ IBWT has teamed up with <a href="https://okpay.com/" target="_blank">OKPAY</a> t
 		Please read the <a href="/company/termsofservice">terms of service</a> page before you sign up.<br>
 		<h3>Security</h3>
 		We use <strong>Two Factor Authentication</strong> for your account to login to <?=COMPANY_URL?>.<br>
-		We use <strong>Time-based One-time Password Algorithm (TOTP)</strong> for login, withdrawal/deposits and settings.
+		We use <strong>Time-based One-time Password Algorithm (TOTP)</strong> for login, withdrawal/deposits and settings.<br>
+		Optional Google Authenticator can be activated via settings.<br>
+Customers must password verify coin withdrawal.<br>
+All coin withdrawals are admin approved for extra security.<br>
 		<p><h3>TOTP Project and downloads</h3>
 			<ul>
 			<li><a href="http://code.google.com/p/google-authenticator/" target="_blank">Google Authenticator</a></li>
