@@ -17,7 +17,7 @@
 				<td>
 					<select name="DepositMethod" id="DepositMethod" onChange="DepositByMethod(this.value);" class="form-control">
 						<option value="okpay">OKPAY</option>
-						<option value="egopay">EGOPAY</option>						
+
 						<option value="post">Postal Address - Royal Mail</option>
 					</select>
 				</td>
@@ -40,7 +40,7 @@
 						</table>
 					</div>
 					<div id="DepositOkPay" style="display:block">
-						<p>Please make SURE to include your IBWT reference in the COMMENT of your OKPAY / EGOPAY transaction to: deposit@ibwt.co.uk through <a href="/okpay" target="_blank"><strong>OKPAY</strong></a> / <a href=" https://www.egopay.com/personal/what-is-egopay" target="_blank"><strong>EGOPAY</strong></a></p>
+						<p>Please make SURE to include your IBWT reference in the COMMENT of your OKPAY / EGOPAY transaction to: deposit@ibwt.co.uk through <a href="/okpay" target="_blank"><strong>OKPAY</strong></a> </p>
 					</div>
 				</td>
 			<tr  class=" tooltip-x" rel="tooltip-x" data-placement="top" title="Quote this reference number in your deposit">
@@ -70,8 +70,8 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-			<p>You will need a verified EGOPAY account to deposit USD or other denominations through <a href="https://ibwt.co.uk/egopay" target="_blank">EGOKPAY</a></p>
-			<p><a href="https://ibwt.co.uk/company/funding">BOTH methods (OKPAY & EGOPAY)</a> are conducted via bank wire transfers</p>
+			
+			<p><a href="https://ibwt.co.uk/company/funding"> methods OKPAY </a> are conducted via bank wire transfers</p>
 			<p>Hard Currency deposit currently ONLY available for <a href="https://ibwt.co.uk/company/funding">GBP denomination</a></p>
 				</td>
 			</tr>
@@ -117,7 +117,7 @@
 					<td colspan="2">
 						<select name="WithdrawalMethod" id="WithdrawalMethod" onChange="PaymentMethod(this.value);" class="form-control">
 							<option value="okpay">OKPAY</option>
-							<option value="egopay">EGOPAY</option>							
+							
 							<option value="post">Postal Address - Royal Mail</option>
 							<option value="bank">Bank - Personal</option>
 							<option value="bankBuss">Bank - Business</option>											
@@ -235,7 +235,7 @@
 					<td colspan="2"><input type="text" value="" placeholder="5.0" min="5" max="10000" name="WithdrawAmountFiat" id="WithdrawAmountFiat" maxlength="5" class="form-control"><br>
 <small style="color:red ">
 &pound;1 mail withdrawal fee + royal mail fee (see below).<br>
-&pound;1 OKPAY / EGOPAY withdrawal fee<br>
+&pound;1 OKPAY withdrawal fee<br>
 &pound;2 bank withdrawal fee.<br>
 Mail withdrawals must be in denominations of &pound;5.<br>
 </small></td>
@@ -255,5 +255,5 @@ Mail withdrawals must be in denominations of &pound;5.<br>
 			</table>
 		</form>
 	</div>
-	See our <a href="/company/funding">Withdrawal</a> information to see current status of withdrawals. Please consider withdrawals via <a href="/okpay">OKPAY</a> / <a href="/egopay" target="_blank">EGOPAY</a> if Hard Currency is unavailable.
+	See our <a href="/company/funding">Withdrawal</a> information to see current status of withdrawals. Please consider withdrawals via <a href="/okpay">OKPAY</a>  if Hard Currency is unavailable.
 </div>
