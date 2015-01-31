@@ -84,7 +84,7 @@ $ex = Session::read('ex');
 						<ul class="nav nav-sidebar">
 							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> MARKETS</a></li>
 						<?php echo $this->_render('element', 'sidebar-menu');?>		
-							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>
+<!--							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>-->
 						<?php echo $this->_render('element', 'share-menu');?>
 							<li class="active"><a href="/users/settings"> <i class="fa fa-gears"></i> Settings</a></li>
 							<li class="active"><a href="/ex/dashboard"> <i class="fa fa-dashboard"></i> Dashboard</a></li>						

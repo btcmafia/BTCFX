@@ -11,6 +11,7 @@ $details = Details::find('all',array(
 			'company.verified'=>'Yes')
 	));
 ?>
+<!--
 <div id="sidebar"> 
 	<a href="#Shares" class="list-group-item item-border" data-toggle="collapse" data-parent="#sidebar">
 		<i class="glyphicon glyphicon-plus"></i> Companies <span class="badge bg_danger"><?=$count?></span>
@@ -21,5 +22,6 @@ $details = Details::find('all',array(
 			<i class="glyphicon glyphicon-caret-right"></i><?=$detail['company']['ShortName']?> <span class="badge btn-success"><?=number_format($detail['company']['price'][0],2)?></span>
 		</a>				
 	<?php }?>
-		</div> <!-- subitem -->
-</div> <!-- sidebar -->           
+		</div> 
+</div> 
+-->
