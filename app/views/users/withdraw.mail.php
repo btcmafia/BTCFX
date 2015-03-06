@@ -7,12 +7,12 @@
 <h5>Hi <?=$data['username']?>,</h5>
 
 <p>You have requested to withdraw money from <?=COMPANY_URL?>.</p>
-<p><strong>Thank you, your request has been sent for clearance.</strong></p>
+<p>Thank you, your request has been sent for clearance.</p>
 <?php 
 
 	if($data['WithdrawalMethod']=='okpay'){
 ?>
-<strong>Withdrawal Method: OKPAY send to <?=$data['okpayEmail']?>.</strong>
+Withdrawal Method: OKPAY (or bank if appropriate) send to <?=$data['okpayEmail']?>
 <?php }?><table>
 <?php 
 	if($data['WithdrawalMethod']=='bank'){
@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			<td>Withdrawal Charges:</td>
-			<td>&pound; 2</td>
+			<td> 1</td>
 		</tr>
 <?php }?>
 <?php 
