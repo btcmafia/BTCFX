@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+
 /**
  * Lithium: the most rad php framework
  *
@@ -6,6 +8,8 @@
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
+require_once('app/extensions/action/General.php');
 require 'app/webroot/index.php';
+
 
 ?>

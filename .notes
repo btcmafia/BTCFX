@@ -1,0 +1,1 @@
+On app/controllers/UserController.php [line 1094] we appear to be send our blockchain.info password in plain text, I.e no https?

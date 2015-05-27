@@ -130,7 +130,8 @@ class SessionsController extends \lithium\action\Controller {
 								);
 								Logins::create()->save($data);
 						/////////////////////////////////////////////////////////////////////////////////						
-						return $this->redirect('ex::dashboard');
+					//	return $this->redirect('ex::dashboard');
+						return $this->redirect('in::accounts');
 						exit;
 					}
 				}else{

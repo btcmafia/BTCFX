@@ -1,14 +1,12 @@
 <?php
 
 ?>
-
-<p class="alert alert-danger">
-You can fund your <a href="/" >IBWT</a> account with <a href="/company/funding">Hard Currency</a> (UK only) or via bank wire transfers through <a href="/okpay">OKPAY</a> or <a href="/egopay">EGOPAY</a> </p>
+<p>&nbsp;</p>
 <div class="row container-fluid">
 	<div class="col-md-6 well" >
 		
 		<div class="panel-body">
-        <h3 style="margin-top:0; margin-bottom:15px;">Login</h3>
+        <h3 style="margin-top:0; margin-bottom:15px;">Sign In</h3>
 								<p>Please make sure you enter your <span style="color:red">username</span>, not your email. Your username & password are <span style="color:red">case sensitive</span>!</p>
 			<?=$this->form->create(null,array('class'=>'form-group has-error')); ?>
 			<div class="form-group has-error">			
@@ -57,24 +55,5 @@ You can fund your <a href="/" >IBWT</a> account with <a href="/company/funding">
 			<a href="/users/forgotpassword">Forgot password?</a>
 		</div>
 	</div>
-	<div class="col-md-6 well">
-	
-		<div style="padding-top:0;" class="panel-body">
-		<h3 style="margin-top:0;">Sign up</h3>
-		Don't have an account. <a href="/users/signup" >Signup</a><br>
-		Please read the <a href="/company/termsofservice">terms of service</a> page before you sign up.<br>
-		<h3>Security</h3>
-		We use <strong>Two Factor Authentication</strong> for your account to login to <?=COMPANY_URL?>.<br>
-		We use <strong>Time-based One-time Password Algorithm (TOTP)</strong> for login, withdrawal/deposits and settings.<br>
-		Optional Google Authenticator can be activated via settings.<br>
-Customers must password verify coin withdrawal.<br>
-All coin withdrawals are admin approved for extra security.<br>
-		<p><h3>TOTP Project and downloads</h3>
-			<ul>
-			<li><a href="http://code.google.com/p/google-authenticator/" target="_blank">Google Authenticator</a></li>
-			<li><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">TOTP Android App</a></li>
-			<li><a href="http://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank">TOTP iOS App</a></li>
-			</ul>
-		</p>
-	</div>
+
 </div>

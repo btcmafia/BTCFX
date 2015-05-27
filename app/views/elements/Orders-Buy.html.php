@@ -1,8 +1,7 @@
 	<div class="col-md-6">
 		<div class="panel panel-success">
 			<div class="panel panel-heading">
-			<h2 class="panel-title"  style="font-weight:bold" href="#">Orders:
-			 Buy <?=$first_curr?> &lt; <?=$second_curr?></h2>
+			<h2 class="panel-title"  style="font-weight:bold" href="#">Bids</h2>
 <?php  foreach($TotalBuyOrders['result'] as $TBO){
 	$BuyAmount = $TBO['Amount'];
 	$BuyTotalAmount = $TBO['TotalAmount'];
@@ -14,8 +13,8 @@
 					<tr>
 					<th style="text-align:center " rowspan="2">#</th>										
 					<th style="text-align:center ">Price</th>
-					<th style="text-align:center "><?=$first_curr?></th>
-					<th style="text-align:center "><?=$second_curr?></th>					
+					<th style="text-align:center ">Quantity <?=$first_curr?></th>
+					<th style="text-align:center ">Value <?=$second_curr?></th>					
 					</tr>
 					<tr>
 					<th style="text-align:center " >Total &raquo;</th>

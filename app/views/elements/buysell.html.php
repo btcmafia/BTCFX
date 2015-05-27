@@ -1,19 +1,19 @@
 <?php
+
 use lithium\util\String;
 
 $sel_curr = $this->_request->params['args'][0];
-
 $first_curr = strtoupper(substr($sel_curr,0,3));
 $second_curr = strtoupper(substr($sel_curr,4,3));
-
 $BalanceFirst = $details['balance'][$first_curr];
 $$first_curr = $details['balance'][$first_curr];
 $BalanceSecond = $details['balance'][$second_curr];
 $$second_curr = $details['balance'][$second_curr];
+
 if (is_null($BalanceFirst)){$BalanceFirst = 0;}
 if (is_null($BalanceSecond)){$BalanceSecond = 0;}
-
 ?>
+
 <div id="User_ID" style="display:none "><?=$details['user_id']?></div>
 <?php if(strtolower($this->_request->controller)=='ex'){ 	?>
 <div class="row" >
@@ -67,7 +67,6 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 				'BalanceSecond' => $BalanceSecond,
 				'details' => $details
 			));
-
 	}else{
 		if($$second_curr!=0 && $all){ 
 			echo $this->_render('element', 'Buy',array(
@@ -85,7 +84,6 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 			));
 		}
 	}
-
 	if(!$all){
 			echo $this->_render('element', 'Sell',array(
 			'first_curr' => $first_curr,
@@ -113,15 +111,9 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 	}
 	?>
 	</div>
-	<div class="row">
+
+<div class="row"><!-- orderbook -->
 	<?php
-		echo $this->_render('element', 'Orders-Sell',array(
-			'first_curr' => $first_curr,
-			'second_curr' => $second_curr,
-			'TotalSellOrders' => $TotalSellOrders,		
-			'SellOrders' => $SellOrders,
-			'sel_curr' => $sel_curr,
-		));
 		echo $this->_render('element', 'Orders-Buy',array(
 			'first_curr' => $first_curr,
 			'second_curr' => $second_curr,
@@ -129,22 +121,12 @@ if (is_null($BalanceSecond)){$BalanceSecond = 0;}
 			'BuyOrders' => $BuyOrders,
 			'sel_curr' => $sel_curr,
 		));
+		echo $this->_render('element', 'Orders-Sell',array(
+			'first_curr' => $first_curr,
+			'second_curr' => $second_curr,
+			'TotalSellOrders' => $TotalSellOrders,		
+			'SellOrders' => $SellOrders,
+			'sel_curr' => $sel_curr,
+		));
 	?>
-</div>
-<div class="row">
-<?php	
-	echo $this->_render('element', 'YourOrders',array(
-			'first_curr' => $first_curr,
-			'second_curr' => $second_curr,
-			'YourOrders' => $YourOrders,		
-			'sel_curr' => $sel_curr,
-		));
-		echo $this->_render('element', 'Orders-Complete',array(
-			'first_curr' => $first_curr,
-			'second_curr' => $second_curr,
-			'YourCompleteOrders' => $YourCompleteOrders,		
-			'BuyOrders' => $BuyOrders,
-			'sel_curr' => $sel_curr,
-		));
-?>
 </div>

@@ -30,6 +30,10 @@ class UsersController extends \lithium\action\Controller {
 	public function index(){
 	}
 	public function signup() {	
+
+	$this->redirect('/register');
+	return;
+	
 		if($this->request->data) {	
       $Users = Users::create($this->request->data);
       $saved = $Users->save();
@@ -635,9 +639,10 @@ class UsersController extends \lithium\action\Controller {
 		///////////////////// Change of code required when Virtual Currency added
 		switch($currency){
 			case "BTC":
+			
 			$currencyName = "Bitcoin";
 			$my_address = BITCOIN_ADDRESS;			
-			$callback_url = 'https://'.COMPANY_URL.'/users/receipt/?userid='.$userid.'&secret='.$secret;
+			$callback_url = 'http://'.COMPANY_URL.'/users/receipt/?userid='.$userid.'&secret='.$secret;
 			$root_url = 'https://blockchain.info/api/receive';
 			$parameters = 'method=create&address=' . $my_address .'&shared=false&callback='. urlencode($callback_url);
 			ini_set('allow_url_fopen',1);
@@ -991,7 +996,7 @@ class UsersController extends \lithium\action\Controller {
 			$message = Swift_Message::newInstance();
 			$message->setSubject($currency." Admin Approval from ".COMPANY_URL);
 			$message->setFrom(array(NOREPLY => $currency.' Admin Approval email '.COMPANY_URL));
-			$message->setTo('admin@ibwt.co.uk');
+			$message->setTo('stephen@joopla.co.uk');
 			$message->addBcc(MAIL_1);
 			$message->addBcc(MAIL_2);			
 			$message->addBcc(MAIL_3);		
@@ -1027,7 +1032,7 @@ class UsersController extends \lithium\action\Controller {
 					'password' => String::hash($password),
 					)
 			));
-			$pos = strrpos($useradmin['email'], 'ibwt.co.uk');
+			$pos = strrpos($useradmin['email'], 'joopla.co.uk');
 			if ($pos === false) { // note: three equal signs
    return $this->redirect(array('controller'=>'users','action'=>'paymentadminconfirm/'.$currency.'/'.$verify));
 			}
@@ -1401,6 +1406,27 @@ class UsersController extends \lithium\action\Controller {
 			'order'=>array('DateTime'=>-1)
 		));
 		return compact('title','details','transactions','Fiattransactions');			
+	}
+
+	public function accounts() {
+
+		$title = 'Account Balances';
+
+		$user = Session::read('default');
+		if ($user==""){		return $this->redirect('/login');}
+		$id = $user['_id'];
+		
+		return;
+	}
+	
+	public function orders() {
+		$title = 'Pending Orders';
+
+		$user = Session::read('default');
+		if ($user==""){		return $this->redirect('/login');}
+		$id = $user['_id'];
+
+		return;
 	}
 	
 	public function deposit(){

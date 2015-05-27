@@ -21,6 +21,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
+<!-- delete when live --><META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,13 +33,14 @@
     <link rel="shortcut icon" href="favicon.ico">
 
 
-		<title><?php echo MAIN_TITLE;?><?php if(isset($title)){echo $title;} ?></title>
+		<title><?php echo COMPANY_NAME;?> | <?php if(isset($title)){echo $title;} ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/bootstrap/css/dashboard.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
+    <link href="/bootstrap/css/spacelab.css?v=<?=rand(1,100000000)?>" rel="stylesheet">
+    <link href="/css/bitcoinsuk.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body {
 	padding-top: 40px;
@@ -81,23 +85,22 @@ $ex = Session::read('ex');
       <div class="row">
 			<?php if(strtolower($this->_request->controller)!='admin'){ ?>
 					<div class="col-sm-3 col-md-2 sidebar">
-						<ul class="nav nav-sidebar">
-							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> MARKETS</a></li>
-						<?php echo $this->_render('element', 'sidebar-menu');?>		
-<!--							<li class="active"><a href="#"> <i class="glyphicon glyphicon-th-list"></i> SHARES</a></li>-->
-						<?php echo $this->_render('element', 'share-menu');?>
-							<li class="active"><a href="/users/settings"> <i class="fa fa-gears"></i> Settings</a></li>
-							<li class="active"><a href="/ex/dashboard"> <i class="fa fa-dashboard"></i> Dashboard</a></li>						
-						</ul>
-					</div> <!-- sidebar-->
+						
+
+							<?php echo $this->_render('element', 'sidebar'); ?>
+							</div> <!-- sidebar-->
+							<ul class="nav nav-sidebar">
 			<?php }?>
         
+
 				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
 					<div class="col-md-12 main">				
 					<?php echo $this->_render('element', 'admin');?>
 				<?php }else{?>
 					<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<?php }?>
+ 							 <?php echo $this->_render('element', 'topmenu'); ?>
+
 				<?php echo $this->content(); ?>
 					<div class="footer">
 						<?php echo $this->_render('element', 'footer');?>	

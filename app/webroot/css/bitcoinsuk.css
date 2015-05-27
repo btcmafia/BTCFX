@@ -1,0 +1,16 @@
+/*@import url('/bootstrap/css/spacelab.css');
+*/
+
+#site-title, #site-title a, #site-title a:visited  {
+position:relative; 
+left:15px;
+top: -3px;
+color: white;
+
+}
+
+#logo {
+
+position: absolute;
+top: 60px;
+}

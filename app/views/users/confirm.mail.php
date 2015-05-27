@@ -5,11 +5,11 @@
 
 <p>Please confirm your email address associated at <?=COMPANY_URL?> by clicking the following link:</p>
 
-<p><a href="https://<?=$_SERVER['HTTP_HOST'];?>/users/confirm/<?=$email?>/<?=$verification?>">
-https://<?=$_SERVER['HTTP_HOST'];?>/users/confirm/<?=$email?>/<?=$verification?></a></p>
+<p><a href="<?=PROTOCOL?>://<?=$_SERVER['HTTP_HOST'];?>/users/confirm/<?=$email?>/<?=$verification?>">
+<?=PROTOCOL?>://<?=$_SERVER['HTTP_HOST'];?>/users/confirm/<?=$email?>/<?=$verification?></a></p>
 
 <p>Or use this confirmation code: <?=$verification?> for your email address: <?=$email?> on the page 
-https://<?=$_SERVER['HTTP_HOST'];?>/users/email</p>
+<?=PROTOCOL?>://<?=$_SERVER['HTTP_HOST'];?>/users/email</p>
 
 </p>
 
