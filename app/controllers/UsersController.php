@@ -29,6 +29,8 @@ class UsersController extends \lithium\action\Controller {
 
 	public function index(){
 	}
+
+/*
 	public function signup() {	
 
 	$this->redirect('/register');
@@ -361,6 +363,8 @@ class UsersController extends \lithium\action\Controller {
 			echo 'FAILED';
 		}
 	}
+
+*/
 	
 	public function SendPassword($username=""){
 
@@ -433,6 +437,8 @@ class UsersController extends \lithium\action\Controller {
 			
 			return $this->render(array('json' => array("Password"=>"Password sent to email","TOTP"=>$totp,"EmailPasswordSecurity"=>$details['EmailPasswordSecurity'])));
 	}
+
+/*
 	public function SaveTOTP(){
 		$user = Session::read('default');
 		if ($user==""){return $this->render(array('json' => false));}
@@ -493,6 +499,9 @@ class UsersController extends \lithium\action\Controller {
 
 		return $this->render(array('json' => ""));
 	}
+
+*/
+
 	public function forgotpassword(){
 		if($this->request->data){
 			$msg = "Password reset link sent to your email address!";
@@ -550,7 +559,7 @@ class UsersController extends \lithium\action\Controller {
 		
 		return compact('msg');
 	}
-
+/*
 	public function addbank(){
 		$user = Session::read('default');
 		if ($user==""){		return $this->redirect('Users::index');}		
@@ -1784,5 +1793,7 @@ class UsersController extends \lithium\action\Controller {
 		
 		return $this->render(array('json' => array("Updated"=>$value)));
 	}
+*/
+
 }
 ?>
