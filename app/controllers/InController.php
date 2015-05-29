@@ -436,8 +436,8 @@ class InController extends \app\extensions\action\Controller {
                                 'template',
                                 compact('email','key'),
                                 array(
-                                        'controller' => 'users',
-                                        'template'=>'forgot',
+                                        'controller' => 'in',
+                                        'template'=>'forgotpassword',
                                         'type' => 'mail',
                                         'layout' => false
                                 )
