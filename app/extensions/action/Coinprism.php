@@ -6,9 +6,9 @@ use app\models\Addresses;
 
 class Coinprism extends \lithium\action\Controller{
 // @var string
-        private $username;
+        private $coinprism_username;
         // @var string
-        private $password;
+        private $coinprism_password;
 
 /**
 * Contructor
@@ -18,15 +18,17 @@ class Coinprism extends \lithium\action\Controller{
 */
         public function __construct($username, $password) {
         //connection details
-        $this->username = $username;
-        $this->password = $password;
+        $this->coinprism_username = $username;
+        $this->coinprism_password = $password;
         }
 
 /**
 *Gets a new address from Coinprism, monitors it and saves it
 *
 */
-	public function create_address($user_id, $label = 'My Addr') {
+	public function create_address($user_id, $label = null) {
+
+	$label = "New Address AB";
 
 	$ch = curl_init();
 
@@ -42,19 +44,30 @@ class Coinprism extends \lithium\action\Controller{
 
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
  	 "Content-Type: application/json",
-         "X-Coinprism-Username: $this->username",
-  	 "X-Coinprism-Password: $this->password"
+         "X-Coinprism-Username: $this->coinprism_username",
+  	 "X-Coinprism-Password: $this->coinprism_password"
 	));
 
 	$response = curl_exec($ch);
 	curl_close($ch);
 
-	if (!$response) {
+	if (!$response['bitcoin_address']) {
                         return array('error'=>'Unable to connect to Coinprism API.');
                 }
 
 	$response = json_decode($response,true);
-	
+/*
+echo "<p>Username: " . $this->coinprism_username;
+echo '<p>Password: ' . $this->coinprism_password;
+
+echo "<p>Response: ";
+print_r($response);
+echo '</p>';
+die;
+*/	
+//if($response['bitcoin_address'] == '') {
+//mail('stephen@joopla.co.uk', 'No address from Coinprism!!', "Response:\n\n" . var_dump($response, true) . "\n\nUsername: " . $this->coinprism_username . "\n\nPassword: " . $this->coinprism_password);
+//}
 
 	$monitor = new Monitor(CHAIN_API_KEY, CHAIN_SECRET, CHAIN_CALLBACK_URL);
 	if(! $foo = $monitor->monitor_address($response['bitcoin_address']) ) {

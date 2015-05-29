@@ -203,6 +203,3 @@ reset($YourOrders);
 </div>
 
 
-                        </div>
-                </div>
-        </div>

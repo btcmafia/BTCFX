@@ -15,7 +15,7 @@ use \Swift_Mailer;
 use \Swift_Message;
 use \Swift_Attachment;
 
-class SettingsController extends \lithium\action\Controller {
+class SettingsController extends \app\extensions\action\Controller {
 
         public function index() {
       
@@ -24,10 +24,10 @@ class SettingsController extends \lithium\action\Controller {
 
 	public function profile() {
 
-		$user = Session::read('default');
-		if ($user==""){		return $this->redirect('/login');}
-		$user_id = $user['_id'];
-
+		$this->security();
+		
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();
 
 		$emails = Emails::find('first', array(
 					'conditions' => array(
@@ -38,11 +38,6 @@ class SettingsController extends \lithium\action\Controller {
 
 		$email = $emails['Email']; //current	
 		$current_email = $email; //we'll switch back to this on successful update, because it won't be validated yet
-
-		$details = Details::find('first',	array(
-					'conditions'=>array(
-						'user_id'=> $user_id)
-						));
 
 
 		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
@@ -138,6 +133,9 @@ class SettingsController extends \lithium\action\Controller {
 
 	public function verifyemail($user_id, $email, $code) {
 
+	//TODO: think about this
+	//Don't need to be logged in to verify email address!!
+
 		$search = Emails::find('first', array(
 				'conditions' => array(
 						'user_id' => $user_id,
@@ -163,7 +161,9 @@ class SettingsController extends \lithium\action\Controller {
 					'conditions' => array(
 						'user_id' => $user_id,
 						'Default' => true)
-						))->save(array('Default' => false));
+						));
+		
+		if($old) $old->save(array('Default' => false));
 			
 			$search->save(array('Verified' => true, 'Default' => true));
 
@@ -190,21 +190,21 @@ class SettingsController extends \lithium\action\Controller {
 
 	public function deleteemail($email_id, $code) {
 
+		//def need be logged in here!!?
+		$this->security();
+
 		$this->delete_email('', $email_id, $code);
 	
 		return $this->redirect('/settings/profile/');
 	}
 
-	public function security() {
 
-		$user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $user_id = $user['_id'];
+	public function securitysettings() {
 
-                $details = Details::find('first',
-                        array('conditions'=>array('user_id'=> (string) $user_id))
-                );
-		
+		$this->security();
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();
+
 		$ga = new GoogleAuthenticator();
 	
 		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
@@ -357,13 +357,11 @@ class SettingsController extends \lithium\action\Controller {
 
 	public function notifications() {
 
-
 	return;
 	}
 
 	
 	public function identity() {
-
 
 	return;
 	}

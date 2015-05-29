@@ -159,6 +159,7 @@ class SessionsController extends \lithium\action\Controller {
 			exit;
         // Handle failed authentication attempts
     }
+
 	 public function delete() {
 		Auth::clear('member');
 		Session::delete('default');
