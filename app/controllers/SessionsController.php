@@ -105,7 +105,7 @@ class SessionsController extends \lithium\action\Controller {
 								);
 								Logins::create()->save($data);
 /////////////////////////////////////////////////////////////////////////////////								
-								return $this->redirect('ex::dashboard');
+								return $this->redirect('in::splash');
 								exit;
 							}else{
 								Auth::clear('member');
@@ -135,7 +135,7 @@ class SessionsController extends \lithium\action\Controller {
 								Logins::create()->save($data);
 						/////////////////////////////////////////////////////////////////////////////////						
 					//	return $this->redirect('ex::dashboard');
-						return $this->redirect('in::accounts');
+						return $this->redirect('in::splash');
 						exit;
 					}
 /*OneCode Failed - so not needed!

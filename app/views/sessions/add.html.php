@@ -13,7 +13,7 @@
 					<span class="input-group-addon">
 						<i class="glyphicon glyphicon-asterisk" id="UserNameIcon"></i>
 					</span>
-						<?=$this->form->field('username', array('label'=>'', 'onBlur'=>'SendPassword();', 'placeholder'=>'username', 'class'=>'form-control')); ?>
+						<?=$this->form->field('username', array('label'=>'', 'placeholder'=>'username', 'class'=>'form-control')); ?>
 				</div>
 			</div>				
 			<div class="form-group has-error">			
@@ -26,9 +26,9 @@
 			</div>				
 
 		
-			<?=$this->form->submit('Login' ,array('class'=>'btn btn-primary btn-block','id'=>'LoginButton','disabled'=>'disabled')); ?>
+			<?=$this->form->submit('Login' ,array('class'=>'btn btn-primary btn-block','id'=>'LoginButton')); ?>
 			<?=$this->form->end(); ?>
-			<a href="/users/forgotpassword">Forgot password?</a>
+			<a href="/in/forgotpassword">Forgot password?</a>
 		</div>
 	</div>
 

@@ -237,7 +237,7 @@ class SettingsController extends \app\extensions\action\Controller {
 
 				 if($key != $this->request->data['key']) {
 
-                       		 $error_2fa = 'Password not changed';
+                       		 $error_2fa = 'Settings not updated';
                         	 return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
                        		 }
 
