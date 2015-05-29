@@ -3,7 +3,7 @@ use app\models\Trades;
 use lithium\storage\Session;
 use app\extensions\action\Functions;
 ?>
-<?php $user = Session::read('member'); ?>
+<?php $user = Session::read('default'); ?>
 <div class="navbar-header">
 	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>

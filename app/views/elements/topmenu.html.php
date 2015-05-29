@@ -25,7 +25,7 @@ use lithium\storage\Session;
  <li class="dropdown"><a aria-expanded="true" class="dropdown-toggle" data-toggle="dropdown" href="#">Settings<span class="caret"></span></a>
  	<ul class="dropdown-menu">
 	<li><a href="/settings/profile/">Account Profile</a></li>
-	<li><a href="/settings/securitysettings/">Security Settings</a></li>
+	<li><a href="/settings/security/">Security Settings</a></li>
 	</ul>
  </li>
 

@@ -363,6 +363,11 @@ class UsersController extends \lithium\action\Controller {
 	}
 	
 	public function SendPassword($username=""){
+
+	//TODO: find where this is called from and delete
+
+	return $this->render(array('json' => array("Password"=>"Password sent to email","TOTP"=>'No',"EmailPasswordSecurity"=>'No')));
+
 		$users = Users::find('first',array(
 					'conditions'=>array('username'=>$username)
 				));

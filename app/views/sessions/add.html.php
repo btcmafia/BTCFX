@@ -25,29 +25,6 @@
 				</div>
 			</div>				
 
-			<div class="alert alert-danger"  id="LoginEmailPassword" style="display:none">
-				<div class="form-group has-error">			
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-asterisk"></i>
-						</span>
-					<?=$this->form->field('loginpassword', array('type' => 'password', 'label'=>'','class'=>'span1','maxlength'=>'6', 'placeholder'=>'123456','class'=>'form-control')); ?>
-					</div>		
-				</div>		
-				<small>Please check your registered email in 5 seconds. You will receive "<strong>Login Email Password</strong>" use it in the box below.</small>
-			</div>		
-
-			<div style="display:none" id="TOTPPassword" class="alert alert-danger">
-			<div class="form-group has-error">			
-				<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-asterisk"></i>
-					</span>
-			<?=$this->form->field('totp', array('type' => 'password', 'label'=>'','class'=>'span1','maxlength'=>'6', 'placeholder'=>'123456','class'=>'form-control')); ?>	
-				</div>		
-			</div>		
-				<small><strong>Time based One Time Password (TOTP) from your smartphone</strong></small>	
-			</div>
 		
 			<?=$this->form->submit('Login' ,array('class'=>'btn btn-primary btn-block','id'=>'LoginButton','disabled'=>'disabled')); ?>
 			<?=$this->form->end(); ?>
