@@ -24,7 +24,7 @@ class SettingsController extends \app\extensions\action\Controller {
 
 	public function profile() {
 
-		$this->security();
+		$this->secure();
 		
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
@@ -191,7 +191,7 @@ class SettingsController extends \app\extensions\action\Controller {
 	public function deleteemail($email_id, $code) {
 
 		//def need be logged in here!!?
-		$this->security();
+		$this->secure();
 
 		$this->delete_email('', $email_id, $code);
 	
@@ -199,9 +199,9 @@ class SettingsController extends \app\extensions\action\Controller {
 	}
 
 
-	public function securitysettings() {
+	public function security() {
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
 

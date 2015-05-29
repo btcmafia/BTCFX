@@ -11,7 +11,6 @@ use app\extensions\action\GoogleAuthenticator;
 use lithium\util\String;
 use MongoID;
 
-use app\extensions\action\Bitcoin;
 
 use \lithium\template\View;
 use \Swift_MailTransport;

@@ -17,7 +17,7 @@ class Controller extends \lithium\action\Controller {
 
 	}
 
-   public function security($level = false) {
+   public function secure($level = false) {
 	
 	if( ('admin' == $level) && (! $this->is_admin()) ) return $this->redirect(PROTOCOL . '://' . COMPANY_URL);
 

@@ -1,10 +1,6 @@
 <?php
 namespace app\controllers;
 
-//use app\extensions\action\Security;
-//use app\extensions\action\OAuth2;
-//use app\models\Users;
-//use app\models\Details;
 use app\models\Addresses;
 use app\models\Transactions;
 use app\models\Orders;
@@ -15,11 +11,6 @@ use lithium\data\Connections;
 use app\extensions\action\Functions;
 use app\extensions\action\Coinprism;
 use app\extensions\action\Money;
-//use app\extensions\action\Bitcoin;
-//use app\extensions\action\Litecoin;
-//use app\extensions\action\Greencoin;
-//use lithium\security\Auth;
-//use lithium\storage\Session;
 use app\extensions\action\GoogleAuthenticator;
 use lithium\util\String;
 use MongoID;
@@ -36,7 +27,7 @@ class InController extends \app\extensions\action\Controller {
 
 	public function accounts() {
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 
          	$title = 'Account Balances';
@@ -60,7 +51,7 @@ class InController extends \app\extensions\action\Controller {
 
         public function orders() {
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
                 
 		$title = 'Open Orders';
@@ -83,7 +74,7 @@ class InController extends \app\extensions\action\Controller {
 
 	public function transactions() {
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
 
@@ -115,7 +106,7 @@ class InController extends \app\extensions\action\Controller {
 
 	public function withdraw($currency='btc') {
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 		
 		$currency = strtoupper($currency);
@@ -159,7 +150,7 @@ class InController extends \app\extensions\action\Controller {
 
     public function deposit($currency='btc'){
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();                
 
@@ -217,7 +208,7 @@ class InController extends \app\extensions\action\Controller {
 
 	public function makedefault($btc_address) {
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();                
 		
@@ -242,7 +233,7 @@ class InController extends \app\extensions\action\Controller {
 
 	public function removetransaction($TransactionID,$ID,$url,$currency){
 
-		$this->security();              
+		$this->secure();              
 
 		 $tx = Transactions::find('first', array(
                         'conditions' => array('_id' => new MongoID($ID))
@@ -266,7 +257,7 @@ class InController extends \app\extensions\action\Controller {
 
 	public function paymentverify($currency=null){
 
-		$this->security();
+		$this->secure();
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
 		$email  =  $this->get_email();
