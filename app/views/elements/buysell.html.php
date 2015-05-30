@@ -1,13 +1,16 @@
 <?php
 
 use lithium\util\String;
+use app\extensions\action\Money;
+
+$money = new Money();
 
 $sel_curr = $this->_request->params['args'][0];
 $first_curr = strtoupper(substr($sel_curr,0,3));
 $second_curr = strtoupper(substr($sel_curr,4,3));
-$BalanceFirst = $details['balance'][$first_curr];
+$BalanceFirst = $money->display_money($details['balance'][$first_curr], $first_curr);
 $$first_curr = $details['balance'][$first_curr];
-$BalanceSecond = $details['balance'][$second_curr];
+$BalanceSecond = $money->display_money($details['balance'][$second_curr], $second_curr);
 $$second_curr = $details['balance'][$second_curr];
 
 if (is_null($BalanceFirst)){$BalanceFirst = 0;}
