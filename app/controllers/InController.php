@@ -1,23 +1,18 @@
 <?php
 namespace app\controllers;
-use app\extensions\action\OAuth2;
-use app\models\Users;
-use app\models\Details;
+
 use app\models\Addresses;
 use app\models\Transactions;
 use app\models\Orders;
 use app\models\Parameters;
 use app\models\Settings;
+use app\models\Details;
 use app\models\File;
 use lithium\data\Connections;
+use lithium\storage\Session;
 use app\extensions\action\Functions;
 use app\extensions\action\Coinprism;
 use app\extensions\action\Money;
-use app\extensions\action\Bitcoin;
-use app\extensions\action\Litecoin;
-use app\extensions\action\Greencoin;
-use lithium\security\Auth;
-use lithium\storage\Session;
 use app\extensions\action\GoogleAuthenticator;
 use lithium\util\String;
 use MongoID;
@@ -27,18 +22,17 @@ use \Swift_Mailer;
 use \Swift_Message;
 use \Swift_Attachment;
 
-class InController extends \lithium\action\Controller {
+class InController extends \app\extensions\action\Controller {
 
 	public function index() {
 	}
 
 	public function accounts() {
 
-         	$title = 'Account Balances';
+		$this->secure();
+		$user_id = $this->get_user_id();
 
-                $user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $user_id = $user['_id'];
+         	$title = 'Account Balances';
 
 		$money = new Money($user_id);
 
@@ -59,21 +53,18 @@ class InController extends \lithium\action\Controller {
 
         public function orders() {
 
-                $title = 'Open Orders';
-
-                $user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $id = $user['_id'];
+		$this->secure();
+		$user_id = $this->get_user_id();
+                
+		$title = 'Open Orders';
 
 		$first_curr = 'btc';
 		$second_curr = 'dct';
 
 		$YourOrders = Orders::find('all',array(
 			'conditions'=>array(
-				'user_id'=>$id,
+				'user_id'=>$user_id,
 				'Completed'=>'N',
-		//		'FirstCurrency' => $first_curr,
-		//		'SecondCurrency' => $second_curr,					
 				),
 			'order' => array('DateTime'=>-1)
 		));
@@ -85,18 +76,14 @@ class InController extends \lithium\action\Controller {
 
 	public function transactions() {
 
+		$this->secure();
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();
+
          	$title = 'Transactions';
 
-                $user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $user_id = $user['_id'];
-
-     	        $details = Details::find('first',
-                        array('conditions'=>array('user_id'=> (string) $user_id))
-                );
-                $transactions = Transactions::find('all',array(
+		$transactions = Transactions::find('all',array(
                         'conditions'=>array(
-                        //'username'=>$details['username'], //don't use username - not recorded on cc implementation!!!
 			'user_id' => $user_id,
                         ),
                         'order'=>array('DateTime'=>-1)
@@ -121,13 +108,12 @@ class InController extends \lithium\action\Controller {
 
 	public function withdraw($currency='btc') {
 
+		$this->secure();
+		$user_id = $this->get_user_id();
+		
 		$currency = strtoupper($currency);
 
 	        $title = 'Withdraw Funds';
-
-                $user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $user_id = $user['_id'];
 
 		$money = new Money($user_id);
 		$balances = $money->get_balances();
@@ -144,26 +130,17 @@ class InController extends \lithium\action\Controller {
                                                 'user_id' =>  $user_id,
                                                 'Currency' => $currency,
                                                 'TransactionType' => 'Withdrawal')
+              					));
 
-/*
-                                'user_id'=>$user_id,
-				'TransactionType' => 'Withdrawal',
-                                'Currency'=>$currency,
-				),
-				'$or' => array( 
-						array('Status' => 'emailpending'),
-						array('Status' => 'processing') 
-                                		)
-  */
-              ));
 
         foreach($transactions as $tx) {
 
 	$amount = $tx['Amount'] * -1;
         $amount = $money->display_money($amount, $tx['Currency']); //NOTE: show withdrawals as a positive amount
 
-        //$trans['ALL'][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
-        $trans[$tx['Currency']][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Address' => $tx['Address'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
+        $trans['ALL'][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
+        
+	$trans[$tx['Currency']][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Address' => $tx['Address'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
         }
         $transactions = $trans;
 
@@ -175,19 +152,15 @@ class InController extends \lithium\action\Controller {
 
     public function deposit($currency='btc'){
 
-                $currency = strtoupper($currency);
+		$this->secure();
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();                
+
+		$currency = strtoupper($currency);
 
                 $title = 'Deposit Funds';
                 
-		$user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $id = $user['_id'];
-
-                $details = Details::find('first',
-                        array('conditions'=>array('user_id'=> (string) $id))
-                );
-                $secret = $details['secret'];
-                $user_id = $details['user_id'];
+		$secret = $details['secret'];
 
 
 		/*
@@ -211,10 +184,9 @@ class InController extends \lithium\action\Controller {
 		//
 
 		$default_addresses = Addresses::find('first', array(
-				'conditions' => array('user_id' => $id,
+				'conditions' => array('user_id' => $user_id,
 						      'default' => '1')
 			));
-
 
 			//first time here?
 			if(count($default_addresses) == 0) {
@@ -226,7 +198,7 @@ class InController extends \lithium\action\Controller {
 			}
 	
 		$addresses = Addresses::find('all', array(
-				'conditions' => array('user_id' => $id,
+				'conditions' => array('user_id' => $user_id,
 						      'default' => array('!=' => '1'))
 			));
 
@@ -238,9 +210,9 @@ class InController extends \lithium\action\Controller {
 
 	public function makedefault($btc_address) {
 
-		$user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $user_id = $user['_id'];
+		$this->secure();
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();                
 		
 		$new = Addresses::find('first', array(
 			'conditions' => array('user_id' => $user_id,
@@ -261,21 +233,10 @@ class InController extends \lithium\action\Controller {
 	}
 
 
-	public function settings() {
-
-	        $title = 'Settings';
-
-                $user = Session::read('default');
-                if ($user==""){         return $this->redirect('/login');}
-                $id = $user['_id'];
-
-                return;
-
-	}
-
-
 	public function removetransaction($TransactionID,$ID,$url,$currency){
-               
+
+		$this->secure();              
+
 		 $tx = Transactions::find('first', array(
                         'conditions' => array('_id' => new MongoID($ID))
                 ));
@@ -297,26 +258,23 @@ class InController extends \lithium\action\Controller {
 
 
 	public function paymentverify($currency=null){
+
+		$this->secure();
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();
+		$email  =  $this->get_email();
+
 		if($currency==""){
-				return compact('data','details','user');
+				return compact('details');
 		}
 
 		$currency = strtoupper($currency);
-
-		$user = Session::read('default');
-		if ($user==""){		return $this->redirect('/login');}
-		$user_id = $user['_id'];
-		$email = $user['email'];
 		
-		$details = Details::find('first',
-			array('conditions'=>array('user_id'=> (string) $user_id))
-		);
 	
 		if ($this->request->data) {
 			
 			$money = new Money($user_id);
 			
-		//	$amount = $money->undisplay_money($this->request->data['TransferAmount'], $currency);
 			$amount = $money->undisplay_money($this->request->data['amount'], $currency);
 			if($details['balance.'.$currency]<=$amount){return false;}			
 			$amount = $amount * -1;
@@ -373,12 +331,14 @@ class InController extends \lithium\action\Controller {
 			$mailer->send($message);
 				
 		}	
-		return compact('data','details','user','currency');
+		return compact('data', 'details', 'currency');
 	}
 
 
 	public function paymentconfirm($currency=null,$id = null){
+
 		if ($id==""){return $this->redirect('/login');}
+
 		$transaction = Transactions::find('first',array(
 			'conditions'=>array(
 				'verify.payment'=>$id,
@@ -439,48 +399,129 @@ class InController extends \lithium\action\Controller {
 			$transaction->save($data);
 
 			return;	
-/*
-			$view  = new View(array(
-				'loader' => 'File',
-				'renderer' => 'File',
-				'paths' => array(
-					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-				)
-			));
-			$data = array(
-				'username'=>$username,
-				'verify'=>$verify,
-				'Currency'=>$currency,
-				'address'=>$transaction['address'],
-				'Amount'=>$transaction['Amount'],
-			);
-			$body = $view->render(
-				'template',
-				compact('data'),
-				array(
-					'controller' => 'users',
-					'template'=>'withdrawadmin',
-					'type' => 'mail',
-					'layout' => false
-				)
-			);
-
-			$transport = Swift_MailTransport::newInstance();
-			$mailer = Swift_Mailer::newInstance($transport);
-	
-			$message = Swift_Message::newInstance();
-			$message->setSubject($currency." Admin Approval from ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => $currency.' Admin Approval email '.COMPANY_URL));
-			$message->setTo('admin@ibwt.co.uk');
-			$message->addBcc(MAIL_1);
-			$message->addBcc(MAIL_2);			
-			$message->addBcc(MAIL_3);		
-			$message->setBody($body,'text/html');
-			
-			$mailer->send($message);
-*/		
 		}
 	}
+
+
+       public function forgotpassword(){
+        
+        if($this->request->data){
+                        $msg = "Password reset link sent to your email address!";
+                        $user = Users::find('first',array(
+                                'conditions' => array(
+                                        'email' => $this->request->data['email']
+                                ),
+                                'fields' => array('_id')
+                        ));
+                        $email = $user['email'];
+//              print_r($user['_id']);
+                        $details = Details::find('first', array(
+                                'conditions' => array(
+                                        'user_id' => (string)$user['_id']
+                                ),
+                                'fields' => array('key')
+                        ));
+//                                      print_r($details['key']);exit;
+                $key = $details['key'];
+                if($key!=""){
+                $email = $this->request->data['email'];
+                        $view  = new View(array(
+                                'loader' => 'File',
+                                'renderer' => 'File',
+                                'paths' => array(
+                                        'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+                                )
+                        ));
+                        $body = $view->render(
+                                'template',
+                                compact('email','key'),
+                                array(
+                                        'controller' => 'in',
+                                        'template'=>'forgotpassword',
+                                        'type' => 'mail',
+                                        'layout' => false
+                                )
+                        );
+
+                        $transport = Swift_MailTransport::newInstance();
+                        $mailer = Swift_Mailer::newInstance($transport);
+
+                        $message = Swift_Message::newInstance();
+                        $message->setSubject("Password reset link from ".COMPANY_URL);
+                        $message->setFrom(array(NOREPLY => 'Password reset email '.COMPANY_URL));
+                        $message->setTo($email);
+                        $message->addBcc(MAIL_1);
+                        $message->addBcc(MAIL_2);
+                        $message->addBcc(MAIL_3);
+
+                        $message->setBody($body,'text/html');
+                        $mailer->send($message);
+                        }
+                }
+
+                return compact('msg');
+        }
+
+
+
+
+
+
+		public function splash() {
+
+		        $this->secure();
+        	        $details = $this->get_details();
+
+                	$ga = new GoogleAuthenticator();
+
+               		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
+                	else    $TwoFactorEnabled = false;
+
+			$key = $details['key'];
+
+                        if(! $TwoFactorEnabled) {
+
+                        $qrcode = $ga->getQRCodeGoogleUrl(COMPANY_URL, $details['secret']);
+                        }
+
+
+		return compact('TwoFactorEnabled', 'qrcode', 'key');
+		}
+
+	        public function twofactor() {
+
+			$user = Session::read('default');
+	                if ($user==""){         return $this->redirect('/login');}
+        	        $user_id = $user['_id'];
+
+			if($user['OTPVerified']) $this->redirect('In::accounts'); //already done 2fa
+
+				if(isset($this->request->data['2FA'])) {
+
+				$details = Details::find('first', array(
+                                	        'conditions'=>array(
+                                        	        'user_id'=> $user_id)
+                                                	));
+
+					$ga = new GoogleAuthenticator();
+
+                                    	if(! $ga->verifyCode($details['secret'], $this->request->data['2FA'], 2)) {
+
+                                    	$error = 'Invalid Two Factor Code';
+				
+					return compact('error');
+					}
+
+					$user['OTPVerified'] = true;
+
+			//must be good
+			Session::write('default', $user);
+			return $this->redirect('In::accounts');
+			}		
+	
+        	        return;
+
+        	}
 
 
 }

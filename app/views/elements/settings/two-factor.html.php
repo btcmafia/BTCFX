@@ -1,4 +1,4 @@
-<?=$this->form->create('', array('class' => 'form-horizontal', 'name' => '2fa')); ?>
+<?=$this->form->create('', array('class' => 'form-horizontal', 'name' => '2fa', 'url' => 'Settings::security')); ?>
 
 <fieldset>
     <legend><h2>Two Factor Authentication</h2></legend>

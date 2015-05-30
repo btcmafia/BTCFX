@@ -11,7 +11,6 @@ use app\extensions\action\GoogleAuthenticator;
 use lithium\util\String;
 use MongoID;
 
-use app\extensions\action\Bitcoin;
 
 use \lithium\template\View;
 use \Swift_MailTransport;
@@ -30,11 +29,7 @@ class RegisterController extends \lithium\action\Controller {
       		$saved = $Users->save();
 		
 		if($saved==true){
-//			$bitcoin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
-//			$bitcoinaddress = $bitcoin->getaccountaddress($this->request->data['username']);
 			
-//			$oauth = new OAuth2();
-//			$key_secret = $oauth->request_token();
 			$ga = new GoogleAuthenticator();
 			
 			$user_id = (string) $Users->_id;
@@ -48,8 +43,6 @@ class RegisterController extends \lithium\action\Controller {
 				'mobile.number' => "",								
 				'key'=>$ga->createSecret(64),
 				'secret'=>$ga->createSecret(),
-//				'Friend'=>array(),
-//				'bitcoinaddress.0'=>$bitcoinaddress,
 				'balance.BTC' => (int)0,
 				'balance.TCP' => (int)0,				
 				'balance.DCT' => (int)0,				
@@ -68,9 +61,20 @@ class RegisterController extends \lithium\action\Controller {
                                 'Verified'   => false,
                                 'Default'     => true,
                                 ))->save();
+			
+			$this->send_verification_email($user_id, $email, $verify_code, $Users->username);
+       		
+			//log them in
+			$session = array('_id' => $user_id, 
+					'created' => time(), 	
+					'email' => $email, 
+					'firstname' => $name, 
+					'lastname' => $this->request->data['lastname'], 
+					'updated' => time(), 
+					'username' => $Users->username);
 
-			$this->send_verification_email($user_id, $email, $verify_code, $details);
-       			
+			Session::write('default', $session);
+	
 			$this->redirect("/register/thanks/$user_id/");	
 			
 			}
@@ -117,8 +121,8 @@ class RegisterController extends \lithium\action\Controller {
 
 		$email = $emails['Email'];
 		$verify_code = $emails['VerifyCode'];
-		
-		$this->send_verification_email($user_id, $email, $verify_code, $details);
+
+		$this->send_verification_email($user_id, $email, $verify_code, $details['username']);
 
 		$this->redirect("/register/thanks/$user_id/resent/");
 		}
@@ -128,7 +132,7 @@ class RegisterController extends \lithium\action\Controller {
 	}
 
 	
-	private function send_verification_email($user_id, $email, $verify_code, $details) {
+	private function send_verification_email($user_id, $email, $verify_code, $username) {
 
 	        $view  = new View(array(
                                 'loader' => 'File',

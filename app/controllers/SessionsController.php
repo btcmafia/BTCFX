@@ -43,9 +43,13 @@ class SessionsController extends \lithium\action\Controller {
 					return $this->redirect('/');
 					exit;
 				}
-				if($details['oneCode']===$this->request->data['loginpassword']){
+
+				//No more OneCode!!!
+				//We can re introduce it as a second stage login if we decide
+
+//				if($details['oneCode']===$this->request->data['loginpassword']){
 					$data = array(
-						'oneCodeused'=>'Yes',
+						'oneCodeused'=>'No',
 						'lastconnected'=>array(									
 									'IP' => $IPResponse->ip,
 									'ISO'=> $IPResponse->country,
@@ -101,7 +105,7 @@ class SessionsController extends \lithium\action\Controller {
 								);
 								Logins::create()->save($data);
 /////////////////////////////////////////////////////////////////////////////////								
-								return $this->redirect('ex::dashboard');
+								return $this->redirect('in::splash');
 								exit;
 							}else{
 								Auth::clear('member');
@@ -131,14 +135,15 @@ class SessionsController extends \lithium\action\Controller {
 								Logins::create()->save($data);
 						/////////////////////////////////////////////////////////////////////////////////						
 					//	return $this->redirect('ex::dashboard');
-						return $this->redirect('in::accounts');
+						return $this->redirect('in::splash');
 						exit;
 					}
+/*OneCode Failed - so not needed!
 				}else{
 					Auth::clear('member');
 					Session::delete('default');
 				}
-			}
+*/			}
 			//if theres still post data, and we weren't redirected above, then login failed
 
 			if ($this->request->data){
@@ -159,6 +164,7 @@ class SessionsController extends \lithium\action\Controller {
 			exit;
         // Handle failed authentication attempts
     }
+
 	 public function delete() {
 		Auth::clear('member');
 		Session::delete('default');

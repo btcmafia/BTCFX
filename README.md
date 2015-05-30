@@ -1,4 +1,2 @@
-ibwtcouk
+BTCFX
 ========
-
-In Bitcoin We Trust
