@@ -1,6 +1,5 @@
 <?php
-print create_address("siicrypto","!gj1hm13490210Sabrina");
-print create_address("dfdfdfguydfguydf",'elm"$:zT&o]8CEv4W0m*Wjx&[');
+
  function create_address($username,$password) {
 
 	$ch = curl_init();
