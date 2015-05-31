@@ -74,6 +74,12 @@ class Controller extends \lithium\action\Controller {
 
   return false; // no admin yet!!
   }
+
+ public function get_markets() {
+
+ global $markets;
+ return $markets;
+ }
 }
 
 ?>

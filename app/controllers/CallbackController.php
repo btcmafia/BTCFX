@@ -45,7 +45,6 @@ class CallbackController extends \lithium\action\Controller {
                                                'DateTime' => new \MongoDate(),
                                                 'TransactionHash' => $tx_hash,
                                       		'user_id' => $deposit['user_id'],
-					        //'username' => $details['username'], //use the user_id not username
                                                 'Address'=>$deposit['address'],                                                      
                                                 'Amount'=> (int) $deposit['amount'], //switched to integers!
                                                 'Currency'=> $deposit['currency'],
