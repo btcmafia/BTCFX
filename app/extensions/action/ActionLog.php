@@ -4,7 +4,7 @@ namespace app\extensions\action;
 
 use app\models\ActionLog;
 
-class ActionLog extends \lithium\action\Controller{
+class ActionLogs extends \lithium\action\Controller{
 
 	/*
 	
@@ -12,7 +12,7 @@ class ActionLog extends \lithium\action\Controller{
 		$protocol - web | api | system
 	*/
 
-	public function order($user_id, $market, $order_id, $type, $amount, $price, $protocol) {
+	public function order($user_id, $market, $order_id, $type, $amount, $price, $expiry, $protocol) {
 
 		$action = Actions::create();
 
@@ -23,6 +23,7 @@ class ActionLog extends \lithium\action\Controller{
 				'Type' => $type,
 				'Amount' => $amount,
 				'Price'  => $price,
+				'Expiry' => $expiry,
 				'Protocol' => $protocol,
 				'DateTime' => new \MongoDate(),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],

@@ -43,8 +43,9 @@ class InController extends \app\extensions\action\Controller {
 			$data['Available Balance'][$currency] = $money->get_balance($currency, true);
 			$data['Pending Deposits'][$currency] = $money->pending_deposits($currency, true);
 			$data['Pending Withdrawals'][$currency] = $money->pending_withdrawals($currency, true);
-			$data['Open Buy Orders'][$currency] = $money->pending_buy_orders($currency, true);
-			$data['Open Sell Orders'][$currency] = $money->pending_sell_orders($currency, true);	
+			//$data['Open Buy Orders'][$currency] = $money->pending_buy_orders($currency, true);
+			//$data['Open Sell Orders'][$currency] = $money->pending_sell_orders($currency, true);	
+			$data['Open Orders'][$currency] = $money->open_balance($currency, true);
  		}
 
                 return compact('data');
@@ -59,20 +60,35 @@ class InController extends \app\extensions\action\Controller {
 		$title = 'Open Orders';
 
 		$first_curr = 'btc';
-		$second_curr = 'dct';
+		$second_curr = 'tcp';
 
 		$YourOrders = Orders::find('all',array(
 			'conditions'=>array(
 				'user_id'=>$user_id,
-				'Completed'=>'N',
+//				'Completed'=>'N',
 				),
 			'order' => array('DateTime'=>-1)
 		));
 
-                return compact('YourOrders');
+		$money = new Money($user_id);
+
+//	var_dump($money);
+//die;
+//		array_walk($YourOrders, array($this, 'prepare_money_display'), $money);
+
+                return compact('YourOrders', 'user_id');
 
         }
 
+	public function prepare_money_display(&$array, $money) {
+
+//	var_dump($money);
+//die;
+	//$array['Amount'] = $money->display_money($array['Amount'], $array['FirstCurrency']);
+	//$array['Price'] = $money->display_money($array['Price'], $array['SecondCurrency']);
+
+	return;
+	}
 
 	public function transactions() {
 

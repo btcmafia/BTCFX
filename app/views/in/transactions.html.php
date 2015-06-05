@@ -1,5 +1,8 @@
 <?php
 use lithium\util\String;
+use app\extensions\action\Money;
+
+$money = new Money;
 ?>
 <h2>Transactions</h2>
 	

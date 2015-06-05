@@ -12,9 +12,9 @@ use lithium\storage\Session;
 
  <li class="dropdown"><a aria-expanded="true" class="dropdown-toggle" data-toggle="dropdown" href="#">Trade<span class="caret"></span></a>
 <ul class="dropdown-menu">
-        <li><a href="/trade/x/btc_tcp/">BTC / TCP</a></li>
-        <li><a href="/trade/x/btc_dct/">BTC / DCT</a></li>
-        <li><a href="/trade/x/tcp_dct/">TCP / DCT</a></li>
+        <li><a href="/new_trade/x/btc_tcp/">BTC / TCP</a></li>
+        <li><a href="/new_trade/x/btc_dct/">BTC / DCT</a></li>
+        <li><a href="/new_trade/x/tcp_dct/">TCP / DCT</a></li>
         </ul>
 </li>
  <li><a href="/in/accounts/">Account Balances</a></li>

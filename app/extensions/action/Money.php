@@ -5,16 +5,24 @@ namespace app\extensions\action;
 use app\models\Details;
 use app\models\Transactions;
 
+/*
+	We can use this class without a user_id if we just want to use the display / undisplay_money methods.
+*/
+
 class Money extends \lithium\action\Controller{
 
 private $user_id;
 private $balances; //array
+private $open_balances; //array
 private $btc;
 private $tcp;
 private $dct;
 private $btc_unit;
 
-	public function __construct($user_id) {
+
+	public function __construct($user_id = false) {
+
+	if($user_id) {
 
 		$details = Details::find('first',
 			array('conditions'=>array('user_id'=>$user_id))
@@ -23,10 +31,16 @@ private $btc_unit;
 		$this->user_id = $user_id;
 
 		//balances	
-       		$this->balances['BTC'] = $details['balance']['BTC'];
-       		$this->balances['TCP'] = $details['balance']['TCP'];
-        	$this->balances['DCT'] = $details['balance']['DCT'];
-	
+       		$this->balances['BTC'] = $details['balance.BTC'];
+       		$this->balances['TCP'] = $details['balance.TCP'];
+        	$this->balances['DCT'] = $details['balance.DCT'];
+		
+		$this->open_balances['BTC'] = $details['OpenBalance.BTC'];
+		$this->open_balances['TCP'] = $details['OpenBalance.TCP'];
+		$this->open_balances['DCT'] = $details['OpenBalance.DCT'];
+
+		}
+
 		//currency symbols
        		$this->btc = 'BTC';
         	$this->tcp = 'TCP';
@@ -140,6 +154,16 @@ private $btc_unit;
 		if($forprint) $total = $this->display_money($total, $currency);
 
 		return $total;
+	}
+
+	public function open_balance($currency, $forprint = false) {
+
+	$currency = strtoupper($currency);
+
+	if($forprint) return $this->display_money($this->open_balances[$currency], $currency);
+
+	else return $this->open_balances[$currency];
+	
 	}
 	
 	public function pending_buy_orders($currency, $forprint = false) {

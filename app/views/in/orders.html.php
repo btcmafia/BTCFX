@@ -1,6 +1,7 @@
 <?php	
 
 use lithium\util\String;
+use app\extensions\action\Money;
 
 $sel_curr = $this->_request->params['args'][0];
 $first_curr = strtoupper(substr($sel_curr,0,3));
@@ -22,18 +23,24 @@ foreach($YourOrders as $foo) {
 //format the date from now on
 $foo['DateTime'] = gmdate('d-M-Y H:i:s',$foo['DateTime']->sec);
 
+$money = new Money($user_id);
+//format money
+$foo['Amount'] = $money->display_money($foo['Amount'], $foo['FirstCurrency']);
+$foo['Price'] = $money->display_money($foo['Price'], $foo['SecondCurrency']);
+
+
 	if( ('BTC' == $foo['FirstCurrency']) && ('TCP' == $foo['SecondCurrency']) ) { 
 
-		$btc_tcp[] = array('id' => $foo['_id'], 'date' => $foo['DateTime'], 'type' => $foo['Action'], 'amount' => $foo['Amount'], 'price' => $foo['PerPrice']); 
+		$btc_tcp[] = array('id' => $foo['_id'], 'date' => $foo['DateTime'], 'type' => $foo['Type'], 'amount' => $foo['Amount'], 'price' => $foo['Price']); 
 	}
 	
 	elseif( ('BTC' == $foo['FirstCurrency']) && ('DCT' == $foo['SecondCurrency']) ) { 
 
-		$btc_dct[] = array('id' => $foo['_id'], 'date' => $foo['DateTime'], 'type' => $foo['Action'], 'amount' => $foo['Amount'], 'price' => $foo['PerPrice']); 
+		$btc_dct[] = array('id' => $foo['_id'], 'date' => $foo['DateTime'], 'type' => $foo['Type'], 'amount' => $foo['Amount'], 'price' => $foo['Price']); 
 	}
 	if( ('TCP' == $foo['FirstCurrency']) && ('DCT' == $foo['SecondCurrency']) ) { 
 
-		$tcp_dct[] = array('id' => $foo['_id'], 'date' => $foo['DateTime'], 'type' => $foo['Action'], 'amount' => $foo['Amount'], 'price' => $foo['PerPrice']); 
+		$tcp_dct[] = array('id' => $foo['_id'], 'date' => $foo['DateTime'], 'type' => $foo['Type'], 'amount' => $foo['Amount'], 'price' => $foo['Price']); 
 	}
 }
 reset($YourOrders);
@@ -79,11 +86,11 @@ reset($YourOrders);
                                 <?php foreach($YourOrders as $YO){ ?>
 
                                         <tr>
-                                                <td style="text-align:left "><?=$YO['FirstCurrency']?>/<?=$YO['SecondCurrency']?></td>
-                                        	<td style="text-align:center"><?=$YO['Action']?></td>
-						<td style="text-align:right "><?=number_format($YO['Amount'],8)?></td>
-						<td style="text-align:right "><?=number_format($YO['PerPrice'],2)?></td>
-                                       		<td style="text-align:center"><a href="/ex/RemoveOrder/<?=String::hash($YO['_id'])?>/<?=$YO['_id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
+                                                <td style="text-align:left "><?=$YO['FirstCurrency']?> / <?=$YO['SecondCurrency']?></td>
+                                        	<td style="text-align:center"><?=ucfirst($YO['Type'])?></td>
+						<td style="text-align:right "><?=$YO['Amount']?></td>
+						<td style="text-align:right "><?=$YO['Price']?></td>
+                                       		<td style="text-align:center"><a href="/new_trade/RemoveOrder/<?=String::hash($YO['_id'])?>/<?=$YO['_id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php } ?>
                                 </tbody>
@@ -116,10 +123,10 @@ reset($YourOrders);
 
                                         <tr>
                                                 <td style="text-align:left "><?=$YO['date']?></td>
-                                        	<td style="text-align:center"><?=$YO['type']?></td>
-						<td style="text-align:right "><?=number_format($YO['amount'],8)?></td>
-						<td style="text-align:right "><?=number_format($YO['price'],2)?></td>
-                                       		<td style="text-align:center"><a href="/ex/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
+                                        	<td style="text-align:center"><?=ucfirst($YO['type'])?></td>
+						<td style="text-align:right "><?=$YO['amount']?></td>
+						<td style="text-align:right "><?=$YO['price']?></td>
+                                       		<td style="text-align:center"><a href="/new_trade/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php }
 					}?>
@@ -153,9 +160,9 @@ reset($YourOrders);
 
                                         <tr>
                                                 <td style="text-align:left "><?=$YO['date']?></td>
-                                        	<td style="text-align:center"><?=$YO['type']?></td>
-						<td style="text-align:right "><?=number_format($YO['amount'],8)?></td>
-						<td style="text-align:right "><?=number_format($YO['price'],2)?></td>
+                                        	<td style="text-align:center"><?=ucfirst($YO['type'])?></td>
+						<td style="text-align:right "><?=$YO['amount']?></td>
+						<td style="text-align:right "><?=$YO['price']?></td>
                                        		<td style="text-align:center"><a href="/ex/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php }
@@ -189,9 +196,9 @@ reset($YourOrders);
 
                                         <tr>
                                                 <td style="text-align:left "><?=$YO['date']?></td>
-                                        	<td style="text-align:center"><?=$YO['type']?></td>
-						<td style="text-align:right "><?=number_format($YO['amount'],8)?></td>
-						<td style="text-align:right "><?=number_format($YO['price'],2)?></td>
+                                        	<td style="text-align:center"><?=ucfirst($YO['type'])?></td>
+						<td style="text-align:right "><?=$YO['amount']?></td>
+						<td style="text-align:right "><?=$YO['price']?></td>
                                        		<td style="text-align:center"><a href="/ex/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php }
@@ -201,5 +208,5 @@ reset($YourOrders);
 
   </div>
 </div>
-
+</div>
 

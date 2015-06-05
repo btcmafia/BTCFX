@@ -58,10 +58,9 @@ class Controller extends \lithium\action\Controller {
 	return $this->user_id;
 	}
 
-  public function get_details() {
+  public function get_details() {	
 
 	return $this->details;
-
 	}
 
   public function get_email() {

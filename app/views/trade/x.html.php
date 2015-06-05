@@ -1,1 +1,1 @@
-<?php 	echo $this->_render('element', 'buysell');?>
+<?php echo $this->_render('element', 'buysell'); ?>
