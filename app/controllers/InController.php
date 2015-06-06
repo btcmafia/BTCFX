@@ -179,25 +179,17 @@ class InController extends \app\extensions\action\Controller {
 		$secret = $details['secret'];
 
 
-		/*
-			New cc implementation
-		*/
-
 			//generate a new address
 			if($this->request->data){ 
 
 		 	$coinprism = new Coinprism( COINPRISM_USERNAME, COINPRISM_PASSWORD );
 			$new_addresses = $coinprism->create_address($user_id);
 
-			$this->makedefault($new_addresses['btc_address']);
-			
+			if(! isset($new_addresses['error']) ) $this->makedefault($new_addresses['btc_address']); 
+			else $error = $new_addresses['error'];
 			}
 
 			
-
-		//
-		//Can't find a way to pick the default out of the full results, so doing two data retrievals.
-		//
 
 		$default_addresses = Addresses::find('first', array(
 				'conditions' => array('user_id' => $user_id,
@@ -210,7 +202,8 @@ class InController extends \app\extensions\action\Controller {
 		 	$coinprism = new Coinprism( COINPRISM_USERNAME, COINPRISM_PASSWORD );
 			$new_addresses = $coinprism->create_address($user_id);
 
-			$this->makedefault($new_addresses['btc_address']); //will reload page
+			if(! isset($new_addresses['error']) ) $this->makedefault($new_addresses['btc_address']); //will reload page
+			else $error = $new_addresses['error'];
 			}
 	
 		$addresses = Addresses::find('all', array(
@@ -219,7 +212,7 @@ class InController extends \app\extensions\action\Controller {
 			));
 
                         
-		return compact('details','default_addresses', 'addresses', 'title', 'foo');
+		return compact('details','default_addresses', 'addresses', 'title', 'foo', 'error');
 
         }
 

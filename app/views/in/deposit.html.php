@@ -134,6 +134,15 @@ function initCanvas(ww,hh)
 </script>
 
 <h2>Deposit Funds</h2>
+
+<?php if(isset($error)) { ?>
+<div class="row">
+<div class="alert alert-dismissible alert-danger col-sm-4">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <strong>Error!</strong> <?=$error?>
+</div>
+<?php } ?>
+
 <div class="col-md-6">
         <div class="panel panel-info">
 	  <div class="panel-heading">

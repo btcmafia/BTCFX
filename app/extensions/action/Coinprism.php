@@ -56,18 +56,8 @@ class Coinprism extends \lithium\action\Controller{
                 }
 
 	$response = json_decode($response,true);
-/*
-echo "<p>Username: " . $this->coinprism_username;
-echo '<p>Password: ' . $this->coinprism_password;
 
-echo "<p>Response: ";
-print_r($response);
-echo '</p>';
-die;
-*/	
-//if($response['bitcoin_address'] == '') {
-//mail('stephen@joopla.co.uk', 'No address from Coinprism!!', "Response:\n\n" . var_dump($response, true) . "\n\nUsername: " . $this->coinprism_username . "\n\nPassword: " . $this->coinprism_password);
-//}
+	if('' == $response['bitcoin_address']) return array('error' => 'Cannot generate new address!');
 
 	$monitor = new Monitor(CHAIN_API_KEY, CHAIN_SECRET, CHAIN_CALLBACK_URL);
 	if(! $foo = $monitor->monitor_address($response['bitcoin_address']) ) {

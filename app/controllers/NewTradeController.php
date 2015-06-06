@@ -274,6 +274,19 @@ die;
                                         }
 
 
+			//record the transaction in the public trades collection
+			$trade = Trades::create();
+
+			$trade_data = array(
+						'DateTime' => time(),
+						'FirstCurrency' => $first_curr,
+						'SecondCurrency' => $second_curr,
+						'Price' => $order_value,
+						'Amount' => $order_amount,
+					);
+
+			$trade->save($trade_data);
+
 			if($amount < $order['Amount']) {
                         
 			$amount = 0;
