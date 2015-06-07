@@ -31,17 +31,17 @@ if('buy' == $type) {
       <div class="col-lg-6">
 	<div class="input-group">
         <input class="form-control" id="Amount" name="Amount" placeholder="" type="text">
-	<span class="input-group-addon"> <strong>BTC</strong></span>     
+	<span class="input-group-addon"> <strong><?=$first_curr?></strong></span>     
 	</div>
  </div>
 </div>
 
 <div class="form-group row">
-      <label for="Price" class="col-sm-1 col-sm-offset-2 control-label">Price</label>
+      <label for="Price" class="col-sm-3 col-sm-offset-0 control-label">Price <small>(per <?=$first_curr?>)</small></label>
       <div class="col-sm-6">
 	<div class="input-group">
         <input class="form-control" id="Price" name="Price" placeholder="" type="text">
-	<span class="input-group-addon"> <strong>TCP</strong></span>     
+	<span class="input-group-addon"> <strong><?=$second_curr?></strong></span>     
       </div>
 	</div>
 </div>

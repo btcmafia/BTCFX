@@ -4,6 +4,7 @@ namespace app\controllers;
 use app\models\Users;
 use app\models\Details;
 use app\models\Orders;
+use app\models\Trades;
 use app\models\Transactions;
 use app\extensions\action\Money;
 use app\extensions\action\ActionLog;
@@ -460,6 +461,8 @@ die;
 	$tx = Transactions::create();
 
 	$type = ucfirst($type);
+
+	if('Sell' == $type) $amount = $amount * -1; //when you sell it's recorded as negative
 
 	         $data = array(
                              'DateTime' => new \MongoDate(),

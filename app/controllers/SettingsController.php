@@ -163,7 +163,8 @@ class SettingsController extends \app\extensions\action\Controller {
 						'Default' => true)
 						));
 		
-		if($old) $old->save(array('Default' => false));
+		//for some reason this is preventing the $search->save update below from working on first signup, must be something to do with $search and $old being the same record?
+		if( ($old) && ($old['_id'] != $search['_id']) ) $old->save(array('Default' => false));
 			
 			$search->save(array('Verified' => true, 'Default' => true));
 
@@ -297,14 +298,14 @@ class SettingsController extends \app\extensions\action\Controller {
 			   ($this->request->data['ConfirmPassword'] == '')) {
 
 			$error = 'All fields are required';
-			return compact('error', 'TwoFactorEnabled', 'key');
+			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
 			}
 
 
 			if($key != $this->request->data['key']) {
 
 			$error = 'Password not changed';
-			return compact('error', 'TwoFactorEnabled', 'key');
+			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
 			} 
 
 
@@ -312,7 +313,7 @@ class SettingsController extends \app\extensions\action\Controller {
 				if($this->request->data['NewPassword'] != $this->request->data['ConfirmPassword']) {
 				
 				$error = 'New password fields do not match';
-				return compact('error', 'TwoFactorEnabled', 'key');
+				return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
 				}
 				
 					//check 2fa
@@ -337,7 +338,7 @@ class SettingsController extends \app\extensions\action\Controller {
 							if(0 == count($users)) {
 
 							$error = 'Current password is incorrect.';
-							return compact('error', 'TwoFactorEnabled', 'key');
+							return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
 							}
 			
 			//must be good, update
@@ -347,7 +348,7 @@ class SettingsController extends \app\extensions\action\Controller {
 			$users->save($data, array('validate' => false)); 
 
 			$message = 'Your password has been updated.';
-			return compact('message', 'TwoFactorEnabled', 'key');			
+			return compact('message', 'TwoFactorEnabled', 'key', 'qrcode');			
 
 			}//change passd submitted
 

@@ -52,8 +52,8 @@ else $class = 'danger';
                         <td><?=gmdate('Y-M-d H:i:s',$tx['DateTime']->sec)?></td>
                 	<td><?=$tx['Currency']?></td> 
                         <td><?=$tx['Type']?></td>
-		        <td style="text-align:right "><?=$tx['Amount']?></td>
-			<td><?=$tx['Status']; ?>
+		        <td><?=$tx['Amount']?></td>
+			<td><?=ucfirst($tx['Status']); ?>
 <?php if( ($tx['Status'] == 'emailpending') OR ($tx['Status'] == 'processing')) {  ?>
 &nbsp;<a title= "Cancel this transaction" href="/in/removetransaction/<?=String::hash($tx['_id'])?>/<?=$tx['_id']?>/transactions/<?=$tx['Currency']?>"><i class="fa fa-times"></i></a>
 <?php } ?>
@@ -95,8 +95,8 @@ $total_amount = $tx['Amount'] + $total_amount;
                         <td><?=gmdate('Y-M-d H:i:s',$tx['DateTime']->sec)?></td>
                 	<td><?=$tx['Currency']?></td> 
                         <td><?=$tx['Type']?></td>
-		        <td style="text-align:right "><?=$tx['Amount']?></td>
-			<td><?=$tx['Status']; ?>
+		        <td><?=$tx['Amount']?></td>
+			<td><?=ucfirst($tx['Status']); ?>
 <?php if( ($tx['Status'] == 'emailpending') OR ($tx['Status'] == 'processing')) {  ?>
 &nbsp;<a title= "Cancel this transaction" href="/in/removetransaction/<?=String::hash($tx['_id'])?>/<?=$tx['_id']?>/transactions/<?=$tx['Currency']?>"><i class="fa fa-times"></i></a>
 <?php } ?>
@@ -104,8 +104,8 @@ $total_amount = $tx['Amount'] + $total_amount;
                </tr>
 <?php } ?>
                 <tr>
-                        <td><strong>Total</strong></td>
-                        <td colspan=3 style="text-align:right;font-weight:bold;"><?=$total_amount?></td>
+                        <td colspan=3><strong>Total</strong></td>
+                        <td colspan=1 style="text-align:left;font-weight:bold;"><?=$total_amount?></td>
                         <td>&nbsp;</td>
                 </tr>
 		</tbody>
@@ -143,8 +143,8 @@ $total_amount = $tx['Amount'] + $total_amount;
                         <td><?=gmdate('Y-M-d H:i:s',$tx['DateTime']->sec)?></td>
                 	<td><?=$tx['Currency']?></td> 
                         <td><?=$tx['Type']?></td>
-		        <td style="text-align:right "><?=$tx['Amount']?></td>
-			<td><?=$tx['Status']; ?>
+		        <td><?=$tx['Amount']?></td>
+			<td><?=ucfirst($tx['Status']); ?>
 <?php if( ($tx['Status'] == 'emailpending') OR ($tx['Status'] == 'processing')) {  ?>
 &nbsp;<a title= "Cancel this transaction" href="/in/removetransaction/<?=String::hash($tx['_id'])?>/<?=$tx['_id']?>/transactions/<?=$tx['Currency']?>"><i class="fa fa-times"></i></a>
 <?php } ?>
@@ -152,8 +152,8 @@ $total_amount = $tx['Amount'] + $total_amount;
                </tr>
 <?php } ?>
                 <tr>
-                        <td><strong>Total</strong></td>
-                        <td colspan=3 style="text-align:right;font-weight:bold;"><?=$total_amount?></td>
+                        <td colspan=3><strong>Total</strong></td>
+                        <td colspan=1 style="text-align:left;font-weight:bold;"><?=$total_amount?></td>
                         <td>&nbsp;</td>
                 </tr>
 		</tbody>
@@ -189,8 +189,8 @@ $total_amount = $tx['Amount'] + $total_amount;
                         <td><?=gmdate('Y-M-d H:i:s',$tx['DateTime']->sec)?></td>
                 	<td><?=$tx['Currency']?></td> 
                         <td><?=$tx['Type']?></td>
-		        <td style="text-align:right "><?=$tx['Amount']?></td>
-			<td><?=$tx['Status']; ?>
+		        <td><?=$tx['Amount']?></td>
+			<td><?=ucfirst($tx['Status']); ?>
 <?php if( ($tx['Status'] == 'emailpending') OR ($tx['Status'] == 'processing')) {  ?>
 &nbsp;<a title= "Cancel this transaction" href="/in/removetransaction/<?=String::hash($tx['_id'])?>/<?=$tx['_id']?>/transactions/<?=$tx['Currency']?>"><i class="fa fa-times"></i></a>
 <?php } ?>
@@ -198,8 +198,8 @@ $total_amount = $tx['Amount'] + $total_amount;
                </tr>
 <?php } ?>
                 <tr>
-                        <td><strong>Total</strong></td>
-                        <td colspan=3 style="text-align:right;font-weight:bold;"><?=$total_amount?></td>
+                        <td colspan=3><strong>Total</strong></td>
+                        <td colspan=1 style="text-align:left;font-weight:bold;"><?=$total_amount?></td>
                         <td>&nbsp;</td>
                 </tr>
 		</tbody>

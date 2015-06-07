@@ -1,4 +1,4 @@
-<h2>Trade Page</h2>
+<h2>Buy & Sell</h2>
 
 <?php
 if(isset($error)) { ?>
