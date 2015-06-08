@@ -7,6 +7,7 @@ use app\models\Details;
 use app\models\Users;
 use app\models\Emails;
 use lithium\util\String;
+use app\extensions\action\ActionLog;
 use app\extensions\action\GoogleAuthenticator;
 
 use \lithium\template\View;
@@ -108,6 +109,10 @@ class SettingsController extends \app\extensions\action\Controller {
 						$users->save(array('email' => $email), array('validate' => false));
 						$emails['Email'] = $email;
 
+					//log the action
+					$log = new ActionLog();
+					$log->update_email($user_id, $email);
+
 						$message = 'Your email address has been updated';
 						return compact('emails', 'TwoFactorEnabled', 'message');
 						}
@@ -181,6 +186,10 @@ class SettingsController extends \app\extensions\action\Controller {
 					'user_id' => $user_id,
 					)
 					))->save(array('email.verified' => 'Yes'));
+
+			//log the action
+			$log = new ActionLog();
+			$log->update_email($user_id, $email);
 
 		$message = 'Your email address has been verified';
 	
@@ -276,13 +285,20 @@ class SettingsController extends \app\extensions\action\Controller {
 				$qrcode = $ga->getQRCodeGoogleUrl(COMPANY_URL, $secret);
 
 				$message_2fa = 'Two Factor Authentication is now disabled';
+				
+				$log = new ActionLog();
+				$log->disabled_2fa($user_id);
+		
 			} else {
 
 				$details->save(array('TOTP.Validate' => '1'));
 
 				$TwoFactorEnabled = true;	
-				
+	
 				$message_2fa = 'Two Factor Authentication is now enabled';
+
+				$log = new ActionLog();
+				$log->enabled_2fa($user_id);
 			}
 
 					return compact('message_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
@@ -346,6 +362,10 @@ class SettingsController extends \app\extensions\action\Controller {
 			$data = array('password' => $passwd);
 			
 			$users->save($data, array('validate' => false)); 
+
+				//record the action
+				$log = new ActionLog();
+				$log->update_password($user_id, $passwd);
 
 			$message = 'Your password has been updated.';
 			return compact('message', 'TwoFactorEnabled', 'key', 'qrcode');			

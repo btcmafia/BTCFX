@@ -9,9 +9,10 @@ use app\models\Logins;
 use app\models\Details;
 use lithium\storage\Session;
 use app\extensions\action\Functions;
+use app\extensions\action\ActionLog;
 use app\extensions\action\GoogleAuthenticator;
 
-class SessionsController extends \lithium\action\Controller {
+class SessionsController extends \app\extensions\action\Controller {
 
     public function add() {
 		   //assume there's no problem with authentication
@@ -21,7 +22,11 @@ class SessionsController extends \lithium\action\Controller {
 			Session::delete('default');				
 			$response = file_get_contents("http://ipinfo.io/{$_SERVER['REMOTE_ADDR']}");
 			$IPResponse = json_decode($response);
+
 			if($IPResponse->tor) {
+
+			$error = "Unfortunately, we do not allow known TOR IP addresses.";
+
 		    // Display error message or something
 					Auth::clear('member');
 					Session::delete('default');
@@ -68,12 +73,19 @@ class SessionsController extends \lithium\action\Controller {
 							'user_id'=>(string)$default['_id']
 							)
 					))->save($data);
+
 					$details = Details::find('first',array(
 						'conditions' => array(
 							'username'=>$default['username'],
 							'user_id'=>(string)$default['_id']
 							)
 					));
+
+
+/*
+	For future clean up - This section should be removed, $details["TOTP.Login"] is never true anymore!
+*/
+
 					if($details["TOTP.Validate"]==1 && $details["TOTP.Login"]==true){
 						$totp = $this->request->data['totp'];
 						$ga = new GoogleAuthenticator();
@@ -113,10 +125,19 @@ class SessionsController extends \lithium\action\Controller {
 							}
 						}
 					}else{
+/*
+	End for future clean up
+*/
+
+
 						Session::write('default',$default);
 						$user = Session::read('default');
 /////////////////////////////////////////////////////////////////////////////////
 								$function = new Functions();
+								
+/*
+	Again - probably not needed, we use Actions now instead of Logins
+*/
 								$IP = $function->get_ip_address();
 
 								$data = array(
@@ -133,8 +154,16 @@ class SessionsController extends \lithium\action\Controller {
 									'DateTime' => new \MongoDate(),
 								);
 								Logins::create()->save($data);
-						/////////////////////////////////////////////////////////////////////////////////						
-					//	return $this->redirect('ex::dashboard');
+/*
+	End not needed
+*/
+					$user_id = $default['_id'];
+					$metadata = (array) $IPResponse;
+					$protocol = 'web';
+
+					$log = new ActionLog();
+					$log->login($user_id, $metadata, $protocol);
+
 						return $this->redirect('in::splash');
 						exit;
 					}
@@ -166,8 +195,17 @@ class SessionsController extends \lithium\action\Controller {
     }
 
 	 public function delete() {
+
+		//we would like to log the logout event, so we'll grab their user id
+		$this->secure();
+		$user_id = $this->get_user_id();
+
 		Auth::clear('member');
 		Session::delete('default');
+
+		$log = new ActionLog();
+		$log->logout($user_id);
+
 		return $this->redirect('/');
 		exit;
     }

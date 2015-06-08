@@ -108,7 +108,7 @@ class NewTradeController extends \app\extensions\action\Controller {
 	
 			if($amount < $min_amounts[$first_curr]) {
 
-			$error = 'The minimum amount you can buy or sell is this market is '. $money->display_money($min_amount, $first_curr) . " $first_curr";
+			$error = 'The minimum amount you can buy or sell in this market is '. $money->display_money($min_amounts[$first_curr], $first_curr) . " $first_curr";
 			}
 
 		if(isset($error)) return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'error'); 
@@ -117,11 +117,12 @@ class NewTradeController extends \app\extensions\action\Controller {
 		//create a new order, so we have an order_id for transactions and the action log. We can delete it if the order is completely fulfilled from pending orders
 		$new_order = Orders::create();
 		$new_order->save();
-		$new_order_id = $new_order['_id']; //test this
+		$new_order_id = $new_order['_id']; 
 
 		
 		//log the action
-	//	$action->order($user_id, $market, $new_order_id, $type, $amount, $my_price, $protocol);
+		$log = new ActionLog();
+		$log->order($user_id, $market, $new_order_id, $type, $amount, $my_price, $my_expires, $min_amount, $is_dark, $protocol);
 
 		$orders = Orders::find('all', array(
 				'conditions' => array(
@@ -188,8 +189,8 @@ die;
                                                 $other_first_balance = $other["balance.$first_curr"] + $order_amount - $first_curr_commission;
 						$other_open_second_balance = $other["OpenBalance.$second_curr"] - $order_value; 
 
-                                $this->record_transaction($order['user_id'], $order['order_id'], $first_curr, $second_curr, 'buy', $order_amount, $order_value, $first_curr_commission);
                                 $this->record_transaction($order['user_id'], $order['order_id'], $second_curr, $first_curr, 'sell', $order_value, $order_amount);
+                                $this->record_transaction($order['user_id'], $order['order_id'], $first_curr, $second_curr, 'buy', $order_amount, $order_value, $first_curr_commission);
 
                                                 $commissions[$first_curr][] = $first_curr_commission;
 
@@ -203,8 +204,9 @@ die;
 						$other_open_first_balance = $other["OpenBalance.$first_curr"] - $order_amount; 
                                                 $other_second_balance = $other["balance.$second_curr"] + $order_value - $second_currency_commission;
 
-                           $this->record_transaction($order['user_id'], $order['order_id'], $second_curr, $first_curr, 'buy', $order_amount, $order_value, $second_currency_commission);
-                           $this->record_transaction($order['user_id'], $order['order_id'], $first_curr, $second_curr, 'sell', $order_value, $order_amount);
+
+                           $this->record_transaction($order['user_id'], $order['order_id'], $first_curr, $second_curr, 'sell', $order_amount, $order_value);
+                           $this->record_transaction($order['user_id'], $order['order_id'], $second_curr, $first_curr, 'buy', $order_value, $order_amount, $second_curr_commission);
 
                                                 $commissions[$second_curr][] = $second_curr_commission;
 
@@ -225,11 +227,11 @@ die;
 				$order_data = array(
 						'Amount' => (int) $new_order_amount,
 						);
-
+				
 				//update the other order amount
 				  Orders::find('first', array(
                                         'conditions' => array(
-                                                'order_id' => $order['order_id'])
+                                                '_id' => $order['order_id'])
                                         ))->save($order_data);
 
 			} else {
@@ -256,9 +258,8 @@ die;
                                                 $my_first_balance = $my_first_balance + $order_amount - $my_first_curr_commission;
                                                 $my_second_balance = $my_second_balance - $order_value;
 
-					//done, not tested
-                                      $this->record_transaction($user_id, $new_order_id, $first_curr, $second_curr, 'buy', $order_value, $order_amount, $my_first_curr_commission);
-                                      $this->record_transaction($user_id, $new_order_id, $second_curr, $first_curr, 'sell', $order_amount, $order_value);
+                                      $this->record_transaction($user_id, $new_order_id, $first_curr, $second_curr, 'buy', $order_amount, $order_value, $my_first_curr_commission);
+                                      $this->record_transaction($user_id, $new_order_id, $second_curr, $first_curr, 'sell', $order_value, $order_amount);
 
                                                 $commissions[$first_curr][] = $first_curr_commission;
 
@@ -267,8 +268,7 @@ die;
                                                 $my_first_balance = $my_first_balance - $order_amount;
                                                 $my_second_balance = $my_second_balance + $order_value - $my_second_curr_commission;
                                                
-					//done and working! 
-                                      $this->record_transaction($user_id, $new_order_id, $second_curr, $first_curr, 'buy', $order_value, $order_amount, $my_second_currency_commission);
+                                      $this->record_transaction($user_id, $new_order_id, $second_curr, $first_curr, 'buy', $order_value, $order_amount, $my_second_curr_commission);
                                       $this->record_transaction($user_id, $new_order_id, $first_curr, $second_curr, 'sell', $order_amount, $order_value);
 
                                                 $commissions[$second_curr][] = $second_curr_commission;
@@ -394,6 +394,8 @@ die;
 	$user_id = $this->get_user_id();
 	$details = $this->get_details();
 
+	$protocol = 'web'; //api not done yet
+
 	$order = Orders::find('first', array(
 			'conditions' => array(
 				'user_id' => (string) $user_id,
@@ -449,7 +451,13 @@ die;
 	$order->delete();
 	
 	$message = 'Order deleted';
-               
+        
+	$market = strtolower("{$order['FirstCurrency']}_{$order['SecondCurrency']}");
+
+		//log the action
+		$log = new ActionLog();
+		$log->order_cancelled($user_id, $market, $order_id, $protocol);
+
 	return $this->redirect('/in/orders');
         }
 
@@ -463,6 +471,12 @@ die;
 	$type = ucfirst($type);
 
 	if('Sell' == $type) $amount = $amount * -1; //when you sell it's recorded as negative
+
+
+	/*
+		We don't really care about the price or SecondCurrency here, as each currency is recorded seperately 
+		But we record them so user can click on a transaction and see the full picture, i.e. the market the transaction occurred on and the price paid.
+	*/
 
 	         $data = array(
                              'DateTime' => new \MongoDate(),
