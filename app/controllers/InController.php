@@ -285,7 +285,14 @@ class InController extends \app\extensions\action\Controller {
 			$money = new Money($user_id);
 			
 			$amount = $money->undisplay_money($this->request->data['amount'], $currency);
-			if($details['balance.'.$currency]<=$amount){return false;}			
+			if($details['balance.'.$currency] < $amount) {
+
+			$balance = $details['balance.'.$currency];	
+
+			$error = 'Insufficient funds';
+ 			return compact('details', 'error', 'amount', 'currency', 'balance');
+			}			
+			
 			$amount = $amount * -1;
 			
 			$address = $this->request->data['currencyaddress'];

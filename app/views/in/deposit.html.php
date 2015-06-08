@@ -1,7 +1,12 @@
 <?php
 use lithium\util\String;
-use li3_qrcode\extensions\action\QRcode;
-   $qrcode = new QRcode();
+
+//temp using google charts to make the qrcode
+use app\extensions\action\Qrcode;
+$qr = new qrcode();
+
+//use li3_qrcode\extensions\action\QRcode;
+//   $qrcode = new QRcode();
 ?>
 <script type="text/javascript" src="/js/qrcode/grid.js"></script>
 <script type="text/javascript" src="/js/qrcode/version.js"></script>
@@ -166,14 +171,17 @@ function initCanvas(ww,hh)
   
 <?php
 $type = 'btc_address';
+
+$qr->text($default_addresses[$type]);
+$qr_btc_img =$qr->get_link();
 ?>
- 
+
 	<p>To fund your account with Bitcoin please send payment to <strong><?php echo $default_addresses[$type]; ?></strong></p> 
 
 						<?php   //$qrcode->png($address, QR_OUTPUT_DIR.$address.'.png', 'H', 7, 2);?>
                                         		<table><tr>
 					               <td style="text-align:center ;height:280px;vertical-align:middle ">
-                                                       <img src="<?=QR_OUTPUT_RELATIVE_DIR.$address?>.png" style="border:1px solid black">
+                                                       <img src="<?=$qr_btc_img?>" style="border:0px solid black">
 							</td></tr></table>
 
 <div>
@@ -184,13 +192,15 @@ $type = 'btc_address';
   <div class="tab-pane fade" id="tcp">
 <?php
    $type = 'cc_address';
+$qr->text($default_addresses[$type]);
+$qr_cc_img = $qr->get_link();
 ?>
 	<p>To fund your account with The Coloured Pound or Ducats please send payment to <strong><?=$default_addresses[$type]?></strong></p> 
 
 						<?php   //$qrcode->png($address, QR_OUTPUT_DIR.$address.'.png', 'H', 7, 2);?>
                                         		<table><tr>
 					               <td style="text-align:center ;height:280px;vertical-align:middle ">
-                                                       <img src="<?=QR_OUTPUT_RELATIVE_DIR.$address?>.png" style="border:1px solid black">
+                                                       <img src="<?=$qr_cc_img?>" style="border:0px solid black">
 							</td></tr></table>
 
    <p>Note: Your TCP and DCT deposit addresses are the same.</p> 
