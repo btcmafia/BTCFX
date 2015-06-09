@@ -485,9 +485,8 @@ class InController extends \app\extensions\action\Controller {
 
 		public function splash() {
 
-		        $this->secure();
-        	        $details = $this->get_details();
-
+		        //$this->secure();
+        	       // $details = $this->get_details();
                 	$ga = new GoogleAuthenticator();
 
                		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;

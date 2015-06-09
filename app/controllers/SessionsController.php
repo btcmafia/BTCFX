@@ -32,6 +32,7 @@ class SessionsController extends \app\extensions\action\Controller {
 					Session::delete('default');
 					return false;
 			}
+
 			if (Auth::check('member', $this->request)){
 				//Redirect on successful login
 				$loginpassword = $this->request->data['loginpassword'];

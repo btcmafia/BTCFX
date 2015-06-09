@@ -5,9 +5,12 @@ use app\models\Users;
 use app\models\Details;
 use app\models\Orders;
 use app\models\Trades;
+use app\models\Queue;
+use app\controllers\ApiController;
 use app\models\Transactions;
 use app\extensions\action\Money;
 use app\extensions\action\ActionLog;
+use app\extensions\action\CallQueue;
 use MongoDate;
 use lithium\util\String;
 
@@ -384,7 +387,12 @@ die;
 	$first_balance = $money->display_money($my_first_balance, $first_curr);
 	$second_balance = $money->display_money($my_second_balance, $second_curr);
 
-	return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'message');
+	//get the orderbook for displaying	
+	$foo = new APIController();	
+
+	$orders = (array) $foo->orders($market, 20, true);
+
+	return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'message', 'orders');
 	}
 
 
@@ -408,6 +416,26 @@ die;
 	$error = 'Invalid order';
 	return compact('error');
 	}
+
+	//add the request to the queue
+	$queue = Queue::create();
+
+	$data = array(
+			'Type' => 'remove_order',
+			'DateTime' => new \MongoDate(),
+			'Params' => array('hash' => $hash, 'order_id' => $order_id, 'user_id' => $user_id, 'protocol' => $protocol),
+		     );
+
+	$queue->save($data);
+
+	//let's call the queue until we find a better way to do so.
+	//it's not worth a cron job yet.
+
+	new CallQueue();
+
+
+	return $this->redirect('/in/orders');
+	//this will be the end.
 
 	$money = new Money();
 
@@ -459,7 +487,8 @@ die;
 		$log->order_cancelled($user_id, $market, $order_id, $protocol);
 
 	return $this->redirect('/in/orders');
-        }
+      
+	  }
 
         // $this->record_transaction($user_id, $new_order_id, $first_curr, $second_curr, 'sell', $order_value, $order_amount);
         // $this->record_transaction($user_id, $new_order_id, $second_curr, $first_curr, 'buy', $order_amount, $order_value);

@@ -37,3 +37,21 @@ echo $this->_render('element', 'trade/tradeform', compact('balance', 'currency',
 </div>
 
 </div>
+
+<div class="row col-sm-8">
+<h2 style='text-align:center;'>Orderbook</h2>
+<div class="col-sm-6">
+<?php
+$type = 'bids';
+echo $this->_render('element', 'orderbook', compact('orders', 'type'));
+?>
+</div>
+
+<div class="col-sm-6">
+<?php
+$type = 'asks';
+echo $this->_render('element', 'orderbook', compact('orders', 'type'));
+?>
+</div>
+
+</div>

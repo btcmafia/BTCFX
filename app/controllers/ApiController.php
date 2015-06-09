@@ -12,8 +12,11 @@ class APIController extends \app\extensions\action\Controller {
 return 'BTC API';
 //	return;
 	}
-
-	public function orders($market, $limit = false) {
+	/*
+	If $return then will return the result as array
+	Otherwise will render it as json
+	*/
+	public function orders($market, $limit = false, $return = false) {
 
 
 		if(! in_array($market, $this->get_markets()) ) { 
@@ -68,6 +71,8 @@ return 'BTC API';
 		$result['asks'] = array_slice($result['asks'], 0, $limit);
 		}
 
+		if($return) return $result;
+		
 		return $this->render(array('json' => $result, 'status'=> 200));
 	}
 
