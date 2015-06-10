@@ -1,6 +1,12 @@
-<?php
-?>
 <p>&nbsp;</p>
+
+<?php if(isset($error)) { ?>
+<div class="alert alert-dismissible alert-danger col-sm-7">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <strong>Error!</strong> <?=$error?>
+</div>
+<?php } ?>
+
 <div class="row container-fluid">
 	<div class="col-md-6 well" >
 		
