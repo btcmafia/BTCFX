@@ -21,7 +21,9 @@ class CallQueue extends \lithium\action\Controller{
 			$q = $queue->get_queue();
 			
 			foreach($q as $q) {
-				
+//echo "Type: {$q['Type']}<br />";
+//print_r($q['Params']);
+//die;				
 				$queue->{$q['Type']}($q['Params']);
 				$queue->delete_from_queue($q['_id']);
                		}

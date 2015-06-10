@@ -142,6 +142,7 @@ class ActionLog extends \lithium\action\Controller {
 			);
 
 		$action->save($data);
+	return;
 	}
 
 	public function order_cancelled($user_id, $market, $order_id, $protocol) {
@@ -157,6 +158,23 @@ class ActionLog extends \lithium\action\Controller {
 				'Protocol' => $protocol,
 			);
 
+		$action->save($data);
+	}
+
+
+	public function order_rejected($user_id, $market, $error, $type, $amount, $price, $first_curr, $second_curr, $my_failed_balance, $my_failed_curr, $protocol) {
+
+		$action = Actions::create();
+
+		$type = ucfirst($type);
+
+		$data = array(
+				'user_id' => $user_id,
+				'Type' => 'order_rejected',
+				'Market' => $market,
+				'Description' => "$type order for $amount $first_curr at $price $second_curr rejected - $error",
+				'FailedBalance' => "$my_failed_balance $my_failed_curr",
+			);
 		$action->save($data);
 	}
 
