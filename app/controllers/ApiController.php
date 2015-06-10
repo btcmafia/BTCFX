@@ -12,6 +12,8 @@ class APIController extends \app\extensions\action\Controller {
 return 'BTC API';
 //	return;
 	}
+
+
 	/*
 	If $return then will return the result as array
 	Otherwise will render it as json
@@ -126,6 +128,12 @@ return 'BTC API';
 
 	}
 
+
+	public function cancel_order() {
+
+	
+
+	}
 
 }
 ?>

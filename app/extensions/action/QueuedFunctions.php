@@ -5,6 +5,7 @@ namespace app\extensions\action;
 use app\models\Queue;
 use app\models\Details;
 use app\models\Orders;
+use app\models\Parameters;
 use app\extensions\actionActionLog;
 use app\extensions\action\Money;
 use lithium\util\String;
@@ -17,19 +18,23 @@ class QueuedFunctions extends \lithium\action\Controller{
 	public function __construct() {
 
 		//see if the queue is locked
-		$check = Parameters::find('all');
+		$check = Parameters::find('first');
 
 		$time_out = time() - 30; //if the last lock was more than x seconds ago, a script probably crashed, so treat it as unlocked.
 
-		if( ('1' == $check['Queue.Locked']) OR ($time_out < $check['Queue.DateTime']->sec) ) {
+//echo "<p>Time: " . $time_out;
+//echo "<br />Next: ". $check['Queue.DateTime']->sec;
+//die;
 
-		$this->live = false;
+		if( ('1' == $check['Queue.Locked']) && ($check['Queue.DateTime']->sec > $time_out) ) {
+
+		$this->live = false; //already locked, so we can't create live session
 
 		return false;
 		}
 		//not locked, then lock it.
 		else {
-			$check->save(array('Queue' => array('Locked' => '1', 'DateTime' => new \MongoDate()));
+			$check->save(array('Queue' => array('Locked' => '1', 'DateTime' => new \MongoDate())));
 			
 			$this->live = true;
 
@@ -40,19 +45,26 @@ class QueuedFunctions extends \lithium\action\Controller{
 
 	public function get_queue() {
 
-		$foo = Queue::find('all'); //need to order by DateTime
+		$foo = Queue::find('all',array(
+				'order' => array('DateTime' => 'ASC')
+			));
+
+	return $foo;
 	}
 
 	public function delete_from_queue($queue_id) {
 
-		$foo = Queue::find('find', array(
+		$foo = Queue::find('first', array(
 				'conditions' => array(
 					'_id' => $queue_id,
 				)
 			));
+		
+		$foo->delete();
 	}
 
 	public function remove_order($params) {
+
 
 	if(! $this->live) return false;
 
@@ -65,7 +77,7 @@ class QueuedFunctions extends \lithium\action\Controller{
 	//this was already checked before the order was queued, but hey.
         if(String::hash($order_id) != $hash) {
 
-        $error = array('error' => 'Invalid order';
+        $error = array('error' => 'Invalid order');
         return compact('error');
         }
         
@@ -77,7 +89,6 @@ class QueuedFunctions extends \lithium\action\Controller{
                                 '_id' => $order_id,
                                 )
                                 ));
-
 
         $money = new Money();
 
@@ -119,8 +130,6 @@ class QueuedFunctions extends \lithium\action\Controller{
         //delete order and update balances
         $details->save($data);
         $order->delete();
-
-        $message = 'Order deleted';
 
         $market = strtolower("{$order['FirstCurrency']}_{$order['SecondCurrency']}");
 

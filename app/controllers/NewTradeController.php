@@ -114,8 +114,14 @@ class NewTradeController extends \app\extensions\action\Controller {
 			$error = 'The minimum amount you can buy or sell in this market is '. $money->display_money($min_amounts[$first_curr], $first_curr) . " $first_curr";
 			}
 
-		if(isset($error)) return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'error'); 
+				if(isset($error)) {
 
+				//get the orderbook for displaying	
+				$foo = new APIController();	
+				$orders = (array) $foo->orders($market, 20, true);
+	
+				return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'error', 'orders'); 
+				}
 
 		//create a new order, so we have an order_id for transactions and the action log. We can delete it if the order is completely fulfilled from pending orders
 		$new_order = Orders::create();
@@ -389,7 +395,6 @@ die;
 
 	//get the orderbook for displaying	
 	$foo = new APIController();	
-
 	$orders = (array) $foo->orders($market, 20, true);
 
 	return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'message', 'orders');
@@ -430,65 +435,11 @@ die;
 
 	//let's call the queue until we find a better way to do so.
 	//it's not worth a cron job yet.
-
 	new CallQueue();
 
-
 	return $this->redirect('/in/orders');
-	//this will be the end.
+	}
 
-	$money = new Money();
-
-		if('buy' == $order['Type']) {
-
-		$current_balance = $details["balance.{$order['SecondCurrency']}"];
-		$current_open_balance = $details["OpenBalance.{$order['SecondCurrency']}"];
-		
-		$amount = $money->display_money($order['Amount'], $order['FirstCurrency']);
-		$price = $order['Price']; 
-
-		$order_value = $amount * $price;
-
-		$new_open_balance = $current_open_balance - $order_value;
-		$new_balance = $current_balance + $order_value;
-
-
-		$data = array("OpenBalance.{$order['SecondCurrency']}" => (int) $new_open_balance,
-				"balance.{$order['SecondCurrency']}" => (int) $new_balance);
-		}
-
-		elseif('sell' == $order['Type']) {
-
-		$current_balance = $details["balance.{$order['FirstCurrency']}"];
-		$current_open_balance = $details["OpenBalance.{$order['FirstCurrency']}"];
-		
-		//$amount = $money->display_money($order['Amount'], $order['FirstCurrency']);
-		$amount = $order['Amount'];
-
-		$new_open_balance = $current_open_balance - $amount;
-		$new_balance = $current_balance + $amount;
-	
-		$data = array("OpenBalance.{$order['FirstCurrency']}" => (int) $new_open_balance,
-				"balance.{$order['FirstCurrency']}" => (int) $new_balance);
-
-		}
-		else { return false; } //should be impossible!
-
-	//delete order and update balances
-	$details->save($data); 
-	$order->delete();
-	
-	$message = 'Order deleted';
-        
-	$market = strtolower("{$order['FirstCurrency']}_{$order['SecondCurrency']}");
-
-		//log the action
-		$log = new ActionLog();
-		$log->order_cancelled($user_id, $market, $order_id, $protocol);
-
-	return $this->redirect('/in/orders');
-      
-	  }
 
         // $this->record_transaction($user_id, $new_order_id, $first_curr, $second_curr, 'sell', $order_value, $order_amount);
         // $this->record_transaction($user_id, $new_order_id, $second_curr, $first_curr, 'buy', $order_amount, $order_value);

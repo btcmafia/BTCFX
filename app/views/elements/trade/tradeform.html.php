@@ -37,7 +37,7 @@ if('buy' == $type) {
 </div>
 
 <div class="form-group row">
-      <label for="Price" class="col-sm-3 col-sm-offset-0 control-label">Price <small>(per <?=$first_curr?>)</small></label>
+      <label for="Price" class="col-sm-3 col-sm-offset-0 control-label"><span class="pull-right">Price<br /><small>(per <?=$first_curr?>)</small></span></label>
       <div class="col-sm-6">
 	<div class="input-group">
         <input class="form-control" id="Price" name="Price" placeholder="" type="text">

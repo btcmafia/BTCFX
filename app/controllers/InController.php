@@ -43,8 +43,6 @@ class InController extends \app\extensions\action\Controller {
 			$data['Available Balance'][$currency] = $money->get_balance($currency, true);
 			$data['Pending Deposits'][$currency] = $money->pending_deposits($currency, true);
 			$data['Pending Withdrawals'][$currency] = $money->pending_withdrawals($currency, true);
-			//$data['Open Buy Orders'][$currency] = $money->pending_buy_orders($currency, true);
-			//$data['Open Sell Orders'][$currency] = $money->pending_sell_orders($currency, true);	
 			$data['Open Orders'][$currency] = $money->open_balance($currency, true);
  		}
 
