@@ -4,7 +4,8 @@ namespace app\extensions\action;
 
 use app\models\Actions;
 
-class ActionLog extends \lithium\action\Controller {
+class ActionLog extends \app\extensions\action\Controller {
+//class ActionLog extends \lithium\action\Controller {
 
 
 	public function update_password($user_id, $password = '') {
@@ -26,8 +27,6 @@ class ActionLog extends \lithium\action\Controller {
 
 	public function update_email($user_id, $email) {
 
-		$action = Actions::create();
-
 		$data = array(
 				'user_id' => $user_id,
 				'Type' => 'update_email',
@@ -37,7 +36,8 @@ class ActionLog extends \lithium\action\Controller {
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 			);
 
-		$action->save($data);
+		$action = Actions::create($data);
+		$action->save();
 	}
 
 	public function disabled_2fa($user_id) {

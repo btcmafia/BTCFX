@@ -155,7 +155,7 @@ class NewTradeController extends \app\extensions\action\Controller {
 	return $this->redirect("/new_trade/x/$market/1/");
 	}
 
-	if('1' == $flag) { $message = 'Order succesfully queued'; }
+	if('1' == $flag) { $message = 'Order succesfully submitted'; }
 
 
 	//get the orderbook for displaying	

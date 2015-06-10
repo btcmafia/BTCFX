@@ -63,9 +63,14 @@ return 'BTC API';
 
 		}
 
-		//put in correct order
-		array_multisort($result['bids'], SORT_DESC,
-				$result['asks'], SORT_ASC);
+//reorder
+usort($result['bids'], function($a, $b){
+return $a[0]<$b[0];
+});
+
+usort($result['asks'], function($a, $b){
+return $a[0]>$b[0];
+});
 
 		if($limit) {
 

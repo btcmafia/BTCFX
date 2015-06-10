@@ -70,7 +70,6 @@ class QueuedFunctions extends \lithium\action\Controller{
 	$market = $params['market'];
 
         $money = new Money($user_id);
-        //$action = new ActionLogs();
 
 
                 $first_curr = strtoupper(substr($market,0,3));
@@ -333,7 +332,7 @@ class QueuedFunctions extends \lithium\action\Controller{
 
         $new_order->delete();
 
-        //update balances here
+        //update our balances 
                 $data = array(
                                 "balance.$first_curr" => (int) $my_first_balance,
                                 "OpenBalance.$first_curr" => (int) $my_open_first_balance,
