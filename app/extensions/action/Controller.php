@@ -3,7 +3,8 @@ namespace app\extensions\action;
 use lithium\storage\Session;
 use app\models\Details;
 use app\models\Emails;
-
+use app\models\Users;
+use lithium\util\String;
 
 class Controller extends \lithium\action\Controller {
 
@@ -52,6 +53,19 @@ class Controller extends \lithium\action\Controller {
 
 	return;
  }
+
+	public function validate_password($user_id, $password) {
+
+		 $users = Users::find('first',array(
+                                 'conditions' => array(
+                                       '_id' => $user_id,
+                                       'password' => String::hash($password)),
+                                      ));
+
+                if(0 == count($users)) return false;
+
+		else return true;
+	}
 
   public function get_user_id() {
 

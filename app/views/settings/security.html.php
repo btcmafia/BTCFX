@@ -10,6 +10,6 @@
 
 <div class="row">
 <div class="col-sm-4">
-<?php //echo $this->_render('element', 'settings/api'); ?>
+<?php echo $this->_render('element', 'settings/api'); ?>
 </div>
 </div>

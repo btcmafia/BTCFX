@@ -47,7 +47,7 @@ reset($YourOrders);
 ?>
 <h2>Open Orders</h2>
 
-                <div class="col-md-6">
+                <div class="col-sm-10 col-lg-6">
                         <div class="panel panel-info">
                                 <div class="panel-heading">
 <ul class="nav nav-tabs">

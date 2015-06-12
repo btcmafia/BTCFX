@@ -26,6 +26,7 @@ use lithium\storage\Session;
  	<ul class="dropdown-menu">
 	<li><a href="/settings/profile/">Account Profile</a></li>
 	<li><a href="/settings/security/">Security Settings</a></li>
+	<li><a href="/settings/api/">API Settings</a></li>
 	</ul>
  </li>
 

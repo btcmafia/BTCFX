@@ -8,6 +8,7 @@ use app\models\Users;
 use app\models\Emails;
 use lithium\util\String;
 use app\extensions\action\ActionLog;
+use app\extensions\action\Crypto;
 use app\extensions\action\GoogleAuthenticator;
 
 use \lithium\template\View;
@@ -78,19 +79,13 @@ class SettingsController extends \app\extensions\action\Controller {
 
                                         } //end 2fa
 	
+						//check password
+						if(! $this->validate_password($user_id, $password) ) {
 
-							 //check password
-                                                        $users = Users::find('first',array(
-                                                                                'conditions' => array(
-                                                                                '_id' => $user_id,
-                                                                                'password' => String::hash($this->request->data['Password'])),
-                                                                                ));
+						$error = 'Password is incorrect';
+                                                return compact('emails', 'error', 'TwoFactorEnabled');
+						}
 
-                                                        if(0 == count($users)) {
-
-                                                        $error = 'Password is incorrect.';
-                                                        return compact('emails', 'error', 'TwoFactorEnabled');
-                                                        }
 
 					//check doesn't exist
 					$search = Emails::find('first', array(
@@ -220,6 +215,10 @@ class SettingsController extends \app\extensions\action\Controller {
 		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
 		else	$TwoFactorEnabled = false;
 
+		if(1 == $details['API.Enabled']) $APIEnabled = true;
+		else	$APIEnabled = false;
+
+
 		$key = $details['key'];
 
 			if(! $TwoFactorEnabled) {
@@ -241,14 +240,14 @@ class SettingsController extends \app\extensions\action\Controller {
 			   ($this->request->data['2FA'] == '') ) {
 			
 			$error_2fa = 'All fileds are required';
-			return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
+			return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 			}
 			
 
 				 if($key != $this->request->data['key']) {
 
                        		 $error_2fa = 'Settings not updated';
-                        	 return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
+                        	 return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
                        		 }
 
 	
@@ -256,7 +255,7 @@ class SettingsController extends \app\extensions\action\Controller {
 				if(! $ga->verifyCode($details['secret'], $code, 1)) {
 
 				$error_2fa = 'Invalid Two Factor Code';
-				return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
+				return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 				}
 			
 			//check current password
@@ -269,7 +268,7 @@ class SettingsController extends \app\extensions\action\Controller {
 				if(0 == count($users)) {
 
 					$error_2fa = 'Password is incorrect.';
-					return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
+					return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 				}
 			
 			//we are good - enable  or disable
@@ -301,7 +300,7 @@ class SettingsController extends \app\extensions\action\Controller {
 				$log->enabled_2fa($user_id);
 			}
 
-					return compact('message_2fa', 'TwoFactorEnabled', 'key', 'qrcode');
+					return compact('message_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 		}
 
 		/*/////////////////////////////////////////////////////////////////////////////
@@ -314,14 +313,14 @@ class SettingsController extends \app\extensions\action\Controller {
 			   ($this->request->data['ConfirmPassword'] == '')) {
 
 			$error = 'All fields are required';
-			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
+			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 			}
 
 
 			if($key != $this->request->data['key']) {
 
 			$error = 'Password not changed';
-			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
+			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 			} 
 
 
@@ -329,7 +328,7 @@ class SettingsController extends \app\extensions\action\Controller {
 				if($this->request->data['NewPassword'] != $this->request->data['ConfirmPassword']) {
 				
 				$error = 'New password fields do not match';
-				return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
+				return compact('error', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 				}
 				
 					//check 2fa
@@ -339,24 +338,19 @@ class SettingsController extends \app\extensions\action\Controller {
 						if(! $ga->verifyCode($details['secret'], $this->request->data['2FA'], 2)) {
 
 						$error = 'Invalid Two Factor Code';
-						return compact('error', 'TwoFactorEnabled', 'key');
+						return compact('error', 'TwoFactorEnabled', 'key', 'APIEnabled');
 						}
 	
 					} //end 2fa
 
-							//check current password
-							$users = Users::find('first',array(
-										'conditions' => array(
-										'_id' => $user_id,
-										'password' => String::hash($this->request->data['OldPassword'])),
-										));
-							
-							if(0 == count($users)) {
+						//check password
+						if(! $this->validate_password($user_id, $password) ) {
 
-							$error = 'Current password is incorrect.';
-							return compact('error', 'TwoFactorEnabled', 'key', 'qrcode');
-							}
-			
+						$error = 'Current password is incorrect.';
+						return compact('error', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
+						}
+		
+	
 			//must be good, update
 			$passwd = String::hash($this->request->data['NewPassword']);
 			$data = array('password' => $passwd);
@@ -368,14 +362,146 @@ class SettingsController extends \app\extensions\action\Controller {
 				$log->update_password($user_id, $passwd);
 
 			$message = 'Your password has been updated.';
-			return compact('message', 'TwoFactorEnabled', 'key', 'qrcode');			
+			return compact('message', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');			
 
 			}//change passd submitted
 
-	return compact('TwoFactorEnabled', 'key', 'qrcode');
+	return compact('TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled', 'invalid_addresses');
+}
+
+	public function api() {
+
+	$this->secure();
+	$details = $this->get_details();
+	$user_id = $this->get_user_id();
+
+	$addresses['BTC'] = $details['API.AddressesBTC'];
+	$addresses['CC'] = $details['API.AddressesCC'];
+	
+
+		$ga = new GoogleAuthenticator();
+	
+		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
+		else	$TwoFactorEnabled = false;
+
+		if(1 == $details['API.Enabled']) $APIEnabled = true;
+		else	$APIEnabled = false;
+
+			//POST received
+		      if($this->request->data['submit-api']) {
+
+			//check passwd
+                        if( ($this->request->data['Password'] == '') OR (! $this->validate_password($user_id, $this->request->data['Password']) )) {
+
+                        $error = 'Invalid password';
+                        }
+			
+			//check 2fa
+                        elseif($TwoFactorEnabled) {
+
+
+                               if(! $ga->verifyCode($details['secret'], $this->request->data['2FA'], 2)) {
+
+                               $error = 'Invalid Two Factor Code';
+                               }
+
+			}
+
+		if(isset($error)) {
+
+                        return compact('error', 'TwoFactorEnabled', 'APIEnabled', 'addresses');
+		}
+		
+		//passed security, what do we want to do?
+		$api_action = $this->request->data['api_action'];
+		
+		if($api_action == 'enable_disable') {
+
+			if($APIEnabled) { 
+				$data = array('API.Enabled' => '0');
+				$APIEnabled = false;
+				$message = 'API has been disabled';
+			}
+			else {
+				$data = array('API.Enabled' => '1');
+				$APIEnabled = true;
+				$message = 'API has been enabled';
+			     }			
+ 
+		$details->save($data);
+		return compact('message', 'TwoFactorEnabled', 'APIEnabled', 'addresses');
+	
+		}
+		elseif($api_action == 'new_credentials') {
+
+			$creds = $this->generate_credentials();
+
+			$api_key = $creds['key'];
+			$api_secret = $creds['secret'];
+
+			$data = array('API.Key' => $api_key, 'API.Secret' => $api_secret);
+			$details->save($data);
+
+			$message = "New API credentials generated";
+
+		return compact('message', 'TwoFactorEnabled', 'APIEnabled', 'api_key', 'api_secret', 'addresses');
+
+		}
+		elseif($api_action == 'view_credentials') {
+
+			$api_key = $details['API.Key'];
+			$api_secret = $details['API.Secret'];
+
+		return compact('TwoFactorEnabled', 'APIEnabled', 'api_key', 'api_secret', 'addresses');
+
+		}
+		elseif($api_action == 'update_withdrawals') {
+
+			//validate the addresses
+			$cp = new Crypto();
+
+		         foreach(explode("\r", $this->request->data['AddressesBTC']) as $btc_address) {
+
+                                if(! $cp->validate_address($btc_address) ) $invalid_addresses['BTC'][] = $btc_address;
+                                else $valid_addresses['BTC'][] = $btc_address;
+                                }
+
+                                foreach(explode("\r", $this->request->data['AddressesCC']) as $cc_address) {
+
+                                if(! $cp->validate_address($cc_address) ) $invalid_addresses['CC'][] = $cc_address;
+                                else $valid_addresses['CC'][] = $cc_address;  
+                                }
+
+				$data = array('API' => array(
+						'AddressesBTC' => $valid_addresses['BTC'],
+						'AddressesCC' => $valid_addresses['CC'],	
+					    ));	
+					 
+				$details->save($data);
+
+			$message = "<p>You withdrawal addresses have been updated.</p>";
+
+			if(0 != count($invalid_addresses)) {
+
+			$message .= "<p>The following addresses are invalid and have been excluded:</p>";
+
+			foreach($invalid_addresses['BTC'] as $invalid) {
+
+			$message .= "BTC: $invalid<br />";
+			}
+			foreach($invalid_addresses['CC'] as $invalid) {
+
+			$message .= "CC: $invalid<br />";
+			}
+			}
+			$addresses = $valid_addresses;
+
+		return compact('message', 'TwoFactorEnabled', 'APIEnabled', 'addresses');
+		}//else/if
+	
 	}
-
-
+		return compact('TwoFactorEnabled', 'APIEnabled', 'addresses');
+}
 	public function notifications() {
 
 	return;
@@ -495,6 +621,20 @@ class SettingsController extends \app\extensions\action\Controller {
 
 		$old->save(array('Default' => false)); 
 		$new->save(array('Default' => true)); 
+	}
+
+	/*
+		Generate a new key and secret
+		returns (array) key and secret
+	*/
+	private function generate_credentials() {
+
+                 $ga = new GoogleAuthenticator();
+
+		$array = array('key'=>$ga->createSecret(64),
+			       'secret'=>$ga->createSecret(64));
+
+		return $array;
 	}
 }
 

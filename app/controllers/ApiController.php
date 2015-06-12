@@ -3,7 +3,9 @@ namespace app\controllers;
 
 use app\models\Orders;
 use app\models\Trades;
+use app\models\ApiRequests;
 use app\extensions\action\Money;
+use lithium\util\String;
 
 class APIController extends \app\extensions\action\Controller {
 
@@ -19,6 +21,21 @@ return 'BTC API';
 	Otherwise will render it as json
 	*/
 	public function orders($market, $limit = false, $return = false) {
+
+	//don't limit requests where $return is true, because it's probably the trade page 
+	if(! $return) {
+
+	//record the request
+	$this->record_api('orders');
+	
+	if($this->limit_api()) {
+
+		$result['error'] = array('code' => '2', 'message' => 'API request limit reached');
+
+		return $this->render(array('json' => $result, 'status'=> 200));
+
+	}
+	}
 
 
 		if(! in_array($market, $this->get_markets()) ) { 
@@ -85,6 +102,17 @@ return $a[0]>$b[0];
 
 	public function transactions($market, $time_limit = false, $min_amount = 1) {
 
+	//record the request
+	$this->record_api('transactions');
+	
+	if($this->limit_api()) {
+
+		$result['error'] = array('code' => '2', 'message' => 'API request limit reached');
+
+		return $this->render(array('json' => $result, 'status'=> 200));
+
+	}
+
 		if(! in_array($market, $this->get_markets()) ) { 
 
 			$result['error'] = array('code' => '0', 'message' => 'Invalid market');
@@ -136,8 +164,128 @@ return $a[0]>$b[0];
 
 	public function cancel_order() {
 
-	
+	$details = $this->auth('cancel_order');	
+	$user_id = $details['user_id'];
 
+	
+	
+	}
+
+
+
+	private function auth($type) {
+
+	   if(!$this->request->data){
+			return $this->render(array('json' => array('success'=>0,
+			'now'=>time(),
+			'error'=>"Not submitted through POST."
+			)));
+			die;
+	 }
+
+	$key = $this->request->data['key'];
+	$nonce = $this->request->data['nonce'];
+	$sig = $this->request->data['signature'];
+
+	 if ($key==null){
+
+		$error = "API Key not specified.";
+
+	} elseif(! $this->check_nonce($key, $nonce) ) {
+
+		$error = "Invalid nonce. It must always be greater than the previous.";
+
+	 }else{
+	 
+	 	$details = Details::find('first',array(
+			'conditions'=>array('API.Key'=>$key)
+		));
+
+		if(count($details)==0){  $error = "Invalid API key."; }
+
+		else{
+
+		//check signature
+		if(string::hash($key . $details['API.secret'] . $nonce) != $sig) {
+		$error = "Invalid signature";
+		}
+
+		if(! $this->limit_api() ) {
+		$error = "Too many requests from your IP, please try again after some time.";
+		}
+
+
+		}
+
+	if(isset($error)) {
+
+		$this->record_api($type, $key, $nonce, 'failed');
+		
+		return $this->render(array('json' => array('success'=>0,
+			'timestamp' => time(),
+			'error' => $error
+			)));
+			die;
+	}
+
+		//if not failed by now we must be good
+		$this->record_api($type, $key, $nonce, 'success');
+
+		return $details;
+	}
+	}
+
+	private function check_nonce($key, $nonce) {
+
+		$foo = ApiRequests::find('first', array(
+				'conditions' => array(
+					'Key' => $key,
+					'Nonce' => array('>=' => $nonce),
+				)
+				));
+
+		if(0 != count($foo) ) return false;
+
+		else return true;
+	}
+
+	private function record_api($type, $api_key = false, $nonce = '', $result = '') {
+
+		$record = ApiRequests::create();
+
+			$data = array(
+				'Type' => $type,
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'Timestamp' => time(),
+			);
+		
+		if(isset($api_key)) {
+
+			$data['Key'] = $api_key;
+			$data['Nonce'] = $nonce;
+			$data['Result'] = $result;
+		}
+		
+		$record->save($data);
+	}
+	
+	/*
+		@param $time_limit (int) - number of seconds the $limit is enforced for, default 600, or 10 min
+		@return bool
+	*/
+	private function limit_api($limit = 600, $time_limit = 600) {
+
+
+		$requests = ApiRequests::find('count', array(
+					'conditions' => array(
+						'ip_address' => $_SERVER['Remote_ADDR'],
+						'Timestamp' => array('>=' => $time_limit),
+						)
+					));
+
+		if($requests >= $limit) return false;
+
+		else return true;
 	}
 
 }
