@@ -164,16 +164,20 @@ return $a[0]>$b[0];
 
 	public function cancel_order() {
 
-	$details = $this->auth('cancel_order');	
-	$user_id = $details['user_id'];
+		global $type;
+		$type = 'cancel_order';
+		
+		$this->secure('api');
 
-	
+			
 	
 	}
 
 
 
-	private function auth($type) {
+	private function auth() {
+
+		global $type;
 
 	   if(!$this->request->data){
 			return $this->render(array('json' => array('success'=>0,

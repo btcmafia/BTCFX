@@ -22,6 +22,14 @@ class Controller extends \lithium\action\Controller {
 	
 	if( ('admin' == $level) && (! $this->is_admin()) ) return $this->redirect(PROTOCOL . '://' . COMPANY_URL);
 
+		//if it's the api then $this->auth from the ApiController will authenticate
+		if( 'api' == $level ) {
+		$this->details = $this->auth();
+		$this->user_id = $details['user_id'];
+		
+		return;
+		}
+		
 
  	$user = Session::read('default');
         if ($user==""){   return $this->redirect('/login');
@@ -78,6 +86,18 @@ class Controller extends \lithium\action\Controller {
 	}
 
   public function get_email() {
+
+	//if it's an api call then email may not be set 
+	if('' == $this->email) {
+
+	 $email = Emails::find('first', array(
+                        'conditions' => array(
+                                'user_id' => $user_id,
+                                'Default' => true)
+                        ));
+
+	$this->email = $email['Email'];
+	}
 
 	return $this->email;
 
