@@ -6,6 +6,7 @@ use app\models\Transactions;
 use app\models\Orders;
 use app\models\Parameters;
 use app\models\Settings;
+use app\models\Emails;
 use app\models\Details;
 use app\models\File;
 use lithium\data\Connections;
@@ -50,9 +51,10 @@ class InController extends \app\extensions\action\Controller {
 
 	}
 
-        public function orders() {
+        public function orders($api = false, $details = false) {
 
-		$this->secure();
+		$this->secure($api, $details);
+
 		$user_id = $this->get_user_id();
                 
 		$title = 'Open Orders';
@@ -68,10 +70,41 @@ class InController extends \app\extensions\action\Controller {
 			'order' => array('DateTime'=>-1)
 		));
 
-		$money = new Money($user_id);
+		$money = new Money();
 
-//	var_dump($money);
-//die;
+		if($api) {
+
+			foreach($YourOrders as $foo) {
+
+//format the date from now on
+$foo['DateTime'] = gmdate('d-M-Y H:i:s',$foo['DateTime']->sec);
+
+//format money
+$foo['Amount'] = $money->display_money($foo['Amount'], $foo['FirstCurrency']);
+$foo['Price'] = $money->display_money($foo['Price'], $foo['SecondCurrency']);
+
+
+        if( ('BTC' == $foo['FirstCurrency']) && ('TCP' == $foo['SecondCurrency']) ) {
+
+                $btc_tcp[] = array('id' => (string) $foo['_id'], 'datetime' => $foo['DateTime'], 'type' => $foo['Type'], 'amount' => $foo['Amount'], 'price' => $foo['Price'], 'expires' => $foo['Expires']);
+        }
+
+        elseif( ('BTC' == $foo['FirstCurrency']) && ('DCT' == $foo['SecondCurrency']) ) {
+
+                $btc_dct[] = array('id' => (string) $foo['_id'], 'datetime' => $foo['DateTime'], 'type' => $foo['Type'], 'amount' => $foo['Amount'], 'price' => $foo['Price'], 'expires' => $foo['Expires']);
+        }
+        if( ('TCP' == $foo['FirstCurrency']) && ('DCT' == $foo['SecondCurrency']) ) {
+
+                $tcp_dct[] = array('id' => (string) $foo['_id'], 'datetime' => $foo['DateTime'], 'type' => $foo['Type'], 'amount' => $foo['Amount'], 'price' => $foo['Price'], 'expires' => $foo['Expires']);
+        }
+
+		} //foreach
+
+		$orders = array('btc_tcp' => $btc_tcp, 'btc_dct' => $btc_dct, 'tcp_dct' => $tcp_dct);
+
+		return $orders;
+		} //api
+
 //		array_walk($YourOrders, array($this, 'prepare_money_display'), $money);
 
                 return compact('YourOrders', 'user_id');
@@ -88,9 +121,12 @@ class InController extends \app\extensions\action\Controller {
 	return;
 	}
 
-	public function transactions() {
+	//TODO: need to limit the number of results
+	public function transactions($api = false) {
 
-		$this->secure();
+		if('api' == $api) $this->secure('api');
+		else $this->secure();
+
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
 
@@ -105,14 +141,40 @@ class InController extends \app\extensions\action\Controller {
 
 	$money = new Money($user_id);
 
+	$count = 0;
+	
 	foreach($transactions as $tx) {
 
 
 	$amount = $money->display_money($tx['Amount'], $tx['Currency']);
 
-	$trans['ALL'][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
-	$trans[$tx['Currency']][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
+
+	//formatted differently for the api
+	if($api) {
+
+	$trans['ALL'][$count] = array('id' => $tx['_id'], 'datetime' => $tx['DateTime'], 'currency' => $tx['Currency'], 'type' => $tx['TransactionType'], 'amount' => $amount, 'status' => $tx['Status']);
+	$trans[$tx['Currency']][$count] = array('id' => $tx['_id'], 'datetime' => $tx['DateTime'], 'currency' => $tx['Currency'], 'type' => $tx['TransactionType'], 'amount' => $amount, 'status' => $tx['Status']);
+	
+	//only have the tx_hash if it exists, i.e not for trades
+	if(isset($tx['TransactionHash'])) { 
+						$trans['ALL'][$count]['tx_hash'] = $tx['TransactionHash']; 
+						$trans[$tx['Currency']][$count]['tx_hash'] = $tx['TransactionHash'];
+					 }
+
+	$count++;
 	}
+
+	else { //not api
+
+	$trans['ALL'][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
+
+	$trans[$tx['Currency']][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
+	
+
+	}
+
+	} //foreach
+
 	$transactions = $trans;
 
                 return compact('title','details','transactions');
@@ -420,26 +482,32 @@ class InController extends \app\extensions\action\Controller {
        public function forgotpassword(){
         
         if($this->request->data){
-                        $msg = "Password reset link sent to your email address!";
-                        $user = Users::find('first',array(
-                                'conditions' => array(
-                                        'email' => $this->request->data['email']
-                                ),
-                                'fields' => array('_id')
-                        ));
-                        $email = $user['email'];
-//              print_r($user['_id']);
-                        $details = Details::find('first', array(
-                                'conditions' => array(
-                                        'user_id' => (string)$user['_id']
-                                ),
-                                'fields' => array('key')
-                        ));
-//                                      print_r($details['key']);exit;
-                $key = $details['key'];
+                        $msg = "If the username exists then we have sent password reset instructions to their registered email address.";
+        
+		$username = $this->request->data['username'];
+
+		$details = Details::find('first', array(
+				'conditions' => array(
+					'username' => $username,
+					)));
+
+		//user found
+		if(1 == count($details)) {
+
+			$email = Emails::find('first', array(
+				'conditions' => array(
+					'user_id' => $details['user_id'],
+					'Default' => true,
+					)
+					));
+
+			$email = $email['Email'];
+                	$key = $details['key'];
+
+
                 if($key!=""){
-                $email = $this->request->data['email'];
-                        $view  = new View(array(
+              
+	          $view  = new View(array(
                                 'loader' => 'File',
                                 'renderer' => 'File',
                                 'paths' => array(
@@ -448,7 +516,7 @@ class InController extends \app\extensions\action\Controller {
                         ));
                         $body = $view->render(
                                 'template',
-                                compact('email','key'),
+                                compact('username','email','key'),
                                 array(
                                         'controller' => 'in',
                                         'template'=>'forgotpassword',
@@ -471,20 +539,146 @@ class InController extends \app\extensions\action\Controller {
                         $message->setBody($body,'text/html');
                         $mailer->send($message);
                         }
-                }
+                
+		} //user found
 
                 return compact('msg');
-        }
+       	    } //post data
+	 }
 
 
+	public function changepassword($key = false) {
 
+
+		if(! $key){ return $this->redirect('/login');}
+		
+		$details = Details::find('first', array(
+				'conditions' => array(
+					'key' => $key,
+					)
+					));
+
+		//invalid key
+		if(0 == count($details)) return $this->redirect('/login');
+
+		$user_id = $details['user_id'];
+	
+		if('1' == $details['TOTP.Validate']) $TwoFactorEnabled = true;
+		else $TwoFactorEnabled = false;
+
+
+		//form submitted		
+		if($this->request->data){
+		
+		$email = $this->request->data['email'];
+		
+		$ga = new GoogleAuthenticator();
+
+			if( ('' == $this->request->data['password']) OR ('' == $email) ) {
+
+			$error = "All fields are required";
+			}
+			elseif($this->request->data['password'] != $this->request->data['password2']) {
+
+			$error = "Password fields do not match!";
+			}
+			elseif( ($TwoFactorEnabled) && (! $ga->verifyCode($details['secret'], $this->request->data['2FA'], 2)) ) {
+
+			$error = "Invalid Two Factor Code!";
+			}
+			else {
+
+				$check = Emails::find('first', array(
+						'conditions' => array(
+							'Email' => $email,
+							'user_id' => $user_id,
+							'Default' => true,
+							)
+							));
+
+				if(0 == count($check)) {
+
+				$error = "Password not changed"; //don't tell them why
+				}
+			}
+			
+			if(! $error) {
+
+			$user = Users::find('first', array(
+				'conditions' => array(
+					'user_id' => $user_id,
+					)
+					));
+
+			$data = array(
+                                     'password' => String::hash($this->request->data['password']),
+                                     );
+
+			$user->save($data);
+
+			return $this->redirect('/login/1/'); //redirect with success message
+			}		
+
+		}
+		return compact('TwoFactorEnabled', 'key', 'error');
+	}
+		public function password(){
+		if($this->request->data){
+			$details = Details::find('first', array(
+				'conditions' => array(
+					'key' => $this->request->data['key'],
+				),
+				'fields' => array('user_id')
+			));
+			$msg = "Password Not Changed!";
+//			print_r($details['user_id']);
+			if($details['user_id']!=""){
+				if($this->request->data['password'] == $this->request->data['password2']){
+//					print_r($this->request->data['password']);
+					
+					$user = Users::find('first', array(
+						'conditions' => array(
+							'_id' => $details['user_id'],
+						)
+					));
+//					print_r($user['password']);
+						if($user['password']!=String::hash($this->request->data['password'])){
+							print_r($details['user_id']);
+							
+							$data = array(
+							'password' => String::hash($this->request->data['password']),
+							);
+//							print_r($data);
+							
+							$user = Users::find('all', array(
+								'conditions' => array(
+								'_id' => $details['user_id'],
+								)
+							))->save($data,array('validate' => false));
+					//		print_r($user);
+						
+							if($user){
+								$msg = "Password changed!";
+							}
+						}else{
+								$msg = "Password same as old password!";
+						}
+					}else{
+						$msg = "New password does not match!";
+					}
+			}
+		}
+		return compact('msg');
+	
+
+	}
 
 
 
 		public function splash() {
 
-		        //$this->secure();
-        	       // $details = $this->get_details();
+		        $this->secure();
+        	        $details = $this->get_details();
                 	$ga = new GoogleAuthenticator();
 
                		if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;

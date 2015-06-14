@@ -109,7 +109,7 @@ private $btc_unit;
 
       		else $amount = false;
 
-        	return $amount;
+        	return intval(strval($amount));
         }
 
 	public function pending_deposits($currency, $forprint = false) {

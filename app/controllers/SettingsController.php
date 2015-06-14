@@ -293,6 +293,12 @@ class SettingsController extends \app\extensions\action\Controller {
 				$details->save(array('TOTP.Validate' => '1'));
 
 				$TwoFactorEnabled = true;	
+
+				//need to write OTPVerified = true to the session
+				$user = Session::read('default');
+				$user['OTPVerified'] = true;
+				Session::write('default', $user);
+
 	
 				$message_2fa = 'Two Factor Authentication is now enabled';
 

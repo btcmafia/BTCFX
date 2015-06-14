@@ -90,7 +90,7 @@ reset($YourOrders);
                                         	<td style="text-align:center"><?=ucfirst($YO['Type'])?></td>
 						<td style="text-align:right "><?=$YO['Amount']?></td>
 						<td style="text-align:right "><?=$YO['Price']?></td>
-                                       		<td style="text-align:center"><a href="/new_trade/RemoveOrder/<?=String::hash($YO['_id'])?>/<?=$YO['_id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
+                                       		<td style="text-align:center"><a href="/trade/RemoveOrder/<?=String::hash($YO['_id'])?>/<?=$YO['_id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php } ?>
                                 </tbody>
@@ -126,7 +126,7 @@ reset($YourOrders);
                                         	<td style="text-align:center"><?=ucfirst($YO['type'])?></td>
 						<td style="text-align:right "><?=$YO['amount']?></td>
 						<td style="text-align:right "><?=$YO['price']?></td>
-                                       		<td style="text-align:center"><a href="/new_trade/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
+                                       		<td style="text-align:center"><a href="/trade/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php }
 					}?>
@@ -163,7 +163,7 @@ reset($YourOrders);
                                         	<td style="text-align:center"><?=ucfirst($YO['type'])?></td>
 						<td style="text-align:right "><?=$YO['amount']?></td>
 						<td style="text-align:right "><?=$YO['price']?></td>
-                                       		<td style="text-align:center"><a href="/ex/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
+                                       		<td style="text-align:center"><a href="/trade/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php }
 					}?>
@@ -199,7 +199,7 @@ reset($YourOrders);
                                         	<td style="text-align:center"><?=ucfirst($YO['type'])?></td>
 						<td style="text-align:right "><?=$YO['amount']?></td>
 						<td style="text-align:right "><?=$YO['price']?></td>
-                                       		<td style="text-align:center"><a href="/ex/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
+                                       		<td style="text-align:center"><a href="/trade/RemoveOrder/<?=String::hash($YO['id'])?>/<?=$YO['id']?>/<?=$sel_curr?>" title="Remove this order"><i class="fa fa-times"></i></a></td>
 					 </tr>
                                 <?php }
 					}?>

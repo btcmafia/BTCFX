@@ -5,6 +5,8 @@ namespace app\extensions\action;
 use app\models\Queue;
 use app\models\Details;
 use app\models\Orders;
+use app\models\Trades;
+use app\models\Transactions;
 use app\models\Parameters;
 use app\extensions\action\ActionLog;
 use app\extensions\action\Money;
@@ -94,6 +96,7 @@ class QueuedFunctions extends \lithium\action\Controller{
 
                 $amount = (int) $money->undisplay_money($params['amount'], $first_curr);
 
+		$min_amount = $params['min_amount'];
 
                 //buy or sell?
                 if('buy' == $params['type']) {
@@ -240,8 +243,8 @@ class QueuedFunctions extends \lithium\action\Controller{
                                                         );
 
                                         }
-
-                                //save the other balances
+                                
+				//save the other balances
                                 $other->save($other_data);
 
 
@@ -395,7 +398,7 @@ class QueuedFunctions extends \lithium\action\Controller{
 
 
 
-	public function remove_order($params) {
+	public function cancel_order($params) {
 
 
 	if(! $this->live) return false;
@@ -485,6 +488,7 @@ class QueuedFunctions extends \lithium\action\Controller{
 
 
 	private function record_transaction($user_id, $order_id, $first_curr, $second_curr, $type, $amount, $price, $commission = 0) {
+
 
         $tx = Transactions::create();
 

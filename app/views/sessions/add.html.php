@@ -7,6 +7,13 @@
 </div>
 <?php } ?>
 
+<?php if(isset($message)) { ?>
+<div class="alert alert-success alert-success col-sm-7">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <strong>Notice</strong> <?=$message?>
+</div>
+<?php } ?>
+
 <div class="row container-fluid">
 	<div class="col-md-6 well" >
 		

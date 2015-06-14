@@ -4,6 +4,7 @@ use lithium\storage\Session;
 use app\models\Details;
 use app\models\Emails;
 use app\models\Users;
+use app\controllers\ApiController;
 use lithium\util\String;
 
 class Controller extends \lithium\action\Controller {
@@ -12,24 +13,35 @@ class Controller extends \lithium\action\Controller {
 	private $email;
 	private $email_verified;
 	public  $user_id;
+	public $security_done = '';
+
+	public $count;
 
     protected function _init() {
         parent::_init();
 
 	}
 
-   public function secure($level = false) {
+
+/*
+	Check the user is logged in and make several functions available.
+	@param $level (string) admin | api. If api then security is already done, so we just populate the $details and $user_id fields for later use
+	@param $data (array) If $level = api then this will be the $details field that needs storing
+*/
+   public function secure($level = false, $details = false) {
+
 	
 	if( ('admin' == $level) && (! $this->is_admin()) ) return $this->redirect(PROTOCOL . '://' . COMPANY_URL);
 
-		//if it's the api then $this->auth from the ApiController will authenticate
-		if( 'api' == $level ) {
-		$this->details = $this->auth();
+		//if it's an api call then we don't create the session below, authentication has already been done
+		//use the $details passed
+		if( ('api' == $level) && ($details['user_id']) ) {
+
+		$this->details = $details;
 		$this->user_id = $details['user_id'];
-		
+	
 		return;
 		}
-		
 
  	$user = Session::read('default');
         if ($user==""){   return $this->redirect('/login');

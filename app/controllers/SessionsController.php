@@ -15,7 +15,7 @@ use app\extensions\action\GoogleAuthenticator;
 
 class SessionsController extends \app\extensions\action\Controller {
 
-    public function add() {
+    public function add($flag = null) {
 			//perform the authentication check and redirect on success
 			
 			Session::delete('default');				
@@ -157,6 +157,9 @@ class SessionsController extends \app\extensions\action\Controller {
 		$title = $page['title'];
 		$keywords = $page['keywords'];
 		$description = $page['description'];
+
+		if('1' == $flag) $message = "Your password has been updated.";
+
 			return compact('title','keywords','description', 'error');
 			return $this->redirect('/');
 			exit;

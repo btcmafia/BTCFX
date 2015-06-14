@@ -1,6 +1,6 @@
 <?php
 namespace app\models;
 
-class APIRequests extends \lithium\data\Model {
+class ApiRequests extends \lithium\data\Model {
 }
 ?>

@@ -24,12 +24,19 @@ class TradeController extends \app\extensions\action\Controller {
 
 	function x($market = null, $flag = null) {
 
-	$this->secure();
+	if('api' == $flag) { 
+			$this->secure('api'); 
+			$protocol = 'api';
+			 } 
+	else { 
+		$this->secure();
+		$protocol = 'web';
+		}
+	
 	$details = $this->get_details();
 	$user_id = $this->get_user_id();
 
 	$money = new Money($user_id);
-	//$action = new ActionLogs();
 
 	if($this->request->query['json']==true){
                 $this->_render['type'] = 'json';
@@ -58,13 +65,10 @@ class TradeController extends \app\extensions\action\Controller {
     
 	//trade submitted by post
 	if(($this->request->data)){
-
 		$amount = $this->request->data['Amount'];
-		$price = (int)$money->undisplay_money($this->request->data['Price'], $second_curr);
+		$price = $money->undisplay_money($this->request->data['Price'], $second_curr);
 		$order_value = (int) $amount * $price;
-		
 		$amount = (int) $money->undisplay_money($this->request->data['Amount'], $first_curr);
-
 		
 		//buy or sell?
 		if('buy' == $this->request->data['Type']) {
@@ -99,15 +103,11 @@ class TradeController extends \app\extensions\action\Controller {
 
 
 
-//echo "Amount: $amount<br />";
-//echo "Price: $my_price<br /></p>";
-
 		//some defaults until implemeneted
 		$min_amounts = array('BTC' => 5000000, 'TCP' => 500, 'DCT' => '750');
 		$expires = 'GTC';
 		$min_amount = 1; 
 		$is_dark = '0';
-		$protocol = 'web';
 	
 			if($amount < $min_amounts[$first_curr]) {
 
@@ -116,11 +116,17 @@ class TradeController extends \app\extensions\action\Controller {
 
 				if(isset($error)) {
 
+				if('api' == $protocol) {
+					return $error;
+				} 
+				else{
+
 				//get the orderbook for displaying	
 				$foo = new APIController();	
 				$orders = (array) $foo->orders($market, 20, true);
 	
 				return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'error', 'orders'); 
+				}
 				}
 		//add the order to the queue
 	        $queue = Queue::create();
@@ -151,8 +157,10 @@ class TradeController extends \app\extensions\action\Controller {
         //it's not worth a cron job yet.
         new CallQueue();
 
+	if('api' == $protocol) return true;
+
 	//refresh page, with success message
-	return $this->redirect("/new_trade/x/$market/1/");
+	return $this->redirect("/trade/x/$market/1/");
 	}
 
 	if('1' == $flag) { $message = 'Order succesfully submitted'; }
@@ -166,13 +174,13 @@ class TradeController extends \app\extensions\action\Controller {
 	}
 
 
-   public function RemoveOrder($hash,$order_id,$back){
+   public function RemoveOrder($hash, $order_id, $back = ''){
 
-	$this->secure();
+	if('api' == $back) { $this->secure('api'); } 
+	else { $this->secure(); }
+
 	$user_id = $this->get_user_id();
 	$details = $this->get_details();
-
-	$protocol = 'web'; //api not done yet
 
 	$order = Orders::find('first', array(
 			'conditions' => array(
@@ -181,17 +189,32 @@ class TradeController extends \app\extensions\action\Controller {
 				)
 				));
 
-	if(String::hash($order['_id']) != $hash) {
+	if('api' == $back) {
+
+	$protocol = 'api';
+
+	if(0 == count($order)) {
 
 	$error = 'Invalid order';
 	return compact('error');
 	}
 
+	} else {
+
+		$protocol = 'web';
+
+		if(String::hash($order['_id']) != $hash) {
+
+		$error = 'Invalid order';
+		return compact('error');
+	}
+	}	
+
 	//add the request to the queue
 	$queue = Queue::create();
 
 	$data = array(
-			'Type' => 'remove_order',
+			'Type' => 'cancel_order',
 			'DateTime' => new \MongoDate(),
 			'Params' => array('hash' => $hash, 'order_id' => $order_id, 'user_id' => $user_id, 'protocol' => $protocol),
 		     );
@@ -201,6 +224,8 @@ class TradeController extends \app\extensions\action\Controller {
 	//let's call the queue until we find a better way to do so.
 	//it's not worth a cron job yet.
 	new CallQueue();
+
+	if('api' == $back) { return true; }
 
 	return $this->redirect('/in/orders');
 	}
