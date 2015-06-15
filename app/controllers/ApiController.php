@@ -160,7 +160,7 @@ return $a[0]>$b[0];
 			$price = $money->display_money($trade['Price'], $second_curr);
 			$amount = $money->display_money($trade['Amount'], $first_curr);
 
-			$result[] = array('date' => $trade['DateTime'], 'tid' => $trade['_id'], 'price' => $price, 'amount' => $amount);
+			$result[] = array('date' => $trade['DateTime'], 'tid' => (string) $trade['_id'], 'price' => $price, 'amount' => $amount);
 			}
 		    }
 		
@@ -172,10 +172,8 @@ return $a[0]>$b[0];
 
 	public function balances() {
 
-	$this->auth('balances');
-
-	$details = $this->get_details();
-	$user_id = $this->get_user_id();
+	$details = $this->auth('balances');
+	$user_id = $details['user_id'];
 
 	$time = time();
 
@@ -192,16 +190,17 @@ return $a[0]>$b[0];
 
 	public function user_transactions() {
 
-	$this->auth('user_transactions');
+	$details = $this->auth('user_transactions');
 	
 	$time = time();
 
 		$foo = new InController();
-		$trans =$foo->transactions('api');
+		$trans = (array) $foo->transactions('api', $details);
 
 	$result = array('success' => 1, 'timestamp' => $time, 'transactions' => $trans);
 
-	return $this->render(array('json' => $result, 'status' => 200));
+	echo $this->render(array('json' => $result, 'status' => 200));
+	die;
 	}
 
 
@@ -216,7 +215,8 @@ return $a[0]>$b[0];
 
 	$result = array('success' => 1, 'timestamp' => $time, 'orders' => $orders);
 
-	return $this->render(array('json' => $result, 'status' => 200));
+	echo $this->render(array('json' => $result, 'status' => 200));
+	die;
 	}
 
 

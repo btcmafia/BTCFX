@@ -122,10 +122,9 @@ $foo['Price'] = $money->display_money($foo['Price'], $foo['SecondCurrency']);
 	}
 
 	//TODO: need to limit the number of results
-	public function transactions($api = false) {
+	public function transactions($api = false, $details = false) {
 
-		if('api' == $api) $this->secure('api');
-		else $this->secure();
+		$this->secure('api', $details);
 
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
@@ -152,8 +151,10 @@ $foo['Price'] = $money->display_money($foo['Price'], $foo['SecondCurrency']);
 	//formatted differently for the api
 	if($api) {
 
-	$trans['ALL'][$count] = array('id' => $tx['_id'], 'datetime' => $tx['DateTime'], 'currency' => $tx['Currency'], 'type' => $tx['TransactionType'], 'amount' => $amount, 'status' => $tx['Status']);
-	$trans[$tx['Currency']][$count] = array('id' => $tx['_id'], 'datetime' => $tx['DateTime'], 'currency' => $tx['Currency'], 'type' => $tx['TransactionType'], 'amount' => $amount, 'status' => $tx['Status']);
+$tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec); 
+
+	//$trans['ALL'][$count] = array('id' => (string) $tx['_id'], 'datetime' => $tx['DateTime'], 'currency' => $tx['Currency'], 'type' => $tx['TransactionType'], 'amount' => $amount, 'status' => $tx['Status']);
+	$trans[$tx['Currency']][$count] = array('id' => (string) $tx['_id'], 'datetime' => $tx['DateTime'], 'currency' => $tx['Currency'], 'type' => $tx['TransactionType'], 'amount' => $amount, 'status' => $tx['Status']);
 	
 	//only have the tx_hash if it exists, i.e not for trades
 	if(isset($tx['TransactionHash'])) { 
@@ -176,6 +177,8 @@ $foo['Price'] = $money->display_money($foo['Price'], $foo['SecondCurrency']);
 	} //foreach
 
 	$transactions = $trans;
+
+	if($api) return $transactions;
 
                 return compact('title','details','transactions');
 
