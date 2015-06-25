@@ -106,7 +106,10 @@ class CallbackController extends \lithium\action\Controller {
 						$asset_id = false;
 						$amount = $deposit['amount'] - DEFAULT_TRANSACTION_FEE;
 						$output_address = WARM_WALLET_BTC;
-						
+				
+					//we set the FeeSent to NotNeeded here, otherwise subsequent notifications (after the deposit has been forwarded) will trigger a fee_required
+					$data['FeeSent'] = 'NotNeeded';
+		
 						}
 						else{
 							if('TCP' == $deposit['currency']) $asset_id = TCP_ASSET_ID;
