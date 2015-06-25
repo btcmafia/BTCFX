@@ -358,36 +358,32 @@ function currencyAddress(currency){
 function SuccessButtonDisable(){
 	$("#SendSuccessButton").attr("disabled", "disabled");
 }
+
 function CheckCurrencyPayment(currency){
-	address = $("#currencyaddress").val();
-	$("#AmountError").hide();
+	
+	address = $("#CurrencyAddress"+currency).val();
 	if(address==""){return false;}
-	amount = $("#Amount").val();
+	
+	$("#AmountError"+currency).hide();
+
+	amount = $("#Amount"+currency).val();
 	if(parseFloat(amount)<=0){
-		$("#AmountError").show();
+		$("#AmountError"+currency).show();
 		return false;
-	}else{
-	$("#AmountError").hide();
 	}
 	if(amount==""){return false;}
-	maxValue = $("#maxValue").val();
+	maxValue = $("#MaxValue"+currency).val();
 	if(parseFloat(amount)==0){
-		$("#AmountError").show();
 		return false;}
 	if(parseFloat(amount)>parseFloat(maxValue)){
-		$("#AmountError").show();
+		$("#AmountError"+currency).show();
 		return false;
 	}
 	
-	$("#Send"+currency+"Fees").html($("#txFee").val());
-
-	$("#Send"+currency+"Amount").html(amount);	
-	$("#Send"+currency+"Total").html(parseFloat(amount)-parseFloat($("#txFee").val()));	
-	$("#TransferAmount").val(parseFloat(amount)-parseFloat($("#txFee").val()));
-
 	$.getJSON('/Updates/CurrencyAddress/'+currency+'/'+address,
+
 		function(ReturnValues){
-			if(ReturnValues['verify']['isvalid']==true){
+			if(ReturnValues['verify']['isvalid']!=true){
 				switch(ReturnValues['currency'])
 					{
 					case "BTC":
@@ -397,8 +393,8 @@ function CheckCurrencyPayment(currency){
 					address = "<a href='http://greencoin.io/blockchain/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='glyphicon glyphicon-ok'></i>";
 
 						break;
-					case "LTC":
-					address = "<a href='http://ltc.block-explorer.com/address/"+ address +"' target='_blank'>"+ address +"</a> <i class='glyphicon glyphicon-ok'></i>";
+					case "TCP":
+					address = address +" <i class='glyphicon glyphicon-ok'></i>";
 						break;
 					default:
 					address = address +" <i class='glyphicon glyphicon-remove'></i>";					

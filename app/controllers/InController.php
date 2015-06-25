@@ -14,6 +14,7 @@ use lithium\storage\Session;
 use app\extensions\action\Functions;
 use app\extensions\action\Coinprism;
 use app\extensions\action\Money;
+use \CoinAddress;
 use app\extensions\action\GoogleAuthenticator;
 use lithium\util\String;
 use MongoID;
@@ -26,6 +27,26 @@ use \Swift_Attachment;
 class InController extends \app\extensions\action\Controller {
 
 	public function index() {
+	}
+
+	public function get_address() {
+
+
+		$input = '1PQvzpEyF8vixDH86pJ5oY52zyb3HRRr15';
+
+		$outputs = array(
+				array('address' => '18z3H8R3qa5KbwthjjxLEkX5eDLUbPwzNo', 'amount' => '80000'), //electrum - ibwt.co.uk
+		//		array('address' => '1Lq5mSDLtKbLqz7hQXPdMRm8spWey4FUjL', 'amount' => '0.0001'), //electrum - test
+				);
+
+		$raw = Coinprism::send_bitcoin($input, $outputs);
+//		$signed = Coinprism::sign($raw, $privkey);
+//		$foo = Coinprism::broadcast($signed);
+
+	$foo = print_r($raw, true) . "\n\n" . print_r($signed, true) . "\n\n" . print_r($foo, true);
+
+//	$foo = print_r($privkey['private_key'], true) . "Hello ";
+	return $foo;	
 	}
 
 	public function accounts() {
@@ -49,7 +70,7 @@ class InController extends \app\extensions\action\Controller {
 
                 return compact('data');
 
-	}
+	}	
 
         public function orders($api = false, $details = false) {
 
@@ -332,12 +353,14 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 	public function paymentverify($currency=null){
 
 		$this->secure();
+
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
 		$email  =  $this->get_email();
 
 		if($currency==""){
-				return compact('details');
+
+			return $this->redirect('/in/withdraw');
 		}
 
 		$currency = strtoupper($currency);
@@ -354,12 +377,19 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
 			$error = 'Insufficient funds';
  			return compact('details', 'error', 'amount', 'currency', 'balance');
+			//should redirect really:
+			//return $this->redirect('/in/withdraw');
 			}			
 			
 			$amount = $amount * -1;
 			
 			$address = $this->request->data['currencyaddress'];
 			
+
+		/*
+			This all needs to be queued!
+		*/
+
 			$tx = Transactions::create();
 				$data = array(
 					'DateTime' => new \MongoDate(),

@@ -218,13 +218,15 @@ class UpdatesController extends \lithium\action\Controller {
 			$coin = new Bitcoin('http://'.BITCOIN_WALLET_SERVER.':'.BITCOIN_WALLET_PORT,BITCOIN_WALLET_USERNAME,BITCOIN_WALLET_PASSWORD);
 			break;
 
-			case "XGC":
-			$coin = new Greencoin('http://'.GREENCOIN_WALLET_SERVER.':'.GREENCOIN_WALLET_PORT,GREENCOIN_WALLET_USERNAME,GREENCOIN_WALLET_PASSWORD);
+			case "TCP":
+			//TODO: no validation!!!!!!	
+			return $this->render(array('json' => array(
+			'verify'=> array('isvalid' => true),
+			'currency'=>'TCP',
+		)));
+			
 			break;
 			
-			case "LTC":
-			$coin = new Litecoin('http://'.LITECOIN_WALLET_SERVER.':'.LITECOIN_WALLET_PORT,LITECOIN_WALLET_USERNAME,LITECOIN_WALLET_PASSWORD);
-			break;
 		}
 		// End of /////////////////// Change of code required when Virtual Currency added			
 			$verify = $coin->validateaddress($address);

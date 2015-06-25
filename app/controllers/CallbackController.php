@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\Addresses;
 use app\models\Transactions;
 use lithium\data\Connections;
 use app\extensions\action\Coinprism;
@@ -16,7 +17,7 @@ class CallbackController extends \lithium\action\Controller {
 	/*
 		We only care about the tx_hash, we get all the real info from coinprism
 	*/	
-	
+
 		$coinprism = new Coinprism(COINPRISM_USERNAME, COINPRISM_PASSWORD);
 		$transactions = $coinprism->get_transaction($data['payload']['transaction_hash']);
 		
@@ -29,6 +30,14 @@ class CallbackController extends \lithium\action\Controller {
 
 		$coinprism->get_transaction has done most of our work already, only returning outputs to addresses which belong to our users and seperating the transactions by currency
 	*/
+
+		//check it isn't us sending the fee for forwarding
+		//todo: think of a more robust way of checking this
+		if( (DEFAULT_TRANSACTION_FEE == $transactions['deposits'][0]['amount']) && ('BTC' == $transactions['deposits'][0]['currency']) ) {
+
+			 return $this->render(array('layout' => false));
+		}
+
 
 		foreach($transactions['deposits'] as $deposit) {
 
@@ -65,9 +74,77 @@ class CallbackController extends \lithium\action\Controller {
 				}
 
 
+
+		/*
+			if a btc deposit then we can forward it as soon as it has one confirmation
+
+			if an asset deposit then we need to send enough btc to the address to pay the transaction fee when forwarding, then 2nd time round we'll do the forwarding
+		*/
+
+		if($confirmations > 0) {
+
+			if($addr = Coinprism::get_address($deposit['address'])) {
+
+			$btc_balance = $addr['btc_address']['balance'];
+
+			$fee_required = DEFAULT_TRANSACTION_FEE - $btc_balance;
+
+				//if( ($fee_required > 0) && ('BTC' != $deposit['currency']) ) {
+				if( ($fee_required > 0) && (! $tx['FeeSent']) ) {
+
+				$input = array('address' => TRANSACTION_FEE_ADDRESS, 'key' => TRANSACTION_FEE_KEY);
+				$outputs[] = array('address' => $addr['btc_address']['address'], 'amount' => $fee_required);
+
+				$fee_sent_hash = Coinprism::send($input, $outputs);
+				$data['FeeSent'] = $fee_sent_hash;
+
+				}
+
+				elseif( ($fee_required <= 0) && (! $tx['Forwarded']) ) { //if no fee required and not already been forwarded, forward to warm wallet
+						
+					if('BTC' == $deposit['currency']) {	
+						$asset_id = false;
+						$amount = $deposit['amount'] - DEFAULT_TRANSACTION_FEE;
+						$output_address = WARM_WALLET_BTC;
+						
+						}
+						else{
+							if('TCP' == $deposit['currency']) $asset_id = TCP_ASSET_ID;
+							if('DCT' == $deposit['currency']) $asset_id = DCT_ASSET_ID;
+							$amount = $deposit['amount'];
+							$output_address = WARM_WALLET_ASSET;
+						    }
+					
+				if($amount > 0) {
+			
+					//now we need the private key
+					$privkey = Addresses::find('first', array(
+							'conditions' => array(
+								'btc_address' => $addr['btc_address']['address']
+							))
+							);
+					$privkey = $privkey['private_key'];
+					
+
+					$input = array('address' => $deposit['address'], 'key' => $privkey);
+					$outputs[0]['address'] = $output_address;
+					$outputs[0]['amount'] = $amount;
+
+					if($asset_id) $outputs[0]['asset_id'] = $asset_id;
+				  
+					$forward_hash = Coinprism::send($input, $outputs);
+					$data['Forwarded'] = $forward_hash;
+
+				        }
+					}
+			} //get_address
+		}
+
                          //save the transaction
                          $tx->save($data);
-		}
+
+
+	} //foreach
 			    
 			return $this->render(array('layout' => false));
 	

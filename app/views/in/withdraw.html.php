@@ -75,12 +75,21 @@ function read(a)
  $("#currencyaddress").val(a);
  $("#SendAddress").html(a); 
  $("#currencyaddress").addClass("Address_success");
- $("#currencyAddressWindow").hide();
+ $("#BTCAddressWindow").hide();
+ $("#TCPAddressWindow").hide();
 }       
         
-function loadDiv()
+function loadDivBTC()
 {
-        $("#currencyAddressWindow").show();
+        $("#BTCAddressWindow").show();
+        initCanvas(300,200);
+        qrcode.callback = read;
+        qrcode.decode("");
+}
+
+function loadDivTCP()
+{
+        $("#TCPAddressWindow").show();
         initCanvas(300,200);
         qrcode.callback = read;
         qrcode.decode("");
@@ -165,15 +174,15 @@ function initCanvas(ww,hh)
       Your available Bitcoin balance is <strong><?=$balances['BTC']?> BTC</strong>
       </div>                 
 
-	<form action="/in/paymentverify/<?=$currency?>" method="post">
+	<form action="/in/paymentverify/btc/" method="post">
 
         <label for="currencyaddress">Withdrawal Bitcoin Address</label>
         <div class="input-group">
-        	<input type="text" name="currencyaddress" id="currencyaddress" placeholder="Enter recipient's Bitcoin address" class="form-control" title="To Address" data-content="This is the Bitcoin Address of the recipient." value="" onblur="currencyAddress('btc');"/>
-                 <span class="input-group-addon"><a href="#" onclick="loadDiv();"><i class="glyphicon glyphicon-qrcode tooltip-x" rel="tooltip-x" data-placement="top" title="Scan using your webcam"></i></a></span></div>
+        	<input type="text" name="CurrencyAddressBTC" id="CurrencyAddressBTC" placeholder="Enter recipient's Bitcoin address" class="form-control" title="To Address" data-content="This is the Bitcoin Address of the recipient." value="" onblur="currencyAddress('btc');"/>
+                 <span class="input-group-addon"><a href="#" onclick="loadDivBTC();"><i class="glyphicon glyphicon-qrcode tooltip-x" rel="tooltip-x" data-placement="top" title="Scan using your webcam"></i></a></span></div>
 
 <br />
-                <div id="currencyAddressWindow" style="display:none;border:1px solid gray;padding:2px;width:304px;text-align:center ">
+                <div id="BTCAddressWindow" style="display:none;border:1px solid gray;padding:2px;width:304px;text-align:center ">
                 
 		<object  id="iembedflash" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="300" height="200">
                 <param name="movie" value="/js/qrcode/camcanvas.swf" />
@@ -185,17 +194,16 @@ function initCanvas(ww,hh)
                 <a onclick="captureToCanvas();" class="btn btn-primary">Capture</a>
                 <canvas id="qr-canvas" width="300" height="200" style="display:none"></canvas>
 
-                </div><!-- currencyAddressWindow -->
+                </div><!-- BTCAddressWindow -->
 
         <?php
              $max = $balances['BTC'];
            ?>
-           <?=$this->form->field('amount', array('label'=>'Amount', 'placeholder'=>'0.0', 'class'=>'form-control', 'max'=>$max,'min'=>'0.0','onFocus'=>'SuccessButtonDisable();','maxlength'=>10,'type'=>'number','step'=>'0.00000001')); ?>
+           <?=$this->form->field('amount', array('label'=>'Amount', 'id'=>'AmountBTC', 'placeholder'=>'0.0', 'class'=>'form-control', 'max'=>$max,'min'=>'0.0','onFocus'=>'SuccessButtonDisable();','maxlength'=>10,'type'=>'number','step'=>'0.00000001')); ?>
           
-	<div id="AmountError" style="display:none " class="alert alert-danger">Insufficient Funds</div>
-         <input type="hidden" id="maxValue" value="<?=$max?>" name="maxValue">
-         <input type="hidden" id="txFee" value="<?=$txfee?>" name="txFee">                                                       <br>
-         <input type="hidden" id="TransferAmount" value="0" name="TransferAmount" onFocus="SuccessButtonDisable()">            
+	<div id="AmountErrorBTC" style="display:none " class="alert alert-danger">Insufficient Funds</div>
+         <input type="hidden" id="MaxValueBTC" value="<?=$max?>" name="maxValue">
+         <input type="hidden" id="TransferAmountBTC" value="0" name="TransferAmount" onFocus="SuccessButtonDisable()">            
 	
 	 <div class="alert alert-warning" id="<?=$currency?>Alert" style="display:none"></div>
         
@@ -212,8 +220,8 @@ function initCanvas(ww,hh)
                          </table>                         
                 </div>
                 
-          <input type="button" value="Validate" class="btn btn-primary" onclick="return CheckCurrencyPayment('<?=$currency?>');">
-          <input type="submit" value="Send" class="btn btn-success" onclick="return CheckCurrencyPayment('<?=$currency?>');" disabled="disabled" id="Send<?=$currency?>SuccessButton">
+          <input type="button" value="Validate" class="btn btn-primary" onclick="return CheckCurrencyPayment('BTC');">
+          <input type="submit" value="Send" class="btn btn-success" onclick="return CheckCurrencyPayment('TCP');" disabled="disabled" id="Send<?=$currency?>SuccessButton">
 
                     </form>
 
@@ -244,21 +252,115 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 //
 //QUESTION: Why doesn't this function (defined below) work?!!!!
 
-//show_pending_withdrawals($transactions['BTC']); ?>
+//show_pending_withdrawals($transactions['BTC']);
+ ?>
 	</table> 
 	</div>
 </div>
 
 
   <div class="tab-pane fade" id="tcp">
-   <h4>Withdraw The Coloured Pound</h4>
-   <p>To fund your account with Coloured Pounds or Ducats please send payment to AMyGreatColoredCoinAddress</p> 
 
-   <p>Note: Your TCP and DCT deposit addresses are the same.</p> 
- </div>
-  <div class="tab-pane fade" id="dct">
-   <h4>Withdraw Ducat</h4>
-</div>
+
+   <h4>Withdraw The Coloured Pound</h4>
+
+
+      <div class="alert alert-dismissible alert-success">
+      Your available Coloured Pound balance is <strong><?=$balances['TCP']?> TCP</strong>
+      </div>                 
+
+	<form action="/in/paymentverify/tcp/" method="post">
+
+        <label for="currencyaddress">Withdrawal Coloured Pound Address</label>
+        <div class="input-group">
+        	<input type="text" name="currencyaddress" id="currencyaddress" placeholder="Enter recipient's asset address" class="form-control" title="To Address" data-content="This is the Colored Coin asset address of the recipient." value="" onblur="currencyAddress('tcp');"/>
+                 <span class="input-group-addon"><a href="#" onclick="loadDivTCP();"><i class="glyphicon glyphicon-qrcode tooltip-x" rel="tooltip-x" data-placement="top" title="Scan using your webcam"></i></a></span></div>
+
+<br />
+                <div id="TCPAddressWindow" style="display:none;border:1px solid gray;padding:2px;width:304px;text-align:center ">
+                
+		<object  id="iembedflash" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="300" height="200">
+                <param name="movie" value="/js/qrcode/camcanvas.swf" />
+                <param name="quality" value="high" />
+                <param name="allowScriptAccess" value="always" />
+                <embed  allowScriptAccess="always"  id="embedflash" src="/js/qrcode/camcanvas.swf" quality="high" width="300" height="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" mayscript="true"  />
+                </object><br />
+
+                <a onclick="captureToCanvas();" class="btn btn-primary">Capture</a>
+                <canvas id="qr-canvas" width="300" height="200" style="display:none"></canvas>
+
+                </div><!-- TCPAddressWindow -->
+
+        <?php
+             $max = $balances['TCP'];
+           ?>
+           <?=$this->form->field('amount', array('label'=>'Amount', 'placeholder'=>'0.0', 'class'=>'form-control', 'max'=>$max,'min'=>'0.0','onFocus'=>'SuccessButtonDisable();','maxlength'=>10,'type'=>'number','step'=>'1')); ?>
+          
+	<div id="AmountErrorTCP" style="display:none " class="alert alert-danger">Insufficient Funds</div>
+         <input type="hidden" id="maxValue" value="<?=$max?>" name="maxValue">
+         <input type="hidden" id="txFee" value="<?=$txfee?>" name="txFee">                                                       <br>
+         <input type="hidden" id="TransferAmount" value="0" name="TransferAmount" onFocus="SuccessButtonDisable()">            
+	
+	 <div class="alert alert-warning" id="TCPAlert" style="display:none"></div>
+        
+		<div id="SendCalculations">
+                    <table class="table table-condensed table-bordered table-hover">
+                       <tr>
+                          <th width="30%">Send to:</th>
+                          <td id="SendTCPAddress"></td>
+                       </tr>
+                        <tr>
+                          <th>Total Amount:</th>
+                          <td id="SendTCPAmount"></td>
+                       </tr>
+                         </table>                         
+                </div>
+                
+          <input type="button" value="Validate" class="btn btn-primary" onclick="return CheckCurrencyPayment('TCP');">
+          <input type="submit" value="Send" class="btn btn-success" onclick="return CheckCurrencyPayment('TCP');" disabled="disabled" id="SendTCPSuccessButton">
+
+                    </form>
+
+	<div>
+	<?php
+if( 0 != count($transactions['TCP']) ) {
+?>
+<h3>Pending TCP Withdrawals</h3>
+        <table class="table table-condensed table-bordered table-hover" style="font-size:11px">
+        <thead>
+         <tr>
+                <th>Date</th><th>Address</th><th>Amount</th><th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+<?php foreach($transactions['TCP'] as $tx) {
+$tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
+ ?>
+         <tr>
+                <td><?=$tx['DateTime']?></td><td><?=$tx['Address']?></td><td><?=$tx['Amount']?></td><td><?=$tx['Status']?>
+	&nbsp;<a title= "Cancel this transaction" href="/in/removetransaction/<?=String::hash($tx['_id'])?>/<?=$tx['_id']?>/withdraw/tcp/"><i class="fa fa-times"></i></a>
+</td>
+         </tr>
+<?php } ?>
+        </tbody>
+<?php
+}
+ ?>
+	</table> 
+
+
+
+
+
+
+
+
+
+
+
+<?php
+/////////////////////////
+?>
 
 </div>
 
