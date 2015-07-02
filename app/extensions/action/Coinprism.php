@@ -63,6 +63,22 @@ class Coinprism extends \lithium\action\Controller{
 
 
 
+
+	public static function validate_address($address, $currency = false) {
+
+	$data = self::get_address($address);
+
+	if('' == $data['btc_address']['address']) return false; 
+
+	if(! $currency) return $data;
+
+	if( ('BTC' == $currency) && ($address != $data['btc_address']['address']) ) return false;
+	if( ('BTC' != $currency) && ($address != $data['asset_address']) ) return false;
+
+	return $data;
+	}
+
+
 /*
 	We can use get_address to check the address is valid, or to retrieve the corresponding btc / asset address and balances
 	
@@ -80,14 +96,17 @@ class Coinprism extends \lithium\action\Controller{
 	$response = json_decode(curl_exec($ch));
 	curl_close($ch);
 
+
 	if(isset($response->ErrorCode)) { return false; }
 
 	else { return array('btc_address' => array('address' => $response->bitcoin_address, 'balance' => $response->balance), 'asset_address' => $response->asset_address); }
 	}
 
 
-
-	public function get_transaction($txhash) {
+	/*
+	 @param $flag (string) Set to ALL if you want the whole response returned without filtering. I.e. don't limit to deposit addresses.
+	*/
+	public function get_transaction($txhash, $flag = false) {
 
 	$ch = curl_init();
 
@@ -104,12 +123,18 @@ class Coinprism extends \lithium\action\Controller{
 
 	$response = json_decode($response);
 
+		//return response without further processing
+		if('ALL' == $flag) {
+			 return $response;
+
+		}
+
 	$results = array('hash' => $txhash, 'confirmations' => $response->confirmations); 
 
 		foreach($response->outputs as $output) {
 	
-	//find out who which user owns the address and get the cc_address
-	if(! $search = $this->search_address($output->addresses[0]) ) continue;
+	//find out which user owns the address and get the cc_address
+	if(! $search = self::search_address($output->addresses[0]) ) continue;
 
 			if($output->asset_id == DCT_ASSET_ID) {
 
@@ -154,7 +179,7 @@ class Coinprism extends \lithium\action\Controller{
 	return $result; 
 	}
 
-	private function search_address($btc_address) {
+	public static function search_address($btc_address) {
 
 
 	$search = Addresses::find('first',

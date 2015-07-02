@@ -29,24 +29,18 @@ class InController extends \app\extensions\action\Controller {
 	public function index() {
 	}
 
-	public function get_address() {
+	public function test() {
 
+		//$coinprism = new Coinprism( COINPRISM_USERNAME, COINPRISM_PASSWORD );
+                //$foo = $coinprism->create_address('55741216487e78c10f8b456c', 'DUST CUSTOM ADDRESS');
 
-		$input = '1PQvzpEyF8vixDH86pJ5oY52zyb3HRRr15';
+		$array1 = array('john', 'david', 'ben');
 
-		$outputs = array(
-				array('address' => '18z3H8R3qa5KbwthjjxLEkX5eDLUbPwzNo', 'amount' => '80000'), //electrum - ibwt.co.uk
-		//		array('address' => '1Lq5mSDLtKbLqz7hQXPdMRm8spWey4FUjL', 'amount' => '0.0001'), //electrum - test
-				);
+		$array2 = array('sophie', 'silvie', 'charlotte');
 
-		$raw = Coinprism::send_bitcoin($input, $outputs);
-//		$signed = Coinprism::sign($raw, $privkey);
-//		$foo = Coinprism::broadcast($signed);
+		//$foo = array_unique(array_merge($array1, $array2));
 
-	$foo = print_r($raw, true) . "\n\n" . print_r($signed, true) . "\n\n" . print_r($foo, true);
-
-//	$foo = print_r($privkey['private_key'], true) . "Hello ";
-	return $foo;	
+	return compact('foo');	
 	}
 
 	public function accounts() {
@@ -145,7 +139,7 @@ $foo['Price'] = $money->display_money($foo['Price'], $foo['SecondCurrency']);
 	//TODO: need to limit the number of results
 	public function transactions($api = false, $details = false) {
 
-		$this->secure('api', $details);
+		$this->secure($api, $details);
 
 		$user_id = $this->get_user_id();
 		$details = $this->get_details();
@@ -210,7 +204,7 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
 		$this->secure();
 		$user_id = $this->get_user_id();
-		
+	
 		$currency = strtoupper($currency);
 
 	        $title = 'Withdraw Funds';
@@ -220,6 +214,88 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
  		$paytxfee = Parameters::find('first');
                 $txfee = $paytxfee['paytxfee'];
+
+	
+		if ($this->request->data) {
+		
+			if(! $this->validate_currency($this->request->data['currency']) ) $error = 'Invalid currency';
+			else $currency = $this->request->data['currency']; 
+	
+			$money = new Money($user_id);
+		
+			$amount = $this->request->data["Amount$currency"];
+	
+			if($balances[$currency] < $amount) $error = 'Insufficient funds';
+			
+			$amount = $money->undisplay_money($amount, $currency);
+
+			if($amount <= 0) $error = 'Invalid amount';
+
+			$amount = $amount * -1;
+			
+			$address = $this->request->data["CurrencyAddress$currency"];
+
+			if(! Coinprism::validate_address($address, $currency) ) $error = 'Invalid address';
+
+
+		if(! isset($error)) {
+		/*
+			This all needs to be queued!
+		*/
+
+		$email = $this->get_email();	
+		$details = $this->get_details();
+	
+			$tx = Transactions::create();
+				$data = array(
+					'DateTime' => new \MongoDate(),
+					'user_id' => $user_id,
+					'TransactionType' => 'Withdrawal',
+					'Address'=>$address,							
+					'verify.payment' => sha1(openssl_random_pseudo_bytes(4,$cstrong)),
+					'Paid' => 'No',
+					'Amount'=> (int) $amount,
+					'Currency'=> $currency,					
+					'Added'=>false,
+					'Status' => 'emailpending'
+				);							
+				$tx->save($data);	
+			
+			$money->update_balance($amount, $currency);
+			$data['Amount'] = $money->display_money($amount, $currency);
+	
+			$view  = new View(array(
+				'loader' => 'File',
+				'renderer' => 'File',
+				'paths' => array(
+					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
+				)
+			));
+			$body = $view->render(
+				'template',
+				compact('data','details', 'address', 'currency'),
+				array(
+					'controller' => 'in',
+					'template'=>'withdrawDigital',
+					'type' => 'mail',
+					'layout' => false
+				)
+			);
+			$transport = Swift_MailTransport::newInstance();
+			$mailer = Swift_Mailer::newInstance($transport);
+	
+			$message = Swift_Message::newInstance();
+			$message->setSubject($currency." Withdrawal Approval from ".COMPANY_URL);
+			$message->setFrom(array(NOREPLY => $currency.' Withdrawal Approval email '.COMPANY_URL));
+			$message->setTo($email);
+			$message->setBody($body,'text/html');
+			
+			$mailer->send($message);
+				
+		return $this->redirect("/in/paymentrequested/$currency/");		
+		}
+		}
+
                 
 		$transactions = Transactions::find('all',array(
                                 'conditions'=>array(
@@ -228,7 +304,7 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
                                                                 array('Status' => 'processing')
                                                                 ),
                                                 'user_id' =>  $user_id,
-                                                'Currency' => $currency,
+                                                //'Currency' => $currency,
                                                 'TransactionType' => 'Withdrawal')
               					));
 
@@ -242,12 +318,11 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
         
 	$trans[$tx['Currency']][] = array('_id' => $tx['_id'], 'DateTime' => $tx['DateTime'], 'Address' => $tx['Address'], 'Currency' => $tx['Currency'], 'Type' => $tx['TransactionType'], 'Amount' => $amount, 'Status' => $tx['Status'], 'Hash' => $tx['TransactionHash']);
         }
-        $transactions = $trans;
+        
+	$transactions = $trans;
 
-                        return compact('title', 'balances', 'transactions','user','currency');
-			
-
-                return;
+                        return compact('title', 'balances', 'transactions','user','currency', 'error');
+	
 	}
 
     public function deposit($currency='btc'){
@@ -346,11 +421,11 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
                         }
 
-                return $this->redirect('/in/'.$url.'/'.$currency);
+                return $this->redirect('/in/'.$url.'/');
         }
 
 
-	public function paymentverify($currency=null){
+	public function paymentrequested($currency=null){
 
 		$this->secure();
 
@@ -360,155 +435,98 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
 		if($currency==""){
 
-			return $this->redirect('/in/withdraw');
+			return $this->redirect('/in/withdraw/');
 		}
 
 		$currency = strtoupper($currency);
 		
-	
-		if ($this->request->data) {
-			
-			$money = new Money($user_id);
-			
-			$amount = $money->undisplay_money($this->request->data['amount'], $currency);
-			if($details['balance.'.$currency] < $amount) {
-
-			$balance = $details['balance.'.$currency];	
-
-			$error = 'Insufficient funds';
- 			return compact('details', 'error', 'amount', 'currency', 'balance');
-			//should redirect really:
-			//return $this->redirect('/in/withdraw');
-			}			
-			
-			$amount = $amount * -1;
-			
-			$address = $this->request->data['currencyaddress'];
-			
-
-		/*
-			This all needs to be queued!
-		*/
-
-			$tx = Transactions::create();
-				$data = array(
-					'DateTime' => new \MongoDate(),
-					'user_id' => $user_id,
-					'TransactionType' => 'Withdrawal',
-					'Address'=>$address,							
-					'verify.payment' => sha1(openssl_random_pseudo_bytes(4,$cstrong)),
-					'Paid' => 'No',
-					'Amount'=> (int) $amount,
-					'Currency'=> $currency,					
-					'Added'=>false,
-					'Status' => 'emailpending'
-				);							
-				$tx->save($data);	
-			
-			$money->update_balance($amount, $currency);
-			$data['Amount'] = $money->display_money($amount, $currency);
-	
-			$view  = new View(array(
-				'loader' => 'File',
-				'renderer' => 'File',
-				'paths' => array(
-					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
-				)
-			));
-			$body = $view->render(
-				'template',
-				compact('data','details','tx','currency'),
-				array(
-					'controller' => 'in',
-					'template'=>'withdrawDigital',
-					'type' => 'mail',
-					'layout' => false
-				)
-			);
-			$transport = Swift_MailTransport::newInstance();
-			$mailer = Swift_Mailer::newInstance($transport);
-	
-			$message = Swift_Message::newInstance();
-			$message->setSubject($currency." Withdrawal Approval from ".COMPANY_URL);
-			$message->setFrom(array(NOREPLY => $currency.' Withdrawal Approval email '.COMPANY_URL));
-			$message->setTo($email);
-			$message->addBcc(MAIL_1);
-			$message->addBcc(MAIL_2);			
-			$message->addBcc(MAIL_3);		
-			$message->setBody($body,'text/html');
-			
-			$mailer->send($message);
-				
-		}	
-		return compact('data', 'details', 'currency');
+		return compact('details', 'currency');
 	}
 
 
-	public function paymentconfirm($currency=null,$id = null){
+	public function paymentconfirm($currency=null, $verify_code = null){
 
-		if ($id==""){return $this->redirect('/login');}
+		$this->secure();
+
+		$user_id = $this->get_user_id();
+		$details = $this->get_details();
+		$username = $details['username'];
+		
+
+		if ($this->request->data) {
+
+			$verify_code = $this->request->data['verify'];
+			$password = $this->request->data['password'];
+			$currency = $this->request->data['currency'];
+			
+
+			$transaction = Transactions::find('first',array(
+				'conditions'=>array(
+					'verify.payment'=>$verify_code,
+					'user_id'=>$user_id,
+					'Currency'=>$currency,
+					'Status'=>'emailpending'
+					)
+			));
+
+			//check passwd
+                        if( ($password == '') OR (! $this->validate_password($user_id, $password) )) {
+	
+			$error = 'Invalid password';
+			}		
+
+			//check 2fa
+			if(1 == $details["TOTP.Validate"]) {
+ 				
+				$code = $this->request->data['code']; //2fa
+		
+				$ga = new GoogleAuthenticator();
+
+                                if(! $ga->verifyCode($details['secret'], $code, 1)) $error = 'Invalid Two Factor Authentication code'; 
+
+			}
+
+			if($password=="") $error = 'Password is required';
+
+			if(! isset($error) ) {
+			
+				$data = array('Status' => 'processing');	
+				$transaction->save($data);
+
+				return $this->redirect('/in/paymentprocessed/');
+			}
+		}
+
 
 		$transaction = Transactions::find('first',array(
 			'conditions'=>array(
-				'verify.payment'=>$id,
+				'user_id' => $user_id,
+				'verify.payment'=>$verify_code,
 				'Currency'=>$currency,
 				'TransactionType' => 'Withdrawal',
 				'Status'=>'emailpending'
 				)
 		));
 
+		if(0 == count($transaction)) return; 
+
+		if ($verify_code==""){return $this->redirect('/login');}
+
+	        if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
+                else    $TwoFactorEnabled = false;
+
 		$money = new Money($transaction['user_id']);
 		$amount = $transaction['Amount'] * -1;
 		$transaction['Amount'] = $money->display_money($amount, $transaction['Currency']);
 
 
-		$details = Details::find('first', array(
-					'conditions' => array(
-					'user_id' => $transaction['user_id'],
-					)
-					));
-		$username = $details['username'];
-
-		return compact('transaction','username','currency');
+		return compact('transaction', 'currency', 'TwoFactorEnabled', 'error');
 	}
 
-	public function paymentadmin(){
+	public function paymentprocessed(){
 
-		if ($this->request->data) {
+		$this->secure();
 
-			$verify = $this->request->data['verify'];
-			$user_id = $this->request->data['user_id'];
-			$username = $this->request->data['username'];
-			$password = $this->request->data['password'];
-			$currency = $this->request->data['currency'];
-			if($password==""){
-				return $this->redirect(array('controller'=>'in','action'=>'paymentconfirm/'.$currency.'/'.$verify));
-			}
-			$transaction = Transactions::find('first',array(
-				'conditions'=>array(
-					'verify.payment'=>$verify,
-					'user_id'=>$user_id,
-					'Currency'=>$currency,
-					'Status'=>'emailpending'
-					)
-			));
-			$user = Users::find('first',array(
-				'conditions' => array(
-					'username' => $username,
-					'password' => String::hash($password),
-				)
-			));
-			$user_id = $user['_id'];
-		
-			if($user_id==""){
-				return $this->redirect(array('controller'=>'in','action'=>'paymentconfirm/'.$currency.'/'.$verify));
-			}
-		
-			$data = array('Status' => 'processing');	
-			$transaction->save($data);
-
-			return;	
-		}
 	}
 
 
@@ -578,133 +596,6 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
                 return compact('msg');
        	    } //post data
 	 }
-
-
-	public function changepassword($key = false) {
-
-
-		if(! $key){ return $this->redirect('/login');}
-		
-		$details = Details::find('first', array(
-				'conditions' => array(
-					'key' => $key,
-					)
-					));
-
-		//invalid key
-		if(0 == count($details)) return $this->redirect('/login');
-
-		$user_id = $details['user_id'];
-	
-		if('1' == $details['TOTP.Validate']) $TwoFactorEnabled = true;
-		else $TwoFactorEnabled = false;
-
-
-		//form submitted		
-		if($this->request->data){
-		
-		$email = $this->request->data['email'];
-		
-		$ga = new GoogleAuthenticator();
-
-			if( ('' == $this->request->data['password']) OR ('' == $email) ) {
-
-			$error = "All fields are required";
-			}
-			elseif($this->request->data['password'] != $this->request->data['password2']) {
-
-			$error = "Password fields do not match!";
-			}
-			elseif( ($TwoFactorEnabled) && (! $ga->verifyCode($details['secret'], $this->request->data['2FA'], 2)) ) {
-
-			$error = "Invalid Two Factor Code!";
-			}
-			else {
-
-				$check = Emails::find('first', array(
-						'conditions' => array(
-							'Email' => $email,
-							'user_id' => $user_id,
-							'Default' => true,
-							)
-							));
-
-				if(0 == count($check)) {
-
-				$error = "Password not changed"; //don't tell them why
-				}
-			}
-			
-			if(! $error) {
-
-			$user = Users::find('first', array(
-				'conditions' => array(
-					'user_id' => $user_id,
-					)
-					));
-
-			$data = array(
-                                     'password' => String::hash($this->request->data['password']),
-                                     );
-
-			$user->save($data);
-
-			return $this->redirect('/login/1/'); //redirect with success message
-			}		
-
-		}
-		return compact('TwoFactorEnabled', 'key', 'error');
-	}
-		public function password(){
-		if($this->request->data){
-			$details = Details::find('first', array(
-				'conditions' => array(
-					'key' => $this->request->data['key'],
-				),
-				'fields' => array('user_id')
-			));
-			$msg = "Password Not Changed!";
-//			print_r($details['user_id']);
-			if($details['user_id']!=""){
-				if($this->request->data['password'] == $this->request->data['password2']){
-//					print_r($this->request->data['password']);
-					
-					$user = Users::find('first', array(
-						'conditions' => array(
-							'_id' => $details['user_id'],
-						)
-					));
-//					print_r($user['password']);
-						if($user['password']!=String::hash($this->request->data['password'])){
-							print_r($details['user_id']);
-							
-							$data = array(
-							'password' => String::hash($this->request->data['password']),
-							);
-//							print_r($data);
-							
-							$user = Users::find('all', array(
-								'conditions' => array(
-								'_id' => $details['user_id'],
-								)
-							))->save($data,array('validate' => false));
-					//		print_r($user);
-						
-							if($user){
-								$msg = "Password changed!";
-							}
-						}else{
-								$msg = "Password same as old password!";
-						}
-					}else{
-						$msg = "New password does not match!";
-					}
-			}
-		}
-		return compact('msg');
-	
-
-	}
 
 
 

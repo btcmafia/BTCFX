@@ -125,6 +125,16 @@ class Controller extends \lithium\action\Controller {
  global $markets;
  return $markets;
  }
+
+ public function validate_currency($currency) {
+
+ global $currencies;
+ $currency = strtolower($currency);
+
+ if(! in_array($currency, $currencies)) return false; 
+
+ else return $currency;
+ }
 }
 
 ?>

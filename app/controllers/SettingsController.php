@@ -8,7 +8,7 @@ use app\models\Users;
 use app\models\Emails;
 use lithium\util\String;
 use app\extensions\action\ActionLog;
-use app\extensions\action\Crypto;
+use app\extensions\action\Coinprism;
 use app\extensions\action\GoogleAuthenticator;
 
 use \lithium\template\View;
@@ -463,46 +463,69 @@ class SettingsController extends \app\extensions\action\Controller {
 		}
 		elseif($api_action == 'update_withdrawals') {
 
+		if($this->request->data['include_alt_address']) $include_alt = true;
+		if($this->request->data['include_existing']) $include_existing = true;
+
 			//validate the addresses
-			$cp = new Crypto();
+		         foreach(explode("\r", $this->request->data['Addresses']) as $address) {
 
-		         foreach(explode("\r", $this->request->data['AddressesBTC']) as $btc_address) {
+			$address = trim($address);
+				
+			if('' == $address) continue;
 
-                                if(! $cp->validate_address($btc_address) ) $invalid_addresses['BTC'][] = $btc_address;
-                                else $valid_addresses['BTC'][] = $btc_address;
-                                }
+				if($address[0] == 'a') $address_type = 'CC';
+				else $address_type = 'BTC';
 
-                                foreach(explode("\r", $this->request->data['AddressesCC']) as $cc_address) {
+                                if(! $addr = Coinprism::validate_address($address) ) { 
 
-                                if(! $cp->validate_address($cc_address) ) $invalid_addresses['CC'][] = $cc_address;
-                                else $valid_addresses['CC'][] = $cc_address;  
-                                }
+				$invalid_addresses[$address_type][] = $address;  
+				}
+          
+				else {
+					 
+					$valid_addresses[$address_type][] = $address; 
+					 
+					 	if($include_alt) {
+						if('BTC' == $address_type) $valid_addresses['CC'][] = $addr['asset_address'];
+						else $valid_addresses['BTC'][] = $addr['btc_address']['address'];
+					 	} 
+					}
+                         }
 
+			
+			if($include_existing) {
+
+			$valid_addresses['BTC'] = array_unique(array_merge( (array) $valid_addresses['BTC'], (array) $addresses['BTC']));
+			$valid_addresses['CC'] = array_unique(array_merge( (array) $valid_addresses['CC'], (array) $addresses['CC']));
+			}
+				
 				$data = array('API' => array(
 						'AddressesBTC' => $valid_addresses['BTC'],
 						'AddressesCC' => $valid_addresses['CC'],	
 					    ));	
+                
 					 
 				$details->save($data);
 
-			$message = "<p>You withdrawal addresses have been updated.</p>";
-
+			$message = "Your withdrawal addresses have been updated.";
+			
 			if(0 != count($invalid_addresses)) {
 
-			$message .= "<p>The following addresses are invalid and have been excluded:</p>";
+			$error .= "<p>The following addresses are invalid and have been excluded:</p>";
 
 			foreach($invalid_addresses['BTC'] as $invalid) {
 
-			$message .= "BTC: $invalid<br />";
+			$error .= "BTC: $invalid<br />";
 			}
 			foreach($invalid_addresses['CC'] as $invalid) {
 
-			$message .= "CC: $invalid<br />";
+			$error .= "CC: $invalid<br />";
 			}
 			}
-			$addresses = $valid_addresses;
 
-		return compact('message', 'TwoFactorEnabled', 'APIEnabled', 'addresses');
+		$addresses = $valid_addresses;
+
+		return compact('message', 'TwoFactorEnabled', 'APIEnabled', 'addresses', 'error');
 		}//else/if
 	
 	}

@@ -335,20 +335,23 @@ return $a[0]>$b[0];
 
 	public function auth($type) {
 
-	   
-		if(!$this->request->data){ //not even recorded!!
-			echo $this->render(array('json' => array('success'=>0,
-			'timestamp'=>time(),
-			'error'=>"Not submitted through POST."
-			)));
-			die;
-	 }
-
 	$key = $this->request->data['key'];
 	$nonce = $this->request->data['nonce'];
 	$sig = $this->request->data['signature'];
 
-	 if ($key==null){
+
+
+	if($this->limit_api() ) {
+		$error = "Too many requests from your IP, please try again after some time.";
+		}
+
+	   
+	elseif(!$this->request->data){ 
+		$error = "Not submitted through POST.";
+	 }
+
+
+	 elseif ($key==null){
 
 		$error = "API Key not specified.";
 
@@ -364,20 +367,17 @@ return $a[0]>$b[0];
 
 		if(count($details)==0){  $error = "Invalid API key."; }
 
+		elseif('1' != $details['API.Enabled']) { $error = "API disabled"; } //too much info?
+
 		else{
 
-		//check signature
-		if(string::hash($key . $details['API.Secret'] . $nonce, array('key' => $key)) != $sig) {
-		$error = "Invalid signature";
-		}
-
-		if($this->limit_api() ) {
-		$error = "Too many requests from your IP, please try again after some time.";
-		}
+			//check signature
+			if(string::hash($key . $details['API.Secret'] . $nonce, array('key' => $key)) != $sig) {
+			$error = "Invalid signature";
+			}
 
 
 		}
-
 
 	}
 
