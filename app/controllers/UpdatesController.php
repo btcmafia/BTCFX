@@ -1,5 +1,13 @@
 <?php
 /**
+
+	Most of this file is redundant. May still be used for the odd AJAX update etc.
+
+	TODO: Clean up or get rid 
+
+*/
+
+/**
  * Lithium: the most rad php framework
  *
  * @copyright     Copyright 2013, Union of RAD (http://union-of-rad.org)

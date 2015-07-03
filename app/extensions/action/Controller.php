@@ -78,13 +78,36 @@ class Controller extends \lithium\action\Controller {
 
 		 $users = Users::find('first',array(
                                  'conditions' => array(
-                                       '_id' => $user_id,
+                                       '_id' => (string) $user_id,
                                        'password' => String::hash($password)),
                                       ));
 
                 if(0 == count($users)) return false;
 
 		else return true;
+	}
+
+	public function update_password($user_id, $password) {
+               
+		$users = Users::find('first',array(
+                                 'conditions' => array(
+                                       '_id' => $user_id,
+                                       )
+					));
+
+                if(0 == count($users)) return false;
+
+
+		$passwd = String::hash($password);
+                $data = array('password' => $passwd);
+                        
+                $users->save($data, array('validate' => false)); 
+
+                //record the action
+                $log = new ActionLog();
+                $log->update_password($user_id, $passwd);
+
+		return true;
 	}
 
   public function get_user_id() {
@@ -104,7 +127,7 @@ class Controller extends \lithium\action\Controller {
 
 	 $email = Emails::find('first', array(
                         'conditions' => array(
-                                'user_id' => $user_id,
+                                'user_id' => $this->user_id,
                                 'Default' => true)
                         ));
 

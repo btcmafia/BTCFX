@@ -6,7 +6,6 @@ use lithium\storage\Session;
 use app\models\Details;
 use app\models\Users;
 use app\models\Emails;
-use lithium\util\String;
 use app\extensions\action\ActionLog;
 use app\extensions\action\Coinprism;
 use app\extensions\action\GoogleAuthenticator;
@@ -258,14 +257,9 @@ class SettingsController extends \app\extensions\action\Controller {
 				return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 				}
 			
-			//check current password
-			$users = Users::find('first',array(
-					'conditions' => array(
-						'_id' => $user_id,
-						'password' => String::hash($password)),
-						));
-							
-				if(0 == count($users)) {
+				
+				//check password				
+				if(! $this->validate_password($user_id, $password) ) {
 
 					$error_2fa = 'Password is incorrect.';
 					return compact('error_2fa', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
@@ -350,22 +344,20 @@ class SettingsController extends \app\extensions\action\Controller {
 					} //end 2fa
 
 						//check password
-						if(! $this->validate_password($user_id, $password) ) {
+						if(! $this->validate_password($user_id, $this->request->data['OldPassword']) ) {
+
 
 						$error = 'Current password is incorrect.';
 						return compact('error', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
 						}
-		
-	
-			//must be good, update
-			$passwd = String::hash($this->request->data['NewPassword']);
-			$data = array('password' => $passwd);
 			
-			$users->save($data, array('validate' => false)); 
 
-				//record the action
-				$log = new ActionLog();
-				$log->update_password($user_id, $passwd);
+			//must be good, update
+			if(! $this->update_password($user_id, $this->request->data['NewPassword'])) {
+
+			$error = 'Unable to update password';
+			return compact('error', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');
+			}			
 
 			$message = 'Your password has been updated.';
 			return compact('message', 'TwoFactorEnabled', 'key', 'qrcode', 'APIEnabled');			

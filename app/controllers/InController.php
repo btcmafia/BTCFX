@@ -533,7 +533,9 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
        public function forgotpassword(){
         
         if($this->request->data){
-                        $msg = "If the username exists then we have sent password reset instructions to their registered email address.";
+                
+		//don't confirm whether username exists
+		$msg = "If the username exists then we have sent password reset instructions to their registered email address.";
         
 		$username = $this->request->data['username'];
 
@@ -545,6 +547,13 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 		//user found
 		if(1 == count($details)) {
 
+		//generate a new reset key and expiry, and save them
+		$ga = new  GoogleAuthenticator();
+		$key = $ga->createSecret(64);
+		$expiry = time() + 60 * 15; //15 min
+		
+		$details->save(array('PasswordReset.Key' => $key, 'PasswordReset.Expiry' => $expiry));
+
 			$email = Emails::find('first', array(
 				'conditions' => array(
 					'user_id' => $details['user_id'],
@@ -553,11 +562,9 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 					));
 
 			$email = $email['Email'];
-                	$key = $details['key'];
 
-
-                if($key!=""){
-              
+		             
+ 
 	          $view  = new View(array(
                                 'loader' => 'File',
                                 'renderer' => 'File',
@@ -583,21 +590,85 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
                         $message->setSubject("Password reset link from ".COMPANY_URL);
                         $message->setFrom(array(NOREPLY => 'Password reset email '.COMPANY_URL));
                         $message->setTo($email);
-                        $message->addBcc(MAIL_1);
-                        $message->addBcc(MAIL_2);
-                        $message->addBcc(MAIL_3);
 
                         $message->setBody($body,'text/html');
                         $mailer->send($message);
-                        }
+                        
                 
 		} //user found
 
-                return compact('msg');
        	    } //post data
+                return compact('msg');
 	 }
 
 
+	public function changepassword($key = '') {
+
+		if('' == $key) $this->redirect('/login');
+
+		$details = Details::find('first', array(
+				'conditions' => array(
+					'PasswordReset.Key' => $key,
+					)
+					));	
+
+		if(0 == count($details)) return $this->redirect('/login');
+
+		//has it expired already?
+		if(time() > $details['PasswordReset.Expiry']) return $this->redirect('/in/expiredkey');
+
+               	if(1 == $details["TOTP.Validate"]) $TwoFactorEnabled = true;
+               	else    $TwoFactorEnabled = false;
+
+
+			if($this->request->data) {
+
+			//we can pretend it's an api call to get easy access to their email address without them being logged in and without creating a session
+			$this->secure('api', $details);
+
+			$user_id = $this->get_user_id();
+
+			$email = $this->request->data['email'];	
+			$password = $this->request->data['password'];	
+			$password2 = $this->request->data['password2'];	
+
+				if($password != $password2) {
+
+					 $error = 'Password fields do not match';			
+				}
+				
+				elseif($this->get_email() != $email) {
+
+					$error = 'Invalid email address';
+				}	
+			
+				elseif($TwoFactorEnabled) {
+
+                			$ga = new GoogleAuthenticator();
+                                
+					if(! $ga->verifyCode($details['secret'], $code, 1)) $error = 'Invalid Two Factor Authentication code'; 
+				}
+
+			if(! isset($error) ) {
+
+				$this->update_password($user_id, $password);
+
+				$message = 'Your password has been updated. You may now <a href="/login/">login</a>.';
+		
+				//delete the key
+				$details->save(array('PasswordReset.Key' => '', 'PasswordReset.Expiry' => ''));
+			}
+	
+			} //POST
+
+		return compact('message', 'error', 'key');
+	}
+
+	public function expiredkey() {
+
+
+	return;
+	}
 
 		public function splash() {
 
