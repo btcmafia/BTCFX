@@ -60,8 +60,6 @@ define('LITHIUM_APP_PATH', dirname(dirname(__DIR__)));
  * set this to a shared path on your server.
  */
 define('LITHIUM_LIBRARY_PATH', dirname(LITHIUM_APP_PATH) . '/libraries');
-// include_once ('/home/nilam/VCCoUK.php');
-/*Brent Config */
 include_once ('/home/config.php');
 /**/
 

@@ -476,6 +476,39 @@ class QueuedFunctions extends \lithium\action\Controller{
 
 	}
 
+
+	public function new_deposit($params) {
+
+	//new deposits are only queued when completed, because we need to update the balance
+	//this means the transaction should already exist
+	//so, get the transaction, update the status, update the balance
+
+		$tx = Transactions::find('first', array(
+                             'conditions' => array('_id' => $params['tx_id'], 'TransactionHash' => $params['tx_hash'], 'Address' => $params['address'], 'Currency' => $params['currency'], 'Amount' => (int) $amount['amount'], 'Added' => $params['queued'])
+                        ));
+
+		if(0 != count($tx)) {
+
+                    $money = new Money($params['user_id']);
+                    if($money->update_balance($params['amount'], $params['currency'])) {
+
+                    	 $data['Status'] = 'completed';
+			 $data['Added'] = true;
+
+		    $tx->save($data);
+                    }
+
+		}
+
+		//There is no ActionLog with new deposits because it is recorded as a transaction, which is complementary to the ActionLog
+	
+		return;
+	}
+
+
+
+
+
 	public function release_lock() {
 
 		$this->live = false;

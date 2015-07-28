@@ -34,7 +34,7 @@ $enable_disable = 'Enable';
 <p>You can enable it below. You can also alter its settings prior to enabling.</p> 
 <?php }
 if(isset($api_key)) { ?>
-<div class="col-sm-6">
+<div class="col-sm-7">
 <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">API Key &amp; Secret</h3>
@@ -97,7 +97,7 @@ if(isset($api_key)) { ?>
 <div id="withdrawboxes">
 
 <div class="row">
-<div class="form-group col-sm-offset-1 col-sm-10">
+<div class="form-group col-sm-offset-1 col-sm-11">
       <label for="Addresses" class="control-label">Allowed Withdrawal Addresses</label>
         <textarea class="form-control" id="Addresses" name="Addresses" placeholder="One address per line"></textarea>
       </div>
@@ -110,7 +110,7 @@ if(isset($api_key)) { ?>
 
 <div class="form-group">
         <input class="col-sm-offset-2" type="checkbox" name="include_alt_address" id="include_alt_address" value="1" checked="true" />
-        <label for="include_alt_address" class="control-label">Include corresponding Bitcoin / Asset address automatically</label>
+        <label for="include_alt_address" class="control-label">Include corresponding Bitcoin / Asset address<br />automatically</label>
 </div>
 
 </div>
@@ -139,7 +139,7 @@ if(isset($api_key)) { ?>
 
 </div>
 
-<div id="addresses" class="col-sm-4">
+<div id="addresses" class="col-sm-offset-1 col-sm-4">
 <?php
 if(0 != count($addresses['BTC']))echo "<h4>Existing BTC Addresses</h4>";
 foreach($addresses['BTC'] as $btc_address) {

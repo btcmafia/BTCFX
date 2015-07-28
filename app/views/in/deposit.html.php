@@ -148,7 +148,7 @@ function initCanvas(ww,hh)
 </div>
 <?php } ?>
 
-<div class="col-md-6">
+<div class="col-md-8">
         <div class="panel panel-info">
 	  <div class="panel-heading">
 

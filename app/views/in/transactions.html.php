@@ -7,7 +7,7 @@ $money = new Money;
 <h2>Transactions</h2>
 	
 
-	<div class="col-md-6">
+	<div class="col-md-8">
 	<div class="panel panel-info">
 
 		<div class="panel-heading">

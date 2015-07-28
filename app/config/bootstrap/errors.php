@@ -28,6 +28,8 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 		'layout' => 'error',
 		'request' => $params['request']
 	));
+
+/*
 $parameters = (array) $params['request'];
 	$view  = new View(array(
 			'loader' => 'File',
@@ -36,12 +38,13 @@ $parameters = (array) $params['request'];
 				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php'
 			)
 		));
-		$email = 'nilam@ibwt.co.uk';
+
+		$email = 'DEVELOPER_EMAIL';
 			$body = $view->render(
 				'template',
 				compact('parameters'),
 				array(
-					'controller' => 'users',
+					'controller' => 'in',
 					'template'=>'error',
 					'type' => 'mail',
 					'layout' => false
@@ -57,7 +60,7 @@ $parameters = (array) $params['request'];
 //			$message->setTo($email);
 //			$message->setBody($body,'text/html');
 //			$mailer->send($message);
-
+*/
 	return $response;
 });
 

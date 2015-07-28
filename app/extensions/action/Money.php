@@ -50,10 +50,6 @@ private $btc_unit;
 	}
 
 
-	public static function sayHi() {
-
-	return "Hello World";
-	}
 
 	public function update_balance($amount, $currency) {
 

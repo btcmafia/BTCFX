@@ -5,6 +5,7 @@ use app\extensions\action\OAuth2;
 use app\models\Users;
 use app\models\Details;
 use app\models\Emails; 
+use app\models\Invites; 
 use lithium\security\Auth;
 use lithium\storage\Session;
 use app\extensions\action\GoogleAuthenticator;
@@ -21,9 +22,26 @@ use \Swift_Attachment;
 class RegisterController extends \lithium\action\Controller {
 
 
-	public function index(){
-		
-	if($this->request->data) {	
+	public function index($code = null){
+	
+	//currently need an invite code
+	if(! $code) return $this->redirect('/register/requestinvite');
+
+	//check the code
+	$invite = Invites::find('first', array(
+				'conditions' => array(
+					'invite_code' => $code,
+				)
+				));
+
+	if(0 == count($invite)) return $this->redirect('/register/requestinvite');
+
+	if('used' == $invite['invited']) $error = 'That invite code has already been used.';
+
+	elseif('yes' != $invite['invited']) $error = 'That invite code is not currently valid.';
+
+
+	if( (! $error) && ($this->request->data) ) {	
         
 		$Users = Users::create($this->request->data);
       		$saved = $Users->save();
@@ -79,7 +97,7 @@ class RegisterController extends \lithium\action\Controller {
 			
 			}
 		}	
-		return compact('saved','Users');		
+		return compact('saved','Users', 'error');		
 	}
 
 	public function thanks($user_id = false, $resent = false) {
@@ -171,6 +189,53 @@ class RegisterController extends \lithium\action\Controller {
                         $mailer->send($message);
 
 		return;
+	}
+
+	public function requestinvite() {
+
+		if($this->request->data) {
+		
+		if($this->request->data['request_submit']) {
+
+			$invites = Invites::create($this->request->data);
+      			$request_invite = $invites->save();
+		
+		if($request_invite == true){
+		
+		return $this->redirect('/register/invitethanks/');
+		}
+
+		return compact('request_invite');
+		}
+		
+			} elseif($this->request->data['already_submit']) {
+
+			$invite_code = $this->request->data['invite_code'];
+			$email = $this->request->data['email'];
+
+			$search = Invites::find('first', array(
+						'conditions' => array(
+							'email' => $email,
+							'invite_code' => $invite_code,
+							'invited' => true,
+							)
+						));
+
+			if(0 != count($search)) {
+
+						 return $this->redirect("/register/index/$invite_code");
+						}
+			else {
+				$error = 'Invitation not found';
+
+				return compact('error', 'already_invite'); }
+			}
+
+	}
+
+	public function invitethanks() {
+
+	return;
 	}
 
 }

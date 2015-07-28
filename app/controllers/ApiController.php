@@ -15,14 +15,15 @@ class APIController extends \app\extensions\action\Controller {
 
 	public function index() {
 
-return 'BTC API';
-//	return;
+	return 'BTC API';
 	}
 
 
 	/*
 	If $return then will return the result as array
 	Otherwise will render it as json
+
+	@TODO: Should properly formed requests that fail for another reason return a response code other than 200?
 	*/
 	public function orders($market, $limit = false, $return = false) {
 

@@ -147,10 +147,6 @@ function initCanvas(ww,hh)
 
 <h2>Withdraw Funds</h2>
 
-<div class="alert alert-dismissible alert-danger col-sm-8 row">
-  <button type="button" class="close" data-dismiss="alert">×</button>
-  <strong>IMPORTANT:</strong> Like most real banks, taking your money is much easier than giving it back. Unfortunately, we have not yet programmed the withdrawals section yet!
-</div>
 
 <?php if(isset($error)) { ?>
 <div class="alert alert-dismissible alert-danger col-sm-8 row">

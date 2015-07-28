@@ -21,10 +21,10 @@ class CallbackController extends \lithium\action\Controller {
 		$coinprism = new Coinprism(COINPRISM_USERNAME, COINPRISM_PASSWORD);
 		$transactions = $coinprism->get_transaction($data['payload']['transaction_hash']);
 		
-
 		$tx_hash = $transactions['hash'];
 		$confirmations = $transactions['confirmations'];
 		$status = $this->convert_status($confirmations);
+
 	/*
 		Would normally only expect one deposit per transaction, but just in case there is more than one due to a sendtomany transaction, we'll loop through each possibility
 
@@ -41,120 +41,143 @@ class CallbackController extends \lithium\action\Controller {
 
 		foreach($transactions['deposits'] as $deposit) {
 
-			//does the transaction already exist?
-			$tx = Transactions::find('first', array(
-			     'conditions' => array('TransactionHash' => $tx_hash, 'Address' => $deposit['address'], 'Currency' => $deposit['currency'], 'Amount' => (int) $deposit['amount'])
-			));
 
-			//if not, create it
-				if($tx['_id']==""){
-				$tx = Transactions::create();
+		        //does the transaction already exist?
+                        $tx = Transactions::find('first', array(
+                             'conditions' => array('TransactionHash' => $tx_hash, 'Address' => $deposit['address'], 'Currency' => $deposit['currency'], 'Amount' => (int) $deposit['amount'])
+                        ));
 
-					$data = array(
+                        //if not, create it
+                                if($tx['_id']==""){
+                                $tx = Transactions::create();
+
+                                        $data = array(
                                                'DateTime' => new \MongoDate(),
                                                 'TransactionHash' => $tx_hash,
-                                      		'user_id' => $deposit['user_id'],
-                                                'Address'=>$deposit['address'],                                                      
-                                                'Amount'=> (int) $deposit['amount'], //switched to integers!
+                                                'user_id' => $deposit['user_id'],
+                                                'Address'=>$deposit['address'],
+                                                'Amount'=> (int) $deposit['amount'],
                                                 'Currency'=> $deposit['currency'],
-			  			'Status' =>$this->convert_status($confirmations),                                             
-						'TransactionType' => 'Deposit',
-                                                'Added'=>false, //means the deposit has not been added to balance? That's how I'm using it here!
-                                               	);
+                                                'Status' =>$status,
+                                                'TransactionType' => 'Deposit',
+                                                'Added'=>false, //the deposit has not been added to balance 
+                                                );
 
-				} else { //already exists, so just update the status
-					$data['Status'] = $status;
-	
-					//and the balance if relevant	
+                                } else {
+
+					//already exists, if we need to update the balance then we'll have to add it to the queue
 					if( ('completed' == $status) && ($tx['Added'] == false) ) {
 
-						$money = new Money($deposit['user_id']);
-						if($money->update_balance($deposit['amount'], $deposit['currency'])) $data['Added'] = true;
-					}
-				}
+                                        //add to Queue
+					$queue = Queue::create();
 
+				                $queue_params = array(
+			                                'user_id' => $user_id,
+                        			        'currency' => $deposit['currency'],
+                               				'amount' => $deposit['amount'],
+							'tx_hash' => $tx_hash,
+							'tx_id' => $tx['_id'],
+                                			'protocol' => 'system',
+                                			);
 
-
-		/*
-			if a btc deposit then we can forward it as soon as it has one confirmation
-
-			if an asset deposit then we need to send enough btc to the address to pay the transaction fee when forwarding, then 2nd time round we'll do the forwarding
-		*/
-
-		if($confirmations > 0) {
-
-			if($addr = Coinprism::get_address($deposit['address'])) {
-
-			$btc_balance = $addr['btc_address']['balance'];
-
-			$fee_required = DEFAULT_TRANSACTION_FEE - $btc_balance;
-
-				//if( ($fee_required > 0) && ('BTC' != $deposit['currency']) ) {
-				if( ($fee_required > 0) && (! $tx['FeeSent']) ) {
-
-				$input = array('address' => TRANSACTION_FEE_ADDRESS, 'key' => TRANSACTION_FEE_KEY);
-				$outputs[] = array('address' => $addr['btc_address']['address'], 'amount' => $fee_required);
-
-				$fee_sent_hash = Coinprism::send($input, $outputs);
-				$data['FeeSent'] = $fee_sent_hash;
-
-				}
-
-				elseif( ($fee_required <= 0) && (! $tx['Forwarded']) ) { //if no fee required and not already been forwarded, forward to warm wallet
-						
-					if('BTC' == $deposit['currency']) {	
-						$asset_id = false;
-						$amount = $deposit['amount'] - DEFAULT_TRANSACTION_FEE;
-						$output_address = WARM_WALLET_BTC;
-				
-					//we set the FeeSent to NotNeeded here, otherwise subsequent notifications (after the deposit has been forwarded) will trigger a fee_required
-					$data['FeeSent'] = 'NotNeeded';
-		
-						}
-						else{
-							if('TCP' == $deposit['currency']) $asset_id = TCP_ASSET_ID;
-							if('DCT' == $deposit['currency']) $asset_id = DCT_ASSET_ID;
-							$amount = $deposit['amount'];
-							$output_address = WARM_WALLET_ASSET;
-						    }
-					
-				if($amount > 0) {
-			
-					//now we need the private key
-					$privkey = Addresses::find('first', array(
-							'conditions' => array(
-								'btc_address' => $addr['btc_address']['address']
-							))
+					$queue_data = array(
+							'Type' => 'new_deposit',
+							'DateTime' => new \MongoDate(),
+							'Params' => $queue_params, 
 							);
-					$privkey = $privkey['private_key'];
-					
 
-					$input = array('address' => $deposit['address'], 'key' => $privkey);
-					$outputs[0]['address'] = $output_address;
-					$outputs[0]['amount'] = $amount;
+					$queue->save($queue_data);
 
-					if($asset_id) $outputs[0]['asset_id'] = $asset_id;
-				  
-					$forward_hash = Coinprism::send($input, $outputs);
-					$data['Forwarded'] = $forward_hash;
-
-				        }
+					//status will be updated by the queue
+					//$tx['Status'] => 'completed';
+					$tx['Added'] = 'queued';
+	
 					}
-			} //get_address
+					elseif($tx['Added'] != 'queued') { //just update the status
+                                        	$data['Status'] = $status;
+					     }
+                                }
+
+		} //foreach
+		
+		//if need be forward the deposit to warm wallet etc	   
+		if( ($confirmations > 0) && (! isset($tx['FeeSent'])) && (! isset($tx['Forwarded'])) ) {
+		$this->forward_deposit($deposit, $tx);
 		}
-
-                         //save the transaction
-                         $tx->save($data);
-
-
-	} //foreach
-			    
+ 
 			return $this->render(array('layout' => false));
 	
 			} //end data posted
 
 		return;
 		}
+
+
+	/*
+		Will either send a small amount of BTC to pay the transaction fee, or if already sent (or not required) will forward the deposit to our warm wallet
+	*/
+	private function forward_deposit($params, $tx) {
+
+         if($addr = Coinprism::get_address($params['address'])) {
+
+                        $btc_balance = $addr['btc_address']['balance'];
+
+                        $fee_required = DEFAULT_TRANSACTION_FEE - $btc_balance;
+
+				//send a transaction fee, we'll forward next time
+                                if( ($fee_required > 0) && (! $tx['FeeSent']) ) {
+
+                                $input = array('address' => TRANSACTION_FEE_ADDRESS, 'key' => TRANSACTION_FEE_KEY);
+                                $outputs[] = array('address' => $addr['btc_address']['address'], 'amount' => $fee_required);
+
+                                $fee_sent_hash = Coinprism::send($input, $outputs);
+                                $data['FeeSent'] = $fee_sent_hash;
+
+                                }
+
+ 				//if no fee required and not already been forwarded, forward to warm wallet
+                                elseif( ($fee_required <= 0) && (! $tx['Forwarded']) ) {
+
+                                        if('BTC' == $params['currency']) {
+                                                $asset_id = false;
+                                                $amount = $params['amount'] - DEFAULT_TRANSACTION_FEE;
+                                                $output_address = WARM_WALLET_BTC;
+
+                                        //we set the FeeSent to NotNeeded here, otherwise subsequent notifications (after the deposit has been forwarded) will trigger a fee_required
+                                        $data['FeeSent'] = 'NotNeeded';
+
+                                                }
+                                                else{
+                                                        if('TCP' == $params['currency']) $asset_id = TCP_ASSET_ID;
+                                                        if('DCT' == $params['currency']) $asset_id = DCT_ASSET_ID;
+                                                        $amount = $params['amount'];
+                                                        $output_address = WARM_WALLET_ASSET;
+                                                    }
+
+                                if($amount > 0) {
+
+                                        //now we need the private key
+                                        $privkey = Addresses::find('first', array(
+                                                        'conditions' => array(
+                                                                'btc_address' => $addr['btc_address']['address']
+                                                        ))
+                                                        );
+                                        $privkey = $privkey['private_key'];
+
+
+                                        $input = array('address' => $params['address'], 'key' => $privkey);
+                                        $outputs[0]['address'] = $output_address;
+                                        $outputs[0]['amount'] = $amount;
+
+                                        if($asset_id) $outputs[0]['asset_id'] = $asset_id;
+
+                                        $forward_hash = Coinprism::send($input, $outputs);
+                                        $data['Forwarded'] = $forward_hash;
+
+                                        }
+                                        }
+                        } //get_address
+	}
 
 	private function convert_status($confirmations) {
 
