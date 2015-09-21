@@ -63,6 +63,7 @@ class CallbackController extends \lithium\action\Controller {
                                                 'Added'=>false, //the deposit has not been added to balance 
                                                 );
 
+
                                 } else {
 
 					//already exists, if we need to update the balance then we'll have to add it to the queue
@@ -97,6 +98,8 @@ class CallbackController extends \lithium\action\Controller {
                                         	$data['Status'] = $status;
 					     }
                                 }
+				
+			$tx->save($data);
 
 		} //foreach
 		
