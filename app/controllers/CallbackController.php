@@ -28,7 +28,7 @@ class CallbackController extends \lithium\action\Controller {
 	/*
 		Would normally only expect one deposit per transaction, but just in case there is more than one due to a sendtomany transaction, we'll loop through each possibility
 
-		$coinprism->get_transaction has done most of our work already, only returning outputs to addresses which belong to our users and seperating the transactions by currency
+		$coinprism->get_transaction() has done most of our work already, only returning outputs to addresses which belong to our users and seperating the transactions by currency
 	*/
 
 		//check it isn't us sending the fee for forwarding
@@ -100,7 +100,7 @@ class CallbackController extends \lithium\action\Controller {
 
 		} //foreach
 		
-		//if need be forward the deposit to warm wallet etc	   
+		//if need be, forward the deposit to warm wallet etc	   
 		if( ($confirmations > 0) && (! isset($tx['FeeSent'])) && (! isset($tx['Forwarded'])) ) {
 		$this->forward_deposit($deposit, $tx);
 		}

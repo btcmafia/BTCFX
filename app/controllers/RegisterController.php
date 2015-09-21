@@ -25,6 +25,9 @@ class RegisterController extends \lithium\action\Controller {
 	public function index($code = null){
 	
 	//currently need an invite code
+
+/*
+
 	if(! $code) return $this->redirect('/register/requestinvite');
 
 	//check the code
@@ -40,7 +43,7 @@ class RegisterController extends \lithium\action\Controller {
 
 	elseif('yes' != $invite['invited']) $error = 'That invite code is not currently valid.';
 
-
+*/
 	if( (! $error) && ($this->request->data) ) {	
         
 		$Users = Users::create($this->request->data);

@@ -646,7 +646,7 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
                 			$ga = new GoogleAuthenticator();
                                 
-					if(! $ga->verifyCode($details['secret'], $code, 1)) $error = 'Invalid Two Factor Authentication code'; 
+					if(! $ga->verifyCode($details['secret'], $this->request->data['code'], 1)) $error = 'Invalid Two Factor Authentication code'; 
 				}
 
 			if(! isset($error) ) {
@@ -661,7 +661,7 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 	
 			} //POST
 
-		return compact('message', 'error', 'key');
+		return compact('message', 'error', 'key', 'TwoFactorEnabled');
 	}
 
 	public function expiredkey() {

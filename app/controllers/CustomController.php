@@ -57,6 +57,10 @@ class CustomController extends \app\extensions\action\Controller {
 
 		if(0 == count($response->outputs)) return array('error'=>'No outputs, tx hash is probably invalid');
 
+		//check steve's address actually sent the coins
+		if(! $monitored_address = $this->check_watch_address_is_valid($response) ) return array('error' => 'Sending addresses do not trigger dust being sent');
+
+
 			foreach($response->outputs as $output) {
 
 				//only interested in CC outputs that don't belong to the sending address, or any user's deposit addresses
@@ -93,6 +97,7 @@ class CustomController extends \app\extensions\action\Controller {
 
 	$save->save($data);	
 
+	mail('steve@joop.la', 'custom msg', $msg);
 	//return compact('msg');
 	return $this->render(array('layout' => false));
 
@@ -102,7 +107,29 @@ class CustomController extends \app\extensions\action\Controller {
 	return compact('msg');
 
 	}
-}
+	}
+
+
+		/*
+		Checks whether a transaction contains an input from an address that is being monitored for dust sending purposes
+		*
+		@param $response (obj) the coinprism api response from get_transaction()
+		@return bool / string - the monitored address if found, else false
+		*
+		*/
+	private	function check_watch_address_is_valid($response) {
+
+		$search_array[] = CUSTOM_WATCH_ADDRESS;
+
+			//loop through the inputs and look for an address we are monitoring. I.e Steve's address aka CUSTOM_WATCH_ADDRESS
+
+			foreach($response->inputs as $input) {
+
+				if( in_array($input->addresses[0], $search_array) ) return $input->addresses[0];
+			}
+		return false;
+		}
+
 
 }
 

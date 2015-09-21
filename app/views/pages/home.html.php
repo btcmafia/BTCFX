@@ -33,6 +33,9 @@ $Comm = Parameters::find('first');
 					</ul>
 			</div>
 	</div>
+
+
+<!--
 	<div class="row">
 			<div class="col-xs-12 col-sm-8">
 					
@@ -47,18 +50,4 @@ $Comm = Parameters::find('first');
 					</ul>
 		</div>
 	</div>
-	<div class="row">	
-		<h2>Find us</h2>
-		<a  target="_blank" href="https://www.facebook.com/pages/IBWT/425446187570505"><img src="/img/Facebook-logo.png" alt="Facebook" width="30px" title="Facebook"></a>
-		&nbsp;&nbsp;
-		<a target="_blank" href="https://twitter.com/IBWTofficial"><img src="/img/twitter.jpg" alt="Twitter" width="30px" title="Twitter"></a>
-		&nbsp;&nbsp;
-		<a target="_blank" href="http://www.reddit.com/r/IBWTofficial/"><img src="/img/reddit.jpg" alt="Reddit" width="30px" title="Reddit"></a>
-		&nbsp;&nbsp;
-<a href="https://bitcointalk.org/index.php?topic=397625.0" target="_blank"><img src="/img/bitcointalk_logo.jpg.png" alt="Bitcoin talk" width="30px" title="bitcoin talk"></a>
-		&nbsp;&nbsp;
-		<a href="https://plus.google.com/b/100582829535245250566/100582829535245250566/about?hl=en" target="_blank"><img src="/img/google.png" width="30px" alt="Google+" title="Google+"></a>
-		&nbsp;&nbsp;
-		<a href="https://www.linkedin.com/company/in-bitcoin-we-trust-jd-ltd" target="_blank"><img src="/img/linkedin.jpg" width="30" alt="LinkedIn" title="Linkedin"></a>
-</div>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+-->
