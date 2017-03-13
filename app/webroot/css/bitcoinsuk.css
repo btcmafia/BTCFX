@@ -1,16 +1,211 @@
 /*@import url('/bootstrap/css/spacelab.css');
 */
 
+.main {
+position: relative;
+top: 40px;
+}
+
+#text_content {
+
+max-width: 900px;
+margin: auto;
+font-size: 1.1em;
+}
+
 #site-title, #site-title a, #site-title a:visited  {
 position:relative; 
 left:15px;
 top: -3px;
 color: white;
-
+font-size: 1.3em; 
 }
 
-#logo {
+.hide {
+display: none;
+}
 
+.show {
+display: inline;
+}
+
+#office-create-customer-form {
 position: absolute;
-top: 60px;
+left: 0px;
+top: 0px;
+margin: 30px;
 }
+
+#pagination {
+text-align: center;
+padding-bottom: 6px;
+font-size: 1.1em;
+}
+
+h1 {
+text-align:center;
+padding-bottom: 5px;
+}
+
+.title, h2#mobile-title {
+text-align:center;
+}
+
+.label {
+color: black !Important;
+font-weight: bold;
+}
+
+.time-slot-box {
+border: 1pt solid black;
+}
+
+a.jobs-booked-unconfirmed, .ontheway {
+background: yellow;
+}
+
+a.jobs-booked-confirmed {
+background: #daf2f1;
+}
+
+.started {
+background: #47f74e;
+color: black;
+}
+.paused {
+background: #ef9351;
+color: black;
+}
+.job-status {
+border: 0.5pt black dotted;
+padding:5px;
+font-weight: bold;
+}
+
+.error, a.error, a:visited.error {
+color: red;
+font-weight: bold;
+}
+
+.green, a.green, a:visited.green {
+color: green;
+}
+.error-slot-message {
+display: none;
+color: red;
+background: yellow;
+font-weight:bold;
+padding:3px;
+}
+
+#ready_to_go {
+font-weight: bold;
+text-align: center;
+background-color: lightgreen;
+padding: 3px;
+width: 250px;
+margin: auto;
+}
+
+.assign_text {
+color: darkblue;
+font-weight: normal;
+background: lightblue;
+border: 1pt solid black;
+padding:3px;
+}
+
+.mobile-footer {
+text-align: center;
+}
+
+#topmenu {
+margin: auto;
+display: flex;
+    justify-content: center;
+}
+
+.center-block {
+margin: auto;
+display: block;
+text-align: center;
+}
+
+.text-left {
+display: inline;
+text-align:left;
+}
+
+#manage-booking-controls {
+margin: auto;
+display: block;
+text-align: center;
+padding-bottom: 5px;
+}
+
+.button {
+padding: 5px;
+}
+
+.active-service {
+color: green;
+}
+
+.inactive-service {
+color: red;
+}
+
+
+
+#select_job_options {
+font-size: 1.4em;
+text-align: center;
+clear:both;
+}
+
+/* Overlay stuff */
+
+/* The Overlay (background) */
+.overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */    
+    height: 100%;
+    width: 0;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: rgb(255,204,153); /* Black fallback color */
+    background-color: rgba(255,204,153, 1); /* Off white w/opacity */
+    /*background-color: rgba(255,255,255, 1); /* White w/opacity */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+    position: relative;
+    top: 15%; /* 25% from the top */
+    width: 100%; /* 100% width */
+/*    text-align: center; /* Centered text/links */
+    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+}
+
+
+/* Position the close button  */
+.overlay .closebtn {
+    position: absolute;
+    bottom: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
+

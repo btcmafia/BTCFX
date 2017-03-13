@@ -6,16 +6,17 @@ use lithium\util\String;
 class Users extends \lithium\data\Model {
 
 	protected $_schema = array(
-		'_id'	=>	array('type' => 'id'),
+		'_id'		=>	array('type' => 'id'),
 		'username'	=>	array('type' => 'string', 'null' => false),
 		'password'	=>	array('type' => 'string', 'null' => false),
 		'firstname'	=>	array('type' => 'string', 'null' => false),
 		'lastname'	=>	array('type' => 'string', 'null' => false),
-		'email'	=>	array('type' => 'string', 'null' => false),		
+		'email'		=>	array('type' => 'string', 'null' => false),		
 		'updated'	=>	array('type' => 'datetime', 'null' => false),
+		'permissions'   => 	array('type' => 'array', 'null' => true),
 		'created'	=>	array('type' => 'datetime', 'null' => false),
 		'verified'	=>	array('type' => 'string', 'null' => true),
-		'ip'	=>	array('type' => 'string', 'null' => true),		
+		'ip'		=>	array('type' => 'string', 'null' => true),		
 	);
 
 	protected $_meta = array(

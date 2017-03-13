@@ -45,7 +45,7 @@ if ($locales = Environment::get('locales')) {
 $user = Auth::check('member'); 
 // these routes are not behind a login
 $user = Auth::check('member'); 
-Router::connect('/login', 'Sessions::add');
+Router::connect('/login/{:args}', array('Sessions::add', 'args' => array('1')));
 Router::connect('/logout', 'Sessions::delete');
 
 if ($user && $user["username"] == "admin") {

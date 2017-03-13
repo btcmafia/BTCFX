@@ -3,9 +3,11 @@ namespace app\controllers;
 
 use app\models\Addresses;
 use app\models\Transactions;
+use app\models\Queue;
 use lithium\data\Connections;
 use app\extensions\action\Coinprism;
 use app\extensions\action\Money;
+use app\extensions\action\CallQueue;
 
 class CallbackController extends \lithium\action\Controller {
 
@@ -42,6 +44,8 @@ class CallbackController extends \lithium\action\Controller {
 		foreach($transactions['deposits'] as $deposit) {
 
 
+		$saved = false;
+
 		        //does the transaction already exist?
                         $tx = Transactions::find('first', array(
                              'conditions' => array('TransactionHash' => $tx_hash, 'Address' => $deposit['address'], 'Currency' => $deposit['currency'], 'Amount' => (int) $deposit['amount'])
@@ -62,6 +66,8 @@ class CallbackController extends \lithium\action\Controller {
                                                 'TransactionType' => 'Deposit',
                                                 'Added'=>false, //the deposit has not been added to balance 
                                                 );
+					
+				$tx->save($data);
 
 
                                 } else {
@@ -87,27 +93,45 @@ class CallbackController extends \lithium\action\Controller {
 							'Params' => $queue_params, 
 							);
 
+
+					//save the data before the queue, then unset $data['Added'], in case queue is processed before this has finished and we overwrite the Added status!
+					$data['Added'] = 'queued';
+					$tx->save($data);
+					$saved = true;
+					unset($data['Added']);
+
 					$queue->save($queue_data);
 
 					//status will be updated by the queue
 					//$tx['Status'] => 'completed';
-					$tx['Added'] = 'queued';
+
+
+					//still calling the queue manually
+					//new CallQueue();
 	
 					}
 					elseif($tx['Added'] != 'queued') { //just update the status
                                         	$data['Status'] = $status;
+						$tx->save($data);
+					    
+						$saved = true;
 					     }
                                 }
 				
-			$tx->save($data);
 
-		} //foreach
 		
 		//if need be, forward the deposit to warm wallet etc	   
-		if( ($confirmations > 0) && (! isset($tx['FeeSent'])) && (! isset($tx['Forwarded'])) ) {
-		$this->forward_deposit($deposit, $tx);
+		if( ($confirmations > 0) && ( (! isset($tx['FeeSent'])) OR (! isset($tx['Forwarded'])) ) ) {
+		$forward_data = $this->forward_deposit($deposit, $tx);
+
+			//if($forward_data) $data = array_merge($data, $forward_data);
+		
+		$tx->save($forward_data);
 		}
+		
  
+		} //foreach
+		
 			return $this->render(array('layout' => false));
 	
 			} //end data posted
@@ -118,6 +142,10 @@ class CallbackController extends \lithium\action\Controller {
 
 	/*
 		Will either send a small amount of BTC to pay the transaction fee, or if already sent (or not required) will forward the deposit to our warm wallet
+		
+	*   @param $params (array) | the deposit data pulled from coinprism->get_transaction()
+	    @param $tx (array)     | the transaction data as stored in our database
+	    @return array / bool   | if address is valid returns data to be stored with transaction regarding FeeSent / Forwarded. To be merged with existing data before saving 
 	*/
 	private function forward_deposit($params, $tx) {
 
@@ -179,7 +207,11 @@ class CallbackController extends \lithium\action\Controller {
 
                                         }
                                         }
+			return $data;
+
                         } //get_address
+			
+		return false;
 	}
 
 	private function convert_status($confirmations) {

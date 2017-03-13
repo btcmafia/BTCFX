@@ -5,7 +5,7 @@ use app\extensions\action\Money;
 $money = new Money;
 ?>
 <h2>Transactions</h2>
-	
+
 
 	<div class="col-md-8">
 	<div class="panel panel-info">

@@ -60,16 +60,15 @@ class TradeController extends \app\extensions\action\Controller {
    
                 $title = $first_curr . " / " . $second_curr;
 
-//echo "<p>First balance $first_curr: $my_first_balance<br/>";
-//echo "Second balance $second_curr: $my_second_balance<br/>";
     
 	//trade submitted by post
 	if(($this->request->data)){
 		$amount = $this->request->data['Amount'];
-		$price = $money->undisplay_money($this->request->data['Price'], $second_curr);
-		$order_value = (int) $amount * $price;
+		$price = (int) $money->undisplay_money($this->request->data['Price'], $second_curr);
+		$order_value = $amount * $price;
 		$amount = (int) $money->undisplay_money($this->request->data['Amount'], $first_curr);
-		
+	
+	
 		//buy or sell?
 		if('buy' == $this->request->data['Type']) {
 
@@ -127,7 +126,9 @@ class TradeController extends \app\extensions\action\Controller {
 	
 				return compact('title', 'first_curr', 'second_curr', 'first_balance', 'second_balance', 'error', 'orders'); 
 				}
-				}
+				} //end errors
+
+
 		//add the order to the queue
 	        $queue = Queue::create();
 
@@ -161,7 +162,7 @@ class TradeController extends \app\extensions\action\Controller {
 
 	//refresh page, with success message
 	return $this->redirect("/trade/x/$market/1/");
-	}
+	} //end trade submitted / POST received
 
 	if('1' == $flag) { $message = 'Order succesfully submitted'; }
 

@@ -628,7 +628,7 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
 			$user_id = $this->get_user_id();
 
-			$email = $this->request->data['email'];	
+		//	$email = $this->request->data['email'];	
 			$password = $this->request->data['password'];	
 			$password2 = $this->request->data['password2'];	
 
@@ -636,12 +636,13 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
 					 $error = 'Password fields do not match';			
 				}
-				
+			
+			/*	
 				elseif($this->get_email() != $email) {
 
 					$error = 'Invalid email address';
 				}	
-			
+			*/
 				elseif($TwoFactorEnabled) {
 
                 			$ga = new GoogleAuthenticator();
@@ -653,10 +654,14 @@ $tx['DateTime'] = gmdate('d-M-Y H:i:s',$tx['DateTime']->sec);
 
 				$this->update_password($user_id, $password);
 
-				$message = 'Your password has been updated. You may now <a href="/login/">login</a>.';
+				//$message = 'Your password has been updated. You may now <a href="/login/">login</a>.';
 		
 				//delete the key
 				$details->save(array('PasswordReset.Key' => '', 'PasswordReset.Expiry' => ''));
+
+				//success message is shown on the login page			
+				return $this->redirect('/login/1/');
+				exit;
 			}
 	
 			} //POST

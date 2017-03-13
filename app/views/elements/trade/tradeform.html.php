@@ -19,8 +19,8 @@ if('buy' == $type) {
                 <td width="50%">Your balance:
                 <span id="BalanceSecond"> <?=$balance?></span> <?=$currency?>
                 </td>
-                <td><?=$best?>
-                <span id="LowestAskPrice"> 0</span> <?=$second_curr?>
+                <td><!--<?=$best?>
+                <span id="LowestAskPrice"> 0</span> <?=$second_curr?>-->
                 </td>
         </tr>
 </table>

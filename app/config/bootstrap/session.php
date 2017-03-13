@@ -17,9 +17,16 @@ use lithium\security\Auth;
 
 $name = basename(LITHIUM_APP_PATH);
 Session::config(array(
-    'default' => array('adapter' => 'Php')
+    'active_data' => array('adapter' => 'Cookie', 'expire' => '+365 day'),
+    'default' => array('adapter' => 'Php'),
 ));
 
+/*
+Session::config(array(
+    'cookie' => array('adapter' => 'Cookie', 'expire' => '+365 day'),
+    'default' => array('adapter' => 'Php')
+));
+*/
 
 Auth::config(array(
     'member' => array(

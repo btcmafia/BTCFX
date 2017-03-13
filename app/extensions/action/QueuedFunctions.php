@@ -484,7 +484,7 @@ class QueuedFunctions extends \lithium\action\Controller{
 	//so, get the transaction, update the status, update the balance
 
 		$tx = Transactions::find('first', array(
-                             'conditions' => array('_id' => $params['tx_id'], 'TransactionHash' => $params['tx_hash'], 'Address' => $params['address'], 'Currency' => $params['currency'], 'Amount' => (int) $amount['amount'], 'Added' => $params['queued'])
+                             'conditions' => array('_id' => $params['tx_id'], 'TransactionHash' => $params['tx_hash'], 'Address' => $params['address'], 'Currency' => $params['currency'], 'Amount' => (int) $params['amount'], 'Added' => 'queued')
                         ));
 
 		if(0 != count($tx)) {

@@ -8,15 +8,6 @@
  */
  use lithium\storage\Session;
  use app\models\Pages;
- if(!isset($title)){
-		$page = Pages::find('first',array(
-			'conditions'=>array('pagename'=>'home')
-		));
- 		$title = $page['title'];
-		$keywords = $page['keywords'];
-		$description = $page['description'];
- }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +20,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="keywords" content="<?php if(isset($keywords)){echo $keywords;} ?>">	
 		<meta name="description" content="<?php if(isset($description)){echo $description;} ?>">		
-    <meta name="author" content="">
     <link rel="shortcut icon" href="favicon.ico">
 
 
@@ -53,28 +43,16 @@ body {
 	<script src="/bootstrap/js/bootstrap-datepicker.js"></script>	
 	<?php
 	$this->scripts('<script src="/js/main.js?v='.rand(1,100000000).'"></script>'); 	
-	?>
+	$this->scripts('<script src="/js/ajax.js"></script>'); 	
+?>
+	
 </head>
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-<?php
-
-if(Session::read('ex')==""){
-		Session::write('ex','BTC/GBP');
-	}else{
-		$ex =	strtoupper(str_replace("_","/",substr($_SERVER['REQUEST_URI'],-7)));
-		Session::write('ex',$ex);			
-}
-$ex = Session::read('ex');
-
-?>
-<body <?php if(strtolower($this->_request->controller)=='ex'){ ?> onLoad="UpdateDetails('<?=$ex?>');" <?php }elseif($this->_request->controller!='Sessions' && $this->_request->controller!='Admin'){?> onLoad="CheckServer();" <?php }?>>
+<body>
 
     <div style="padding-right:0;" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div  style="padding-right:0; padding-left:0;" class="container-fluid">
@@ -83,28 +61,21 @@ $ex = Session::read('ex');
     </div> <!-- navbar-fixed-top -->
     <div class="container-fluid">
       <div class="row">
-			<?php if(strtolower($this->_request->controller)!='admin'){ ?>
-					<div class="col-sm-3 col-md-2 sidebar">
-						
 
-							<?php echo $this->_render('element', 'sidebar'); ?>
-							</div> <!-- sidebar-->
-							<ul class="nav nav-sidebar">
-			<?php }?>
-        
+				<div class="col-sm-12 col-md-12 main">
 
-				<?php if(strtolower($this->_request->controller)=='admin'){ ?>
-					<div class="col-md-12 main">				
-					<?php echo $this->_render('element', 'admin');?>
-				<?php }else{?>
-					<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<?php }?>
- 							 <?php echo $this->_render('element', 'topmenu'); ?>
+ 					<div id='topmenu'>			 
+						<?php  echo $this->_render('element', 'topmenu'); ?>
+					</div>
 
-				<?php echo $this->content(); ?>
-					<div class="footer">
-						<?php echo $this->_render('element', 'footer');?>	
+						<?php echo $this->content(); ?>
+			
+					<div class="mobile-footer">
+			
+						<?php echo $this->_render('element', 'footer', compact('user'));?>	
+			
 					</div>	<!-- footer -->
+			
 				</div> <!-- main -->					
 			</div> <!-- row-->
 		</div> <!-- container-fluid -->

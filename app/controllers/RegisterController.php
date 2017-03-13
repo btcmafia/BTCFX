@@ -26,8 +26,8 @@ class RegisterController extends \lithium\action\Controller {
 	
 	//currently need an invite code
 
-/*
 
+/*
 	if(! $code) return $this->redirect('/register/requestinvite');
 
 	//check the code
@@ -42,8 +42,8 @@ class RegisterController extends \lithium\action\Controller {
 	if('used' == $invite['invited']) $error = 'That invite code has already been used.';
 
 	elseif('yes' != $invite['invited']) $error = 'That invite code is not currently valid.';
-
 */
+
 	if( (! $error) && ($this->request->data) ) {	
         
 		$Users = Users::create($this->request->data);
@@ -155,6 +155,7 @@ class RegisterController extends \lithium\action\Controller {
 	
 	private function send_verification_email($user_id, $email, $verify_code, $username) {
 
+
 	        $view  = new View(array(
                                 'loader' => 'File',
                                 'renderer' => 'File',
@@ -184,9 +185,9 @@ class RegisterController extends \lithium\action\Controller {
                         $message->setSubject("Verification of email from ".COMPANY_URL);
                         $message->setFrom(array(NOREPLY => 'Verification email '.COMPANY_URL));
                         $message->setTo($email);
-                        $message->addBcc(MAIL_1);
-                        $message->addBcc(MAIL_2);
-                        $message->addBcc(MAIL_3);
+//                        $message->addBcc(MAIL_1);
+//                        $message->addBcc(MAIL_2);
+//                        $message->addBcc(MAIL_3);
                         $message->setBody($body,'text/html');
 
                         $mailer->send($message);

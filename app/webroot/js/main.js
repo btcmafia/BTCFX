@@ -1,4 +1,61 @@
 // JS Document
+
+/* Open when someone clicks on the span element */
+function openNav() {
+    document.getElementById("myNav").style.width = "100%";
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+    document.getElementById("myNav").style.class = "hide";
+}
+
+function showService() {
+    document.getElementById("service_address_form").style.class = "hide";
+return false;
+}
+
+function newCustomer() {
+
+$('form').submit(function(event) {
+
+var formData = {
+            'first_name'        : $('input[id=name]').val(),
+	    'last_name'		: $('input[id=last_name]').val(),
+            'phone'             : $('input[id=phone]').val(),
+            'email'             : $('input[id=email]').val(),
+            'address_1'         : $('input[id=address_1]').val(),
+            'address_2'         : $('input[id=address_2]').val(),
+            'city'              : $('input[id=city]').val(),
+            'postcode'          : $('input[id=postcode]').val(),
+        };
+
+        // process the form
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : '/office/newcustomer/', // the url where we want to POST
+            data        : formData, // our data object
+            dataType    : 'json', // what type of data do we expect back from the server
+            encode      : true
+        },
+
+ function(ReturnValues){
+
+
+
+                // log data to the console so we can see
+                console.log(ReturnValues); 
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+});
+
+}
+
 function UpdateDetails(ex){
 	var delay = 10000;
 	var now, before = new Date();
@@ -238,6 +295,7 @@ function ConvertBalance(){
 	}
 	
 }
+
 function SendPassword(){
 	$.getJSON('/Users/SendPassword/'+$("#Username").val(),
 		function(ReturnValues){

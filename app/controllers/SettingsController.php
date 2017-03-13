@@ -130,6 +130,8 @@ class SettingsController extends \app\extensions\action\Controller {
 		return compact('emails', 'TwoFactorEnabled', 'UnvalidatedEmail', 'message', 'error', 'saved');
 	}
 
+
+
 	public function verifyemail($user_id, $email, $code) {
 
 	//TODO: think about this

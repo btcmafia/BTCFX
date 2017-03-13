@@ -9,6 +9,8 @@
 namespace app\controllers;
 
 use app\models\Pages;
+use lithium\storage\Session;
+
 /**
  * This controller is used for serving static pages by name, which are located in the `/views/pages`
  * folder.
@@ -24,9 +26,21 @@ use app\models\Pages;
  * For example, browsing to `/pages/about/company` will render
  * `/views/pages/about/company.html.php`.
  */
-class PagesController extends \lithium\action\Controller {
+class PagesController extends \app\extensions\action\Controller {
 
 	public function view() {
+        	
+		$permissions = $this->get_active_data('permissions');
+
+		if($permissions['office']==true){ return $this->redirect('office::schedule'); }
+
+		elseif ($permissions['contractor']==true){ return $this->redirect('contractors::schedule'); }
+	  	
+		elseif ($this->get_user_id() != ""){ return $this->redirect('customers::index'); }
+
+		else { return $this->redirect('/login/'); }
+
+
 		$options = array();
 		$path = func_get_args();
 
